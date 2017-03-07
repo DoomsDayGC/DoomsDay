@@ -13,27 +13,30 @@ public class MenuScript : MonoBehaviour
 
     bool waitingForKey;
 
+    bool saved = false; // Check if the settings were saved or not
+                        // If they are not saved after changes were made, the back button turns into Cancel
+
     // Use this for initialization
     void Start()
     {
-        menuPanel = transform.FindChild("Panel"); // Looks through the objects of the Canvas and finds the Panel
+        menuPanel = transform.FindChild("ControlSettingsPanel"); // Looks through the objects of the Canvas and finds the Panel
         menuPanel.gameObject.SetActive(false); // At the start the game panel won't be showed
         waitingForKey = false;
 
-        for (int i = 0; i < 13; i++)
+        for (int i = 0; i < 16; i++)
         {
-            if (menuPanel.GetChild(i).name == "forwardFPKey")
-                menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.forwardFP.ToString();
-            else if (menuPanel.GetChild(i).name == "backwardFPKey")
-                menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.backwardFP.ToString();
+            if (menuPanel.GetChild(i).name == "upwardFPKey")
+                menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.upwardFP.ToString();
+            else if (menuPanel.GetChild(i).name == "downwardFPKey")
+                menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.downwardFP.ToString();
             else if (menuPanel.GetChild(i).name == "leftFPKey")
                 menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.leftFP.ToString();
             else if (menuPanel.GetChild(i).name == "rightFPKey")
                 menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.rightFP.ToString();
-            else if (menuPanel.GetChild(i).name == "forwardSPKey")
-                menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.forwardSP.ToString();
-            else if (menuPanel.GetChild(i).name == "backwardSPKey")
-                menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.backwardSP.ToString();
+            else if (menuPanel.GetChild(i).name == "upwardSPKey")
+                menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.upwardSP.ToString();
+            else if (menuPanel.GetChild(i).name == "downwardSPKey")
+                menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.downwardSP.ToString();
             else if (menuPanel.GetChild(i).name == "leftSPKey")
                 menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.leftSP.ToString();
             else if (menuPanel.GetChild(i).name == "rightSPKey")
@@ -48,16 +51,28 @@ public class MenuScript : MonoBehaviour
                 menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.useItemSP.ToString();
             else if (menuPanel.GetChild(i).name == "pauseKey")
                 menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.pause.ToString();
+            else if (menuPanel.GetChild(i).name == "saveButton")
+            {
+                // Trying to change the Back button text to Cancel when is the case
+                saved = true;
+                for (int j = 0; j < 16; j++)
+                    if (menuPanel.GetChild(j).name == "returnButton" && !saved)
+                        menuPanel.GetChild(j).GetComponentInChildren<Text>().text = "Cancel";
+                    else if (menuPanel.GetChild(j).name == "returnButton" && saved)
+                        menuPanel.GetChild(j).GetComponentInChildren<Text>().text = "Back";
+            }
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.Escape) && !menuPanel.gameObject.activeSelf)
             menuPanel.gameObject.SetActive(true);
         else if (Input.GetKeyDown(KeyCode.Escape) && menuPanel.gameObject.activeSelf)
             menuPanel.gameObject.SetActive(false);
+            */
     }
 
     private void OnGUI()
@@ -96,15 +111,15 @@ public class MenuScript : MonoBehaviour
 
         switch (keyName)
         {
-            case "forwardFP":
-                GameManager.GM.forwardFP = newKey;
-                buttonText.text = GameManager.GM.forwardFP.ToString();
-                PlayerPrefs.SetString("forwardFPKey", GameManager.GM.forwardFP.ToString());
+            case "upwardFP":
+                GameManager.GM.upwardFP = newKey;
+                buttonText.text = GameManager.GM.upwardFP.ToString();
+                PlayerPrefs.SetString("upwardFPKey", GameManager.GM.upwardFP.ToString());
                 break;
-            case "backwardFP":
-                GameManager.GM.backwardFP = newKey;
-                buttonText.text = GameManager.GM.backwardFP.ToString();
-                PlayerPrefs.SetString("backwardFPKey", GameManager.GM.backwardFP.ToString());
+            case "downwardFP":
+                GameManager.GM.downwardFP = newKey;
+                buttonText.text = GameManager.GM.downwardFP.ToString();
+                PlayerPrefs.SetString("downwardFPKey", GameManager.GM.downwardFP.ToString());
                 break;
             case "leftFP":
                 GameManager.GM.leftFP = newKey;
@@ -116,15 +131,15 @@ public class MenuScript : MonoBehaviour
                 buttonText.text = GameManager.GM.rightFP.ToString();
                 PlayerPrefs.SetString("rightFPKey", GameManager.GM.rightFP.ToString());
                 break;
-            case "forwardSP":
-                GameManager.GM.forwardSP = newKey;
-                buttonText.text = GameManager.GM.forwardSP.ToString();
-                PlayerPrefs.SetString("forwardSPKey", GameManager.GM.forwardSP.ToString());
+            case "upwardSP":
+                GameManager.GM.upwardSP = newKey;
+                buttonText.text = GameManager.GM.upwardSP.ToString();
+                PlayerPrefs.SetString("upwardSPKey", GameManager.GM.upwardSP.ToString());
                 break;
-            case "backwardSP":
-                GameManager.GM.backwardSP = newKey;
-                buttonText.text = GameManager.GM.backwardSP.ToString();
-                PlayerPrefs.SetString("backwardSPKey", GameManager.GM.backwardSP.ToString());
+            case "downwardSP":
+                GameManager.GM.downwardSP = newKey;
+                buttonText.text = GameManager.GM.downwardSP.ToString();
+                PlayerPrefs.SetString("downwardSPKey", GameManager.GM.downwardSP.ToString());
                 break;
             case "leftSP":
                 GameManager.GM.leftSP = newKey;

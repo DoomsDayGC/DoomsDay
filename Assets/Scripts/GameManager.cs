@@ -7,13 +7,13 @@ public class GameManager : MonoBehaviour
 
     public static GameManager GM;
 
-    public KeyCode forwardFP { get; set; }
-    public KeyCode backwardFP { get; set; }
+    public KeyCode upwardFP { get; set; }
+    public KeyCode downwardFP { get; set; }
     public KeyCode leftFP { get; set; }
     public KeyCode rightFP { get; set; }
 
-    public KeyCode forwardSP { get; set; }
-    public KeyCode backwardSP { get; set; }
+    public KeyCode upwardSP { get; set; }
+    public KeyCode downwardSP { get; set; }
     public KeyCode leftSP { get; set; }
     public KeyCode rightSP { get; set; }
 
@@ -37,13 +37,13 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        forwardFP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("forwardFPKey", "UpArrow"));
-        backwardFP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("backwardFPKey", "DownArrow"));
+        upwardFP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("upwardFPKey", "UpArrow"));
+        downwardFP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("downwardFPKey", "DownArrow"));
         leftFP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("leftFPKey", "LeftArrow"));
         rightFP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("rightFPKey", "RightArrow"));
 
-        forwardSP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("forwardSPKey", "W"));
-        backwardSP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("backwardSPKey", "S"));
+        upwardSP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("upwardSPKey", "W"));
+        downwardSP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("downwardSPKey", "S"));
         leftSP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("leftSPKey", "A"));
         rightSP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("rightSPKey", "D"));
 
