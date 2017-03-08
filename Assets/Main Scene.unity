@@ -420,8 +420,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 801567076}
-  thrust: 10
-  maxSpeed: 40
+  thrust: 12
+  maxSpeed: 25
 --- !u!54 &801567076
 Rigidbody:
   m_ObjectHideFlags: 0
