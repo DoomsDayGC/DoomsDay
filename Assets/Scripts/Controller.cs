@@ -8,6 +8,7 @@ public class Controller : MonoBehaviour {
     public float thrust;
     public float maxSpeed;
 
+    // Like more
     bool goesUpward = false;
     bool goesDownward = false;
     bool goesRight = false;
@@ -21,8 +22,9 @@ public class Controller : MonoBehaviour {
         GoesDownward();
         leftSpeed = (Vector3.left * thrust *2).x;
         // Way more testing
-        rightSpeed = (Vector3.right * thrust *8).x;
+        rightSpeed = (Vector3.right * thrust *16).x;
         // Some more
+        // Added more features
     }
 
     private void GoesForward()
