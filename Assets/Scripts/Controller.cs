@@ -19,7 +19,8 @@ public class Controller : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         GoesForward();
         GoesDownward();
-        leftSpeed = (Vector3.left * thrust).x;
+        leftSpeed = (Vector3.left * thrust * 10).x;
+        // This is a test for brenching
         rightSpeed = (Vector3.right * thrust).x;
     }
 
@@ -33,23 +34,16 @@ public class Controller : MonoBehaviour {
         downSpeed = (Vector3.down * maxSpeed).y;
     }
 
-    // Update is called once per frame
+
     void Update ()
     {
 
         if (Input.GetKey(GameManager.GM.upwardFP))
         {
-            //transform.position += Vector3.up / 8;
-            /*if(rb.velocity.y < upSpeed)
-                rb.AddForce(Vector3.up * thrust, ForceMode.Acceleration);
-            */
-            //if (!goesForward)
-            //  GoesForward();
             if (!goesDownward)
             {
                 if (rb.velocity.y < upSpeed)
                 {
-                    //upSpeed += 0.2f;
                     rb.AddForce(Vector3.up * thrust, ForceMode.Acceleration);
                     goesUpward = true;
                     goesDownward = false;
@@ -69,21 +63,11 @@ public class Controller : MonoBehaviour {
 
         }
         if(Input.GetKey(GameManager.GM.downwardFP))
-        {
-            //transform.position += Vector3.down / 8;
-            /*
-            if(rb.velocity.y > downSpeed)
-            {
-                rb.AddForce(Vector3.down * thrust, ForceMode.Acceleration);
-            }*/
-            
+        { 
             if (!goesUpward)
             {
-                //if (!goesDownward)
-                  //  GoesDownward();
                 if (rb.velocity.y > downSpeed)
                 {
-                    //downSpeed += 0.2f;
                     rb.AddForce(Vector3.down * thrust, ForceMode.Acceleration);
                     goesDownward = true;
                 }
@@ -98,23 +82,15 @@ public class Controller : MonoBehaviour {
                 {
                     goesUpward = false;
                 }
-                //rb.AddForce(Vector3.down.y * ((Vector3.up * maxSpeed) / thrust) * thrust, ForceMode.Acceleration);
             }
                 
         }
         if (Input.GetKey(GameManager.GM.leftFP))
         {
-            //transform.position += Vector3.left / 8;
-            //if ((Vector3.left * thrust).x > -maxSpeed)
-             //   rb.AddForce(Vector3.left * thrust*5, ForceMode.Acceleration);
-
             if (!goesRight)
             {
-                //if (!goesDownward)
-                //  GoesDownward();
                 if (rb.velocity.x > downSpeed)
                 {
-                    //downSpeed += 0.2f;
                     rb.AddForce(Vector3.left * thrust, ForceMode.Acceleration);
                     goesLeft = true;
                 }
@@ -129,16 +105,11 @@ public class Controller : MonoBehaviour {
                 {
                     goesRight = false;
                 }
-                //rb.AddForce(Vector3.down.y * ((Vector3.up * maxSpeed) / thrust) * thrust, ForceMode.Acceleration);
             }
 
         }
         if (Input.GetKey(GameManager.GM.rightFP))
         {
-            //transform.position += Vector3.right / 8;
-            //if ((Vector3.right * thrust).x < maxSpeed)
-            //    rb.AddForce(Vector3.right * thrust *5, ForceMode.Acceleration);
-
             if (!goesLeft)
             {
                 if (rb.velocity.x < upSpeed)
