@@ -19,9 +19,9 @@ public class Controller : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         GoesForward();
         GoesDownward();
-        leftSpeed = (Vector3.left * thrust * 10).x;
-        // This is a test for brenching
-        rightSpeed = (Vector3.right * thrust).x;
+        leftSpeed = (Vector3.left * thrust).x;
+        rightSpeed = (Vector3.right * thrust *10).x;
+        // This is a second test
     }
 
     private void GoesForward()
