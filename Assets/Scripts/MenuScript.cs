@@ -23,7 +23,7 @@ public class MenuScript : MonoBehaviour
         menuPanel.gameObject.SetActive(false); // At the start the game panel won't be showed
         waitingForKey = false;
 
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 19; i++)
         {
             if (menuPanel.GetChild(i).name == "upwardFPKey")
                 menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.upwardFP.ToString();
@@ -51,16 +51,6 @@ public class MenuScript : MonoBehaviour
                 menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.useItemSP.ToString();
             else if (menuPanel.GetChild(i).name == "pauseKey")
                 menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.pause.ToString();
-            else if (menuPanel.GetChild(i).name == "saveButton")
-            {
-                // Trying to change the Back button text to Cancel when is the case
-                saved = true;
-                for (int j = 0; j < 16; j++)
-                    if (menuPanel.GetChild(j).name == "returnButton" && !saved)
-                        menuPanel.GetChild(j).GetComponentInChildren<Text>().text = "Cancel";
-                    else if (menuPanel.GetChild(j).name == "returnButton" && saved)
-                        menuPanel.GetChild(j).GetComponentInChildren<Text>().text = "Back";
-            }
         }
     }
 
