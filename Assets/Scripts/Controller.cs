@@ -21,7 +21,8 @@ public class Controller : MonoBehaviour {
         GoesDownward();
         leftSpeed = (Vector3.left * thrust *2).x;
         // Way more testing
-        rightSpeed = (Vector3.right * thrust *4).x;
+        rightSpeed = (Vector3.right * thrust *8).x;
+        // Some more
     }
 
     private void GoesForward()
