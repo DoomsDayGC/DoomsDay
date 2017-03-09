@@ -19,7 +19,9 @@ public class Controller : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         GoesForward();
         GoesDownward();
-        leftSpeed = (Vector3.left * thrust).x;
+
+        // Again, more testing
+        leftSpeed = (Vector3.left * thrust *12 *2).x;
         rightSpeed = (Vector3.right * thrust *10).x;
         // This is a second test
     }
