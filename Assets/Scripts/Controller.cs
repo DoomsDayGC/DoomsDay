@@ -16,6 +16,7 @@ public class Controller : MonoBehaviour {
 
     private void Start()
     {
+        // Random comment
         rb = GetComponent<Rigidbody>();
         GoesForward();
         GoesDownward();
