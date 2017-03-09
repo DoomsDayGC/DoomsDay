@@ -7,7 +7,7 @@ public class Controller : MonoBehaviour {
     public Rigidbody rb;
     public float thrust;
     public float maxSpeed;
-
+    
     bool goesUpward = false;
     bool goesDownward = false;
     bool goesRight = false;
@@ -16,7 +16,6 @@ public class Controller : MonoBehaviour {
 
     private void Start()
     {
-        // Random comment
         rb = GetComponent<Rigidbody>();
         GoesForward();
         GoesDownward();
