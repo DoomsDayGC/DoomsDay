@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Realistic Hail Set\Demo Scene\Scripts\DemoSceneController.cs" />
     <Compile Include="Assets\Scripts\ControlSaveButton.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\ExitOnClick.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Assets\Unity UI Sample\Scripts\TiltWindow.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Realistic Hail Set\README.txt" />
     <None Include="Assets\Unity UI Sample\Fonts\Jupiter\LICENSE.txt" />
     <None Include="Assets\Unity UI Sample\Materials\UI-Default-No-Alpha.shader" />
     <None Include="Assets\Unity UI Sample\Textures and Sprites\SF UI\Background\LICENSE.txt" />
