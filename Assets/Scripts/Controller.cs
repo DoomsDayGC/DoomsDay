@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Controller : MonoBehaviour {
+public class Controller : MonoBehaviour
+{
 
     public Rigidbody rb;
     public float thrust;
     public float maxSpeed;
+
+    private GameObject canvasObject;
 
     private float stopThrust;
 
@@ -23,6 +26,9 @@ public class Controller : MonoBehaviour {
 
     private void Start()
     {
+        //gameObject.GetComponent<Canvas>().enabled = false;
+        canvasObject = GameObject.Find("MainMenuCanvas");
+        canvasObject.SetActive(false);
         rb = GetComponent<Rigidbody>();
         upSpeed = (Vector3.up * maxSpeed).y;
         downSpeed = (Vector3.down * maxSpeed).y;
@@ -157,7 +163,7 @@ public class Controller : MonoBehaviour {
 
         if(Input.GetKey(GameManager.GM.pause))
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);         
         }
 
         if (brakeY && !Input.GetKey(GameManager.GM.upwardFP))

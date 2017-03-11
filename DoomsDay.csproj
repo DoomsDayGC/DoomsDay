@@ -86,6 +86,7 @@
     <Compile Include="Assets\Scripts\LoadSceneOnClick.cs" />
     <Compile Include="Assets\Scripts\MainCameraScript.cs" />
     <Compile Include="Assets\Scripts\MenuScript.cs" />
+    <Compile Include="Assets\Scripts\PauseGame.cs" />
     <Compile Include="Assets\Scripts\SelectOnInput.cs" />
     <Compile Include="Assets\Scripts\StarsController.cs" />
     <Compile Include="Assets\Unity UI Sample\Scripts\ActiveStateToggler.cs" />
