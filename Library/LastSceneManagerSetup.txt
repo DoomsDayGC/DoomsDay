@@ -1,4 +1,5 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Realistic Hail Set/Scenes/Main Menu.unity
   isLoaded: 1
   isActive: 1
@@ -8,3 +9,8 @@ sceneSetups:
 - path: Assets/Realistic Hail Set/Scenes/Space.unity
   isLoaded: 1
   isActive: 0
+=======
+- path: Assets/Realistic Hail Set/Scenes/Space.unity
+  isLoaded: 1
+  isActive: 1
+>>>>>>> 7a0271e7efa81b29153b72c7385ab82935049a25
