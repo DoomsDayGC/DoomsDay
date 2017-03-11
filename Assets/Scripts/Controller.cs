@@ -42,6 +42,7 @@ public class Controller : MonoBehaviour
         if (rb.velocity.z < 10)
             rb.AddForce(Vector3.forward * thrust, ForceMode.Acceleration);
 
+
         if (Input.GetKey(GameManager.GM.upwardFP))
         {
             brakeY = false;
