@@ -78,7 +78,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="Assets\Media\Materials\Unity UI Sample\Scripts\ActiveStateToggler.cs" />
     <Compile Include="Assets\Media\Materials\Unity UI Sample\Scripts\ApplicationManager.cs" />
     <Compile Include="Assets\Media\Materials\Unity UI Sample\Scripts\ChangeColor.cs" />
@@ -99,10 +98,7 @@
     <Compile Include="Assets\PyroParticles\Prefab\Script\FireProjectileScript.cs" />
     <Compile Include="Assets\PyroParticles\Prefab\Script\MeteorSwarmScript.cs" />
     <Compile Include="Assets\PyroParticles\Prefab\Script\SingleLineAttribute.cs" />
-=======
-    <Compile Include="Assets\Realistic Hail Set\Demo Scene\Scripts\DemoSceneController.cs" />
     <Compile Include="Assets\Scripts\AsteroidController.cs" />
->>>>>>> a4e4003203720b5a43f11ddcdb653828d6ece425
     <Compile Include="Assets\Scripts\ControlSaveButton.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\ExitOnClick.cs" />
