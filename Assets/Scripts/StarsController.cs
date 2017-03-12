@@ -24,6 +24,6 @@ public class StarsController : MonoBehaviour {
         //transform.Translate(Vector3.forward * Time.deltaTime, Camera.main.transform);
         this.transform.position = earth.transform.position + new Vector3(-earth.transform.position.x , -earth.transform.position.y ,distance);
         //shapeModule.radius = 4000;
-        Debug.Log(earth.transform.position.z + " - " + transform.position.z);
+        //Debug.Log(earth.transform.position.z + " - " + transform.position.z);
 	}
 }
