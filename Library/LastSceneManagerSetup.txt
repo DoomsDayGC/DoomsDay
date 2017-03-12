@@ -1,13 +1,13 @@
 sceneSetups:
-- path: Assets/Realistic Hail Set/Scenes/Space.unity
+- path: Assets/Scenes/Space.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/Main Menu.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/Stars.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/Planets Stars Whatever.unity
   isLoaded: 1
   isActive: 1
-- path: Assets/Realistic Hail Set/Scenes/Main Menu.unity
-  isLoaded: 1
-  isActive: 0
-- path: Assets/Realistic Hail Set/Scenes/Main Scene.unity
-  isLoaded: 0
-  isActive: 0
-- path: Assets/Stars.unity
-  isLoaded: 0
-  isActive: 0
