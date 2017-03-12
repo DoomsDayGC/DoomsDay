@@ -13,7 +13,7 @@ public class MenuScript : MonoBehaviour
 
     bool waitingForKey;
 
-    bool saved = false; // Check if the settings were saved or not
+    //bool saved = false; // Check if the settings were saved or not
                         // If they are not saved after changes were made, the back button turns into Cancel
 
     // Use this for initialization

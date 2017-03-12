@@ -9,6 +9,8 @@ public class Controller : MonoBehaviour
     public Rigidbody rb;
     public float thrust;
     public float maxSpeed;
+    public float forwardSpeed;
+    public static float staticForwardSpeed;
 
     private GameObject canvasObject;
 
@@ -26,9 +28,13 @@ public class Controller : MonoBehaviour
 
     private void Start()
     {
+        staticForwardSpeed = forwardSpeed;
         //gameObject.GetComponent<Canvas>().enabled = false;
-        canvasObject = GameObject.Find("MainMenuCanvas");
-        canvasObject.SetActive(false);
+        if (GameObject.Find("MainMenuCanvas"))
+        {
+            canvasObject = GameObject.Find("MainMenuCanvas");
+            canvasObject.SetActive(false);
+        }
         rb = GetComponent<Rigidbody>();
         upSpeed = (Vector3.up * maxSpeed).y;
         downSpeed = (Vector3.down * maxSpeed).y;
@@ -39,9 +45,8 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
-        if (rb.velocity.z < 10)
+        if (rb.velocity.z < forwardSpeed)
             rb.AddForce(Vector3.forward * thrust, ForceMode.Acceleration);
-
 
         if (Input.GetKey(GameManager.GM.upwardFP))
         {
