@@ -5,15 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour
 {
+    private Rigidbody rb; // Player's Rigidbody
+    public float thrust; // Used for acceleration
+    public float maxSpeed; // The maximum speed the player can achieve by going in a direction
+    public float forwardSpeed; // The speed the player is moving forward in the universe
 
-    public Rigidbody rb;
-    public float thrust;
-    public float maxSpeed;
-    public float forwardSpeed;
+    //  The maximum radius the player can go until leaving the area
+    public float maxRadius;
+
+    // We need the forward speed outside this class as well therefor i made it static
     public static float staticForwardSpeed;
-
+   
+    // Used to make the Main Menu appear upon pressing the pause key
     private GameObject canvasObject;
 
+    // Used to decelerate the player upon changing direction
     private float stopThrust;
 
     bool goesUpward = false;
@@ -22,9 +28,16 @@ public class Controller : MonoBehaviour
     bool goesLeft = false;
     float upSpeed, downSpeed, leftSpeed, rightSpeed;
 
+    // Checks if the player changed direction or not
     bool brakeY = false;
     bool brakeX = false;
     float friction = 0.95f;
+
+    // Used to stop the player from exiting the game area
+    bool canGoXLeft = true;
+    bool canGoXRight = true;
+    bool canGoYUp = true;
+    bool canGoYDown = true;
 
     private void Start()
     {
@@ -43,21 +56,76 @@ public class Controller : MonoBehaviour
         stopThrust = thrust * 4;
     }
 
-    private void Update()
+    void GoForward()
     {
         if (rb.velocity.z < forwardSpeed)
             rb.AddForce(Vector3.forward * thrust, ForceMode.Acceleration);
+    }
 
-        if (Input.GetKey(GameManager.GM.upwardFP))
+    void CheckRadius()
+    {
+        if(this.transform.position.x >= maxRadius)
+        {
+            canGoXRight = false;
+            canGoXLeft = true;
+        }
+        else
+        {
+            canGoXRight = true;
+        }
+
+        if(this.transform.position.x <= -maxRadius)
+        {
+            canGoXLeft = false;
+            canGoXRight = true;
+        }
+        else
+        {
+            canGoXLeft = true;
+        }
+
+        if(this.transform.position.y >= maxRadius)
+        {
+            canGoYUp = false;
+            canGoYDown = true;
+        }
+        else
+        {
+            canGoYUp = true;
+        }
+
+        if(this.transform.position.y <= -maxRadius)
+        {
+            canGoYDown = false;
+            canGoYUp = true;
+        }
+        else
+        {
+            canGoYDown = true;
+        }
+    }
+
+    private void Update()
+    {
+        /*
+        Vector3 offset = this.transform.position - circleCenter;
+        offset.Normalize();
+        offset = offset * maxRadius;
+        transform.position = offset;
+        */
+
+        GoForward();
+
+        CheckRadius();
+
+        if (Input.GetKey(GameManager.GM.upwardFP) && canGoYUp == true)
         {
             brakeY = false;
             if (goesDownward == false)
             {
                 if (rb.velocity.y < upSpeed)
                 {
-                    // For using ForceMode.Force we need the palyer to have a Mass of roughly 0.16  
                     rb.AddForce(Vector3.up * thrust, ForceMode.Acceleration);
-                    Debug.Log(Vector3.up * thrust + "-" + rb.velocity.y + "-" + upSpeed);
                     goesUpward = true;
                     goesDownward = false;
                 }
@@ -74,13 +142,20 @@ public class Controller : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            if (Input.GetKey(GameManager.GM.upwardFP) && canGoYUp == false)
+            {
+                rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            }
+        }
 
         if (!Input.GetKey(GameManager.GM.upwardFP))
         {
             brakeY = true;
         }
-
-        if (Input.GetKey(GameManager.GM.downwardFP))
+        
+        if (Input.GetKey(GameManager.GM.downwardFP) && canGoYDown == true)
         {
             brakeY = false;
             if (goesUpward == false)
@@ -108,7 +183,7 @@ public class Controller : MonoBehaviour
             brakeY = true;
         }
 
-        if (Input.GetKey(GameManager.GM.leftFP))
+        if (Input.GetKey(GameManager.GM.leftFP) && canGoXLeft == true)
         {
             brakeX = false;
             if (goesRight == false)
@@ -131,13 +206,20 @@ public class Controller : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            if (Input.GetKey(GameManager.GM.leftFP) && canGoXLeft == false)
+            {
+                rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
+            }
+        }
 
         if (!Input.GetKey(GameManager.GM.leftFP))
         {
             brakeX = true;
         }
 
-        if (Input.GetKey(GameManager.GM.rightFP))
+        if (Input.GetKey(GameManager.GM.rightFP) && canGoXRight == true)
         {
             brakeX = false;
             if (goesLeft == false)

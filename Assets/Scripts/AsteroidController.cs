@@ -21,8 +21,8 @@ public class AsteroidController : MonoBehaviour
     {
         if (this.transform.position.x <= player.transform.position.x)
             direction = (player.transform.position - new Vector3(0, 0, 0)) - this.transform.position;
-        else
-            direction = (player.transform.position + new Vector3(0, 0, 0)) - this.transform.position;
+        //else
+          //  direction = (player.transform.position + new Vector3(0, 0, 0)) - this.transform.position;
 
         //if (direction.x >= 3 && (direction.y >= 0.3 || direction.y <= -0.3) && (direction.z >= 3 || direction.z <= -3))
         if(direction.z <= -2)
