@@ -29,7 +29,6 @@ public class Gravity : MonoBehaviour
         direction = offset;
         direction.z = 0;
 
-        //Debug.Log(offset + " " + isAttracted);
         if(isAttracted)
         {          
             Earth.GetComponent<Rigidbody>().AddForce(-direction * gravitationalPull, ForceMode.Acceleration);

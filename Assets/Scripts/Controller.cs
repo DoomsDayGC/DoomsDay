@@ -42,7 +42,6 @@ public class Controller : MonoBehaviour
     private void Start()
     {
         staticForwardSpeed = forwardSpeed;
-        //gameObject.GetComponent<Canvas>().enabled = false;
         if (GameObject.Find("MainMenuCanvas"))
         {
             canvasObject = GameObject.Find("MainMenuCanvas");
@@ -107,13 +106,6 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
-        /*
-        Vector3 offset = this.transform.position - circleCenter;
-        offset.Normalize();
-        offset = offset * maxRadius;
-        transform.position = offset;
-        */
-
         GoForward();
 
         CheckRadius();
