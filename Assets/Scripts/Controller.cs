@@ -106,159 +106,168 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
-        GoForward();
 
-        CheckRadius();
-
-        if (Input.GetKey(GameManager.GM.upwardFP) && canGoYUp == true)
+        if (PlayerStatus.isAlive)
         {
-            brakeY = false;
-            if (goesDownward == false)
+            GoForward();
+
+            CheckRadius();
+
+            if (Input.GetKey(GameManager.GM.upwardFP) && canGoYUp == true)
             {
-                if (rb.velocity.y < upSpeed)
+                brakeY = false;
+                if (goesDownward == false)
                 {
-                    rb.AddForce(Vector3.up * thrust, ForceMode.Acceleration);
-                    goesUpward = true;
-                    goesDownward = false;
+                    if (rb.velocity.y < upSpeed)
+                    {
+                        rb.AddForce(Vector3.up * thrust, ForceMode.Acceleration);
+                        goesUpward = true;
+                        goesDownward = false;
+                    }
+                }
+                else
+                {
+                    if (rb.velocity.y <= 0)
+                    {
+                        rb.AddForce(Vector3.up * stopThrust, ForceMode.Acceleration);
+                    }
+                    else
+                    {
+                        goesDownward = false;
+                    }
                 }
             }
             else
             {
-                if (rb.velocity.y <= 0)
+                if (Input.GetKey(GameManager.GM.upwardFP) && canGoYUp == false)
                 {
-                    rb.AddForce(Vector3.up * stopThrust, ForceMode.Acceleration);
+                    rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+                }
+            }
+
+            if (!Input.GetKey(GameManager.GM.upwardFP))
+            {
+                brakeY = true;
+            }
+
+            if (Input.GetKey(GameManager.GM.downwardFP) && canGoYDown == true)
+            {
+                brakeY = false;
+                if (goesUpward == false)
+                {
+                    if (rb.velocity.y > downSpeed)
+                    {
+                        rb.AddForce(Vector3.down * thrust, ForceMode.Acceleration);
+                        goesDownward = true;
+                    }
                 }
                 else
                 {
-                    goesDownward = false;
+                    if (rb.velocity.y >= 0)
+                    {
+                        rb.AddForce(Vector3.down * stopThrust, ForceMode.Acceleration);
+                    }
+                    else
+                    {
+                        goesUpward = false;
+                    }
                 }
+            }
+            if (!Input.GetKey(GameManager.GM.downwardFP))
+            {
+                brakeY = true;
+            }
+
+            if (Input.GetKey(GameManager.GM.leftFP) && canGoXLeft == true)
+            {
+                brakeX = false;
+                if (goesRight == false)
+                {
+                    if (rb.velocity.x > leftSpeed)
+                    {
+                        rb.AddForce(Vector3.left * thrust, ForceMode.Acceleration);
+                        goesLeft = true;
+                    }
+                }
+                else
+                {
+                    if (rb.velocity.x >= 0)
+                    {
+                        rb.AddForce(Vector3.left * stopThrust, ForceMode.Acceleration);
+                    }
+                    else
+                    {
+                        goesRight = false;
+                    }
+                }
+            }
+            else
+            {
+                if (Input.GetKey(GameManager.GM.leftFP) && canGoXLeft == false)
+                {
+                    rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
+                }
+            }
+
+            if (!Input.GetKey(GameManager.GM.leftFP))
+            {
+                brakeX = true;
+            }
+
+            if (Input.GetKey(GameManager.GM.rightFP) && canGoXRight == true)
+            {
+                brakeX = false;
+                if (goesLeft == false)
+                {
+                    if (rb.velocity.x < rightSpeed)
+                    {
+                        rb.AddForce(Vector3.right * thrust, ForceMode.Acceleration);
+                        goesRight = true;
+                        goesLeft = false;
+                    }
+                }
+                else
+                {
+                    if (rb.velocity.x <= 0)
+                    {
+                        rb.AddForce(Vector3.right * stopThrust, ForceMode.Acceleration);
+                    }
+                    else
+                    {
+                        goesLeft = false;
+                    }
+                }
+            }
+
+            if (!Input.GetKey(GameManager.GM.rightFP))
+            {
+                brakeX = true;
+            }
+
+            if (Input.GetKey(GameManager.GM.pause))
+            {
+                SceneManager.LoadScene(1);
+            }
+
+            if (brakeY && !Input.GetKey(GameManager.GM.upwardFP))
+            {
+                var vel = rb.velocity;
+                vel.y *= friction;
+                rb.velocity = vel;
+                rb.angularVelocity *= friction;
+            }
+            if (brakeX && !Input.GetKey(GameManager.GM.leftFP))
+            {
+                var vel = rb.velocity;
+                vel.x *= friction;
+                rb.velocity = vel;
+                rb.angularVelocity *= friction;
             }
         }
         else
         {
-            if (Input.GetKey(GameManager.GM.upwardFP) && canGoYUp == false)
-            {
-                rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-            }
-        }
-
-        if (!Input.GetKey(GameManager.GM.upwardFP))
-        {
-            brakeY = true;
-        }
-        
-        if (Input.GetKey(GameManager.GM.downwardFP) && canGoYDown == true)
-        {
-            brakeY = false;
-            if (goesUpward == false)
-            {
-                if (rb.velocity.y > downSpeed)
-                {
-                    rb.AddForce(Vector3.down * thrust, ForceMode.Acceleration);
-                    goesDownward = true;
-                }
-            }
-            else
-            {
-                if (rb.velocity.y >= 0)
-                {
-                    rb.AddForce(Vector3.down * stopThrust, ForceMode.Acceleration);
-                }
-                else
-                {
-                    goesUpward = false;
-                }
-            }
-        }
-        if (!Input.GetKey(GameManager.GM.downwardFP))
-        {
-            brakeY = true;
-        }
-
-        if (Input.GetKey(GameManager.GM.leftFP) && canGoXLeft == true)
-        {
-            brakeX = false;
-            if (goesRight == false)
-            {
-                if (rb.velocity.x > leftSpeed)
-                {
-                    rb.AddForce(Vector3.left * thrust, ForceMode.Acceleration);
-                    goesLeft = true;
-                }
-            }
-            else
-            {
-                if (rb.velocity.x >= 0)
-                {
-                    rb.AddForce(Vector3.left * stopThrust, ForceMode.Acceleration);
-                }
-                else
-                {
-                    goesRight = false;
-                }
-            }
-        }
-        else
-        {
-            if (Input.GetKey(GameManager.GM.leftFP) && canGoXLeft == false)
-            {
-                rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
-            }
-        }
-
-        if (!Input.GetKey(GameManager.GM.leftFP))
-        {
-            brakeX = true;
-        }
-
-        if (Input.GetKey(GameManager.GM.rightFP) && canGoXRight == true)
-        {
-            brakeX = false;
-            if (goesLeft == false)
-            {
-                if (rb.velocity.x < rightSpeed)
-                {
-                    rb.AddForce(Vector3.right * thrust, ForceMode.Acceleration);
-                    goesRight = true;
-                    goesLeft = false;
-                }
-            }
-            else
-            {
-                if (rb.velocity.x <= 0)
-                {
-                    rb.AddForce(Vector3.right * stopThrust, ForceMode.Acceleration);
-                }
-                else
-                {
-                    goesLeft = false;
-                }
-            }
-        }
-
-        if (!Input.GetKey(GameManager.GM.rightFP))
-        {
-            brakeX = true;
-        }
-
-        if(Input.GetKey(GameManager.GM.pause))
-        {
-            SceneManager.LoadScene(1);         
-        }
-
-        if (brakeY && !Input.GetKey(GameManager.GM.upwardFP))
-        {
-            var vel = rb.velocity;
-            vel.y *= friction;
-            rb.velocity = vel;
-            rb.angularVelocity *= friction;
-        }
-        if (brakeX && !Input.GetKey(GameManager.GM.leftFP))
-        {
-            var vel = rb.velocity;
-            vel.x *= friction;
-            rb.velocity = vel;
-            rb.angularVelocity *= friction;
+            rb.velocity = Vector3.zero;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
         }
     }
 

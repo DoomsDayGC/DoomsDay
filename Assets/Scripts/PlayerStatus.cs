@@ -8,6 +8,8 @@ public class PlayerStatus : MonoBehaviour {
 
     int count;
 
+    public static bool isAlive = true;
+
     private void Start()
     {
         count = 0;
@@ -15,7 +17,12 @@ public class PlayerStatus : MonoBehaviour {
         for (int i = 0; i < HP.Length; i++)
             HP[i] = true;
     }
-   
+
+    private void Update()
+    {
+        if (!CollisionSystem.isAlive)
+            isAlive = false;
+    }
 
     private void OnGUI()
     {
@@ -26,7 +33,7 @@ public class PlayerStatus : MonoBehaviour {
             GUI.Label(new Rect(k, 80, 50, 50), HP[i].ToString());
             k += 35;
         }
-        GUI.Label(new Rect(0, 110, 100, 100), CollisionSystem.isAlive == false || count == HP.Length ? "Dead" : "Alive");
+        GUI.Label(new Rect(0, 110, 100, 100), isAlive == false || count == HP.Length ? "Dead" : "Alive");
         GUI.EndGroup();
     }
 
@@ -44,5 +51,8 @@ public class PlayerStatus : MonoBehaviour {
                 }
             }
         }
+
+        if (count == HP.Length)
+            isAlive = false;
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CollisionSystem : MonoBehaviour
 {
     static public bool isAlive = true;
-    
+    static public bool starHit = false;
     
     private void OnCollisionEnter(Collision col)
     {
@@ -16,8 +16,7 @@ public class CollisionSystem : MonoBehaviour
     {
         if (other.transform.name == "Player")
         {
-            isAlive = false;
-            Debug.Log("Star");
+            starHit = true;
         }
     }
 

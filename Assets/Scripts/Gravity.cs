@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
-    public GameObject Earth;
+    public static bool sunAttraction = false;
+
+    public GameObject earth;
 
     public float gravitationalPull;
 
@@ -23,15 +25,20 @@ public class Gravity : MonoBehaviour
 
     void FixedUpdate()
     {
-        offset = Earth.transform.position - this.transform.position;
+        offset = earth.transform.position - this.transform.position;
         SetGravity();
 
         direction = offset;
         direction.z = 0;
 
+        if (isAttracted && this.tag == "Star")
+        {
+            sunAttraction = true;
+        }
+
         if(isAttracted)
         {          
-            Earth.GetComponent<Rigidbody>().AddForce(-direction * gravitationalPull, ForceMode.Acceleration);
+            earth.GetComponent<Rigidbody>().AddForce(-direction * gravitationalPull, ForceMode.Acceleration);
         }
     }
 
