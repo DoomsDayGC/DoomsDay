@@ -19,7 +19,7 @@ public class MainCameraScript : MonoBehaviour {
 	void Update () {
         offset = new Vector3(playerRb.transform.position.x, playerRb.transform.position.y + 0.50f, playerRb.transform.position.z - 3.2f);
 
-        if (StarGravity.cameraFollow)
+        if (PlayerStatus.cameraFollow)
         {
             this.transform.position = offset;
         }
