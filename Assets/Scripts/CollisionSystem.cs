@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CollisionSystem : MonoBehaviour
 {
-    //static public bool isAlive = true;
     static public bool starHit = false; 
     
     private void OnCollisionEnter(Collision col)

@@ -9,7 +9,10 @@ public class Gravity : MonoBehaviour
 
     // The strength of the gravitational pull
     public float gravitationalPull;
-    
+
+    // Used to calibrate planet's gravity
+    public float powerPerFrame;
+
     // The radius where gravity start to roll
     public float maxRadius;
 
@@ -19,10 +22,18 @@ public class Gravity : MonoBehaviour
     private Vector3 offset;
     private Vector3 direction;
 
+    // Checks if the player got passed the planet
+    private bool beyond2Souls = false;
+
+    // Checks if the player is trying to escape the planetary gravity
+    private bool runYouFool = false;
+
     // The positions of the planet's center
     private float xC;
     private float yC;
     private float zC;
+
+    float gravity = 0.0f;
 
     private void Start()
     {
@@ -37,7 +48,6 @@ public class Gravity : MonoBehaviour
     void FixedUpdate()
     {
         offset = earth.transform.position - this.transform.position;
-        //SetGravity();
 
         direction = offset;
         direction.z = 0;
@@ -46,20 +56,55 @@ public class Gravity : MonoBehaviour
         var y = Mathf.Pow((earth.transform.position.y - yC), 2);
         var z = Mathf.Pow((earth.transform.position.z - zC), 2);
         
-        //if(isAttracted)
-        if ((x + y + z) <= Mathf.Pow(maxRadius, 2))
+        ///////
+        if (earth.transform.position.z >= (this.transform.position.z + this.transform.localScale.z))
+        {
+            beyond2Souls = true;
+        }
+
+        ///////
+        if (gravity >= 0 && planetAttraction && ((Input.GetKey(GameManager.GM.leftFP) && this.transform.position.x > earth.transform.position.x)
+            || (Input.GetKey(GameManager.GM.rightFP) && this.transform.position.x < earth.transform.position.x)
+            || (Input.GetKey(GameManager.GM.upwardFP) && this.transform.position.y < earth.transform.position.y)
+            || (Input.GetKey(GameManager.GM.downwardFP) && this.transform.position.y > earth.transform.position.y)))
+        {
+            gravity -= powerPerFrame * Time.deltaTime;
+            runYouFool = true;
+        }
+
+        if (gravity <= gravitationalPull && planetAttraction && !runYouFool)
+        {
+            gravity += powerPerFrame * Time.deltaTime;
+        }
+
+        //Debug.Log(gravity);
+
+        ///////
+        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls)
         {
             planetAttraction = true;
-            earth.GetComponent<Rigidbody>().AddForce(-direction * gravitationalPull, ForceMode.Acceleration);
+            earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
+
+            if(earth.transform.position.z >= this.transform.position.z && PlayerStatus.isAlive)
+            {
+                if (earth.GetComponent<Rigidbody>().velocity.z <= Controller.staticForwardSpeed + 30)
+                    earth.GetComponent<Rigidbody>().AddForce(Vector3.forward * 100, ForceMode.Acceleration);
+            }
         }
         else
         {
+            gravity = 0.0f;
             planetAttraction = false;
+            beyond2Souls = false;
         }
 
-        if(planetAttraction)
+        runYouFool = false;
+
+
+        //////
+        if (planetAttraction)
         {
-            if (offset.magnitude <= (3 / 4.0 * maxRadius) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
+            if (offset.magnitude <= (1 / 2.0 * (maxRadius - this.transform.localScale.x)) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.warning = true;
             }
@@ -67,7 +112,7 @@ public class Gravity : MonoBehaviour
             {
                 PlayerStatus.warning = false;
             }
-            if (offset.magnitude <= (1 / 2.0 * maxRadius) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
+            if (offset.magnitude <= (1 / 3.0 * (maxRadius - this.transform.localScale.x)) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.cameraFollow = false;
                 Controller.ignoreKey = true;

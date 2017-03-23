@@ -110,7 +110,10 @@ public class Controller : MonoBehaviour
     }
 
     private void Update()
-    { 
+    {
+        if (GetComponent<Rigidbody>().velocity.z >= staticForwardSpeed)
+                GetComponent<Rigidbody>().AddForce(Vector3.back * 10, ForceMode.Acceleration);
+
         if (PlayerStatus.isAlive)
         {
             GoForward();
@@ -269,6 +272,10 @@ public class Controller : MonoBehaviour
                     rb.velocity = vel;
                     rb.angularVelocity *= friction;
                 }
+            }
+            else
+            {
+                rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, forwardSpeed);
             }
         }
         else

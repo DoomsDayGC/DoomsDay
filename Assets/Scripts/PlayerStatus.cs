@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
-    // The player
-    public GameObject Player;
-
     // A vector that contains the number of lives the player has
     static bool[] HP;
     private int count; // Vector's length
@@ -20,6 +18,7 @@ public class PlayerStatus : MonoBehaviour
     // The amount of maximum heat
     public static float heatAmount;
 
+    // Shows a warning if the player is on a collision course with a planet / star
     public static bool warning = false;
 
     private void Start()
@@ -33,18 +32,8 @@ public class PlayerStatus : MonoBehaviour
     }
 
     private void Update()
-    {
-        if(!StarGravity.sunAttraction && isAlive)
-        {
-            if (heatAmount >= 0)
-            {
-                heatAmount -= 0.5f * Time.deltaTime;
-            }
-            else
-            {
-                isAlive = false;
-            }
-        }
+    { 
+
     }
 
     private void OnGUI()
@@ -52,10 +41,8 @@ public class PlayerStatus : MonoBehaviour
         var k = 0;
         GUI.BeginGroup(new Rect(0, 0, 200, 200));
 
-        GUI.Label(new Rect(0, 20, 200, 200), Player.GetComponent<Rigidbody>().velocity.ToString());
+        GUI.Label(new Rect(0, 20, 200, 200), GetComponent<Rigidbody>().velocity.ToString());
         GUI.Label(new Rect(0, 40, 200, 200), "Max Speed: " + Controller.maxSpeedStatic.ToString());
-
-        //GUI.Label(new Rect(0, 60, 200, 200), "Status:\n" + isAlive.ToString());
 
         for (int i = 0; i < HP.Length; i++)
         {
