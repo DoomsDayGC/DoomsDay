@@ -20,6 +20,8 @@ public class PlayerStatus : MonoBehaviour
 
     // Shows a warning if the player is on a collision course with a planet / star
     public static bool warning = false;
+    public static bool itsAGo = false;
+
 
     private void Start()
     {

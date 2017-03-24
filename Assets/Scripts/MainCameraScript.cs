@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainCameraScript : MonoBehaviour {
 
@@ -19,6 +20,16 @@ public class MainCameraScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        if (PlayerStatus.itsAGo)
+        {
+            GetComponent<GravityWarning>().FadeIn();
+        }
+        if (!PlayerStatus.warning) 
+        {
+            GetComponent<GravityWarning>().FadeOut();
+        }
+
+        /*
         var allRenderers = GetComponentsInChildren<Renderer>();
         foreach (Renderer r in allRenderers)
         {
@@ -26,8 +37,7 @@ public class MainCameraScript : MonoBehaviour {
             {
                 r.sharedMaterials[i].SetColor("_Color", new Color(1,1,1,0.5f));
             }
-        }
-
+        }*/
 
         offset = new Vector3(playerRb.transform.position.x, playerRb.transform.position.y + 0.50f, playerRb.transform.position.z - 3.2f);
 
@@ -35,5 +45,7 @@ public class MainCameraScript : MonoBehaviour {
         {
             this.transform.position = offset;
         }
+
+        
     }
 }

@@ -55,7 +55,7 @@ public class Gravity : MonoBehaviour
         var x = Mathf.Pow((earth.transform.position.x - xC), 2);
         var y = Mathf.Pow((earth.transform.position.y - yC), 2);
         var z = Mathf.Pow((earth.transform.position.z - zC), 2);
-        
+
         ///////
         if (earth.transform.position.z >= (this.transform.position.z + this.transform.localScale.z))
         {
@@ -85,7 +85,7 @@ public class Gravity : MonoBehaviour
             planetAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
 
-            if(earth.transform.position.z >= this.transform.position.z && PlayerStatus.isAlive)
+            if (earth.transform.position.z >= this.transform.position.z && PlayerStatus.isAlive)
             {
                 if (earth.GetComponent<Rigidbody>().velocity.z <= Controller.staticForwardSpeed + 30)
                     earth.GetComponent<Rigidbody>().AddForce(Vector3.forward * 100, ForceMode.Acceleration);
@@ -107,11 +107,13 @@ public class Gravity : MonoBehaviour
             if (offset.magnitude <= (1 / 2.0 * (maxRadius - this.transform.localScale.x)) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.warning = true;
+                PlayerStatus.itsAGo = true;
             }
             else
             {
                 PlayerStatus.warning = false;
             }
+
             if (offset.magnitude <= (1 / 3.0 * (maxRadius - this.transform.localScale.x)) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.cameraFollow = false;

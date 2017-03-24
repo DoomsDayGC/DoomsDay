@@ -114,6 +114,7 @@ public class StarGravity : MonoBehaviour
             if (distance.magnitude <= 25 && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.warning = true;
+                PlayerStatus.itsAGo = true;
             }
             else
             {
