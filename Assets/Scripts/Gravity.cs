@@ -77,14 +77,34 @@ public class Gravity : MonoBehaviour
             gravity += powerPerFrame * Time.deltaTime;
         }
 
-        //Debug.Log(gravity);
 
         ///////
         if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls)
         {
             planetAttraction = true;
+            //Debug.Log(earth.transform.position.x + " " + Controller.maxRadiusStatic);
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
+            //////
+            /*
+            if (earth.transform.position.x < Controller.maxRadiusStatic - 50)
+            {
+                earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
+            }
+            else
+            {
+                earth.GetComponent<Rigidbody>().AddForce(new Vector3(0, -direction.x * gravity, -direction.z * gravity), ForceMode.Acceleration);
+            }
 
+            if (earth.transform.position.y < Controller.maxRadiusStatic - 50)
+            {
+                earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
+            }
+            else
+            {
+                earth.GetComponent<Rigidbody>().AddForce(new Vector3(-direction.x * gravity, 0, -direction.z * gravity), ForceMode.Acceleration);
+            }
+            */
+            //////
             if (earth.transform.position.z >= this.transform.position.z && PlayerStatus.isAlive)
             {
                 if (earth.GetComponent<Rigidbody>().velocity.z <= Controller.staticForwardSpeed + 30)
@@ -99,8 +119,10 @@ public class Gravity : MonoBehaviour
         }
 
         runYouFool = false;
+        // Debug.Log(offset.magnitude + " " + (1 / 2.0 * (maxRadius - this.transform.localScale.x)) + " " + (1 / 3.0 * (maxRadius - this.transform.localScale.x)) + " "
+        //+ PlayerStatus.cameraFollow + " " + PlayerStatus.isAlive + " " + -direction);
 
-
+        Debug.Log(offset.magnitude + " " + ((maxRadius - this.transform.localScale.x) / 3 + 7));
         //////
         if (planetAttraction)
         {
@@ -114,11 +136,30 @@ public class Gravity : MonoBehaviour
                 PlayerStatus.warning = false;
             }
 
-            if (offset.magnitude <= (1 / 3.0 * (maxRadius - this.transform.localScale.x)) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
+            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / 3 + 7) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
             {
                 PlayerStatus.cameraFollow = false;
                 Controller.ignoreKey = true;
             }
+            if(!PlayerStatus.cameraFollow && PlayerStatus.isAlive)
+            {
+                earth.GetComponent<Rigidbody>().AddForce(-direction * 1, ForceMode.Acceleration);
+            }
+
+            /*
+            if(PlayerStatus.cameraFollow && !PlayerStatus.isAlive)
+            {
+                earth.GetComponent<Rigidbody>().AddForce(-direction * 5, ForceMode.Acceleration);
+                //Debug.Log(-direction + " " + PlayerStatus.cameraFollow + " " + PlayerStatus.isAlive);
+            }
+            
+            else
+            {
+                Debug.Log(offset.magnitude + " " + (1 / 2.0 * (maxRadius - this.transform.localScale.x)) + " " + (1 / 3.0 * (maxRadius - this.transform.localScale.x)) + " "
+    + PlayerStatus.cameraFollow + " " + PlayerStatus.isAlive + " " + -direction);
+            }*/
+
+        //(this.transform.position.z + this.transform.localScale.z))//
         }
     }
 

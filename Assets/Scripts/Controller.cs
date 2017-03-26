@@ -16,10 +16,11 @@ public class Controller : MonoBehaviour
 
     //  The maximum radius the player can go until leaving the area
     public float maxRadius;
+    public static float maxRadiusStatic;
 
     // We need the forward speed outside this class as well therefor i made it static
     public static float staticForwardSpeed;
-   
+
     // Used to make the Main Menu appear upon pressing the pause key
     private GameObject canvasObject;
 
@@ -51,6 +52,7 @@ public class Controller : MonoBehaviour
             canvasObject = GameObject.Find("MainMenuCanvas");
             canvasObject.SetActive(false);
         }
+
         rb = GetComponent<Rigidbody>();
         upSpeed = (Vector3.up * maxSpeed).y;
         downSpeed = (Vector3.down * maxSpeed).y;
@@ -58,6 +60,7 @@ public class Controller : MonoBehaviour
         rightSpeed = (Vector3.right * maxSpeed).x;
         stopThrust = thrust * 4;
         maxSpeedStatic = maxSpeed;
+        maxRadiusStatic = maxRadius;
     }
 
     void GoForward()
@@ -68,7 +71,7 @@ public class Controller : MonoBehaviour
 
     void CheckRadius()
     {
-        if(this.transform.position.x >= maxRadius)
+        if (this.transform.position.x >= maxRadius)
         {
             canGoXRight = false;
             canGoXLeft = true;
@@ -78,7 +81,7 @@ public class Controller : MonoBehaviour
             canGoXRight = true;
         }
 
-        if(this.transform.position.x <= -maxRadius)
+        if (this.transform.position.x <= -maxRadius)
         {
             canGoXLeft = false;
             canGoXRight = true;
@@ -88,7 +91,7 @@ public class Controller : MonoBehaviour
             canGoXLeft = true;
         }
 
-        if(this.transform.position.y >= maxRadius)
+        if (this.transform.position.y >= maxRadius)
         {
             canGoYUp = false;
             canGoYDown = true;
@@ -98,7 +101,7 @@ public class Controller : MonoBehaviour
             canGoYUp = true;
         }
 
-        if(this.transform.position.y <= -maxRadius)
+        if (this.transform.position.y <= -maxRadius)
         {
             canGoYDown = false;
             canGoYUp = true;
@@ -112,7 +115,7 @@ public class Controller : MonoBehaviour
     private void Update()
     {
         if (GetComponent<Rigidbody>().velocity.z >= staticForwardSpeed)
-                GetComponent<Rigidbody>().AddForce(Vector3.back * 10, ForceMode.Acceleration);
+            GetComponent<Rigidbody>().AddForce(Vector3.back * 10, ForceMode.Acceleration);
 
         if (PlayerStatus.isAlive)
         {
@@ -122,6 +125,15 @@ public class Controller : MonoBehaviour
 
             if (!ignoreKey)
             {
+                if (Input.GetKey(GameManager.GM.rightFP) && Input.GetKey(GameManager.GM.leftFP))
+                {
+                    canGoXRight = false;
+                }
+                if (Input.GetKey(GameManager.GM.upwardFP) && Input.GetKey(GameManager.GM.downwardFP))
+                {
+                    canGoYDown = false;
+                }
+
                 if (Input.GetKey(GameManager.GM.upwardFP) && canGoYUp == true)
                 {
                     brakeY = false;
@@ -158,6 +170,7 @@ public class Controller : MonoBehaviour
                 {
                     brakeY = true;
                 }
+
 
                 if (Input.GetKey(GameManager.GM.downwardFP) && canGoYDown == true)
                 {
@@ -223,6 +236,7 @@ public class Controller : MonoBehaviour
                     brakeX = true;
                 }
 
+
                 if (Input.GetKey(GameManager.GM.rightFP) && canGoXRight == true)
                 {
                     brakeX = false;
@@ -275,13 +289,14 @@ public class Controller : MonoBehaviour
             }
             else
             {
-                rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, forwardSpeed);
+                rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 10);
             }
         }
         else
         {
             rb.velocity = Vector3.zero;
             rb.constraints = RigidbodyConstraints.FreezeAll;
-        }  
+        }
+        ignoreKey = false;
     }
 }

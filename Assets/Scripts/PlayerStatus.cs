@@ -33,11 +33,6 @@ public class PlayerStatus : MonoBehaviour
             HP[i] = true;
     }
 
-    private void Update()
-    { 
-
-    }
-
     private void OnGUI()
     {
         var k = 0;
