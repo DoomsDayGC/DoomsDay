@@ -129,24 +129,27 @@ public class StarGravity : MonoBehaviour
             {
                 PlayerStatus.isAlive = false;
             }
-            if (this.tag == "Star")
+            if (PlayerStatus.isAlive)
             {
-                if (PlayerStatus.heatAmount <= 100)
+                if (this.tag == "Star")
                 {
-                    PlayerStatus.heatAmount += 3 * Time.deltaTime;
-                }
-            }
-            else
-            {
-                if (PlayerStatus.isAlive)
-                {
-                    if (PlayerStatus.heatAmount >= 0)
+                    if (PlayerStatus.heatAmount <= 100)
                     {
-                        PlayerStatus.heatAmount -= 0.5f * Time.deltaTime;
+                        PlayerStatus.heatAmount += 3 * Time.deltaTime;
                     }
-                    else
+                }
+                else
+                {
+                    if (PlayerStatus.isAlive)
                     {
-                        PlayerStatus.isAlive = false;
+                        if (PlayerStatus.heatAmount >= 0)
+                        {
+                            PlayerStatus.heatAmount -= 0.5f * Time.deltaTime;
+                        }
+                        else
+                        {
+                            PlayerStatus.isAlive = false;
+                        }
                     }
                 }
             }

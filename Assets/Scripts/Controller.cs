@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Controller : MonoBehaviour
 {
     // Used to ignore the keys the user is pressing when the planet is about to die
-    public static bool ignoreKey = false;
+    public static bool ignoreKey;
 
     private Rigidbody rb; // Player's Rigidbody
     public float thrust; // Used for acceleration
@@ -61,6 +61,7 @@ public class Controller : MonoBehaviour
         stopThrust = thrust * 4;
         maxSpeedStatic = maxSpeed;
         maxRadiusStatic = maxRadius;
+        ignoreKey = false;
     }
 
     void GoForward()
@@ -297,6 +298,6 @@ public class Controller : MonoBehaviour
             rb.velocity = Vector3.zero;
             rb.constraints = RigidbodyConstraints.FreezeAll;
         }
-        ignoreKey = false;
+        //ignoreKey = false;
     }
 }
