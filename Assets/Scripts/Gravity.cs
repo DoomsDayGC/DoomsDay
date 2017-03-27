@@ -7,6 +7,8 @@ public class Gravity : MonoBehaviour
     // The, uhm.. Earth
     public GameObject earth;
 
+    public Vector3 earthToPlanetDist;
+
     // The strength of the gravitational pull
     public float gravitationalPull;
 
@@ -48,6 +50,7 @@ public class Gravity : MonoBehaviour
     void FixedUpdate()
     {
         offset = earth.transform.position - this.transform.position;
+        earthToPlanetDist = offset;
 
         direction = offset;
         direction.z = 0;
@@ -109,7 +112,8 @@ public class Gravity : MonoBehaviour
         //////
         if (planetAttraction)
         {
-
+            PlayerStatus.planetName = this.name;
+            //PlayerStatus.isAttracted = planetAttraction;
             if (offset.magnitude <= (/*1 / 2.0 **/ (maxRadius - this.transform.localScale.x) / 2 + 10) && (this.transform.position.z + this.transform.localScale.z / 2) - 25 >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.warning = true;

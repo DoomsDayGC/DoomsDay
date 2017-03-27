@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class StarGravity : MonoBehaviour
 {
+    //public Vector3 distToStar;
+    public bool isAttractedByStar;
+
     // The, uhm.. Earth
     public GameObject earth;
 
@@ -43,6 +46,8 @@ public class StarGravity : MonoBehaviour
         xC = this.transform.position.x;
         yC = this.transform.position.y;
         zC = this.transform.position.z;
+
+        isAttractedByStar = false;
     }
 
     // Update is called once per frame
@@ -50,6 +55,7 @@ public class StarGravity : MonoBehaviour
     {
         var distance = this.transform.position - earth.GetComponent<Rigidbody>().transform.position;
         offset = earth.transform.position - this.transform.position;
+
 
         direction = offset;
         direction.z = 0;
@@ -107,10 +113,13 @@ public class StarGravity : MonoBehaviour
         }
 
         runYouFool = false;
+        isAttractedByStar = sunAttraction;
+
 
         /////
         if (sunAttraction)
         {
+            PlayerStatus.starName = this.name;
             if (distance.magnitude <= 25 && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.warning = true;

@@ -69,7 +69,7 @@ public class Controller : MonoBehaviour
         if (rb.velocity.z < forwardSpeed)
             rb.AddForce(Vector3.forward * thrust, ForceMode.Acceleration);
     }
-
+    /*
     void CheckRadius()
     {
         if (this.transform.position.x >= maxRadius)
@@ -111,6 +111,33 @@ public class Controller : MonoBehaviour
         {
             canGoYDown = true;
         }
+
+    }*/
+
+    void CheckRadius()
+    {
+        if (transform.position.x >= maxRadius ||
+            transform.position.x <= -maxRadius ||
+            transform.position.y >= maxRadius ||
+            transform.position.y <= -maxRadius)
+        {
+            PlayerStatus.showLabel = true;
+            if (PlayerStatus.isAlive)
+            {
+                if (PlayerStatus.heatAmount >= 0)
+                {
+                    PlayerStatus.heatAmount -= 10f * Time.deltaTime;
+                }
+                else
+                {
+                    PlayerStatus.isAlive = false;
+                }
+            }
+        }
+        else
+        {
+            PlayerStatus.showLabel = false;
+        }
     }
 
     private void Update()
@@ -135,7 +162,7 @@ public class Controller : MonoBehaviour
                     canGoYDown = false;
                 }
 
-                if (Input.GetKey(GameManager.GM.upwardFP) && canGoYUp == true)
+                if (Input.GetKey(GameManager.GM.upwardFP))// && canGoYUp == true)
                 {
                     brakeY = false;
                     if (goesDownward == false)
@@ -161,7 +188,7 @@ public class Controller : MonoBehaviour
                 }
                 else
                 {
-                    if (Input.GetKey(GameManager.GM.upwardFP) && canGoYUp == false)
+                    if (Input.GetKey(GameManager.GM.upwardFP))// && canGoYUp == false)
                     {
                         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
                     }
@@ -173,7 +200,7 @@ public class Controller : MonoBehaviour
                 }
 
 
-                if (Input.GetKey(GameManager.GM.downwardFP) && canGoYDown == true)
+                if (Input.GetKey(GameManager.GM.downwardFP))// && canGoYDown == true)
                 {
                     brakeY = false;
                     if (goesUpward == false)
@@ -201,7 +228,7 @@ public class Controller : MonoBehaviour
                     brakeY = true;
                 }
 
-                if (Input.GetKey(GameManager.GM.leftFP) && canGoXLeft == true)
+                if (Input.GetKey(GameManager.GM.leftFP))// && canGoXLeft == true)
                 {
                     brakeX = false;
                     if (goesRight == false)
@@ -226,7 +253,7 @@ public class Controller : MonoBehaviour
                 }
                 else
                 {
-                    if (Input.GetKey(GameManager.GM.leftFP) && canGoXLeft == false)
+                    if (Input.GetKey(GameManager.GM.leftFP))// && canGoXLeft == false)
                     {
                         rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
                     }
@@ -238,7 +265,7 @@ public class Controller : MonoBehaviour
                 }
 
 
-                if (Input.GetKey(GameManager.GM.rightFP) && canGoXRight == true)
+                if (Input.GetKey(GameManager.GM.rightFP))// && canGoXRight == true)
                 {
                     brakeX = false;
                     if (goesLeft == false)
@@ -299,5 +326,10 @@ public class Controller : MonoBehaviour
             rb.constraints = RigidbodyConstraints.FreezeAll;
         }
         //ignoreKey = false;
+        if (Input.GetKey(GameManager.GM.pause))
+        {
+            SceneManager.LoadScene(1);
+            GetComponent<PlayerStatus>().ResetLevel();
+        }
     }
 }
