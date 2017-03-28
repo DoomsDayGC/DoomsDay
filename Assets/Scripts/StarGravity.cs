@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StarGravity : MonoBehaviour
 {
+    public static bool atras;
+
     //public Vector3 distToStar;
     public bool isAttractedByStar;
 
@@ -48,6 +50,7 @@ public class StarGravity : MonoBehaviour
         zC = this.transform.position.z;
 
         isAttractedByStar = false;
+        atras = false;
     }
 
     // Update is called once per frame
@@ -86,12 +89,12 @@ public class StarGravity : MonoBehaviour
             gravity += powerPerFrame * Time.deltaTime;
         }
 
-        //Debug.Log(gravity);
         
         //////
         if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls)
         {
             sunAttraction = true;
+            atras = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
         }
         else
@@ -112,6 +115,10 @@ public class StarGravity : MonoBehaviour
             }
         }
 
+        if(atras && gravity<1 && !sunAttraction && !beyond2Souls)
+        {
+            atras = false;
+        }
         runYouFool = false;
         isAttractedByStar = sunAttraction;
 
@@ -137,6 +144,10 @@ public class StarGravity : MonoBehaviour
             if (PlayerStatus.cameraFollow == false && distance.magnitude >= 0 && this.transform.position.z <= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.isAlive = false;
+            }
+            if (!PlayerStatus.cameraFollow && PlayerStatus.isAlive)
+            {
+                earth.GetComponent<Rigidbody>().AddForce(-direction * 5, ForceMode.Acceleration);
             }
             if (PlayerStatus.isAlive)
             {

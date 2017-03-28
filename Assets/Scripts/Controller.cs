@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour
 {
+    private Vector3 initialPos;
+
     // Used to ignore the keys the user is pressing when the planet is about to die
     public static bool ignoreKey;
 
@@ -39,10 +41,14 @@ public class Controller : MonoBehaviour
     float friction = 0.95f;
 
     // Used to stop the player from exiting the game area
-    bool canGoXLeft = true;
+    // Or used to stop the player from using a trick
     bool canGoXRight = true;
-    bool canGoYUp = true;
     bool canGoYDown = true;
+    /*
+    bool canGoXLeft = true;
+    bool canGoYUp = true;
+    */
+    
 
     private void Start()
     {
@@ -62,6 +68,8 @@ public class Controller : MonoBehaviour
         maxSpeedStatic = maxSpeed;
         maxRadiusStatic = maxRadius;
         ignoreKey = false;
+
+        initialPos = this.transform.position;
     }
 
     void GoForward()
@@ -116,12 +124,24 @@ public class Controller : MonoBehaviour
 
     void CheckRadius()
     {
-        if (transform.position.x >= maxRadius ||
-            transform.position.x <= -maxRadius ||
-            transform.position.y >= maxRadius ||
-            transform.position.y <= -maxRadius)
+        if (transform.position.x >= initialPos.x + maxRadius - 30 ||
+            transform.position.x <= initialPos.x - maxRadius + 30 ||
+            transform.position.y >= initialPos.y + maxRadius - 30 ||
+            transform.position.y <= initialPos.y - maxRadius + 30)
         {
             PlayerStatus.showLabel = true;
+            //rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0);
+        }
+        else
+        {
+            PlayerStatus.showLabel = false;
+        }
+
+        if (transform.position.x >= initialPos.x + maxRadius ||
+            transform.position.x <= initialPos.x - maxRadius ||
+            transform.position.y >= initialPos.y + maxRadius ||
+            transform.position.y <= initialPos.y - maxRadius) 
+        {
             if (PlayerStatus.isAlive)
             {
                 if (PlayerStatus.heatAmount >= 0)
@@ -130,13 +150,12 @@ public class Controller : MonoBehaviour
                 }
                 else
                 {
-                    PlayerStatus.isAlive = false;
+                    if (PlayerStatus.heatAmount >= 0 && PlayerStatus.heatAmount < 1)
+                    {
+                        PlayerStatus.isAlive = false;
+                    }
                 }
             }
-        }
-        else
-        {
-            PlayerStatus.showLabel = false;
         }
     }
 
@@ -153,6 +172,7 @@ public class Controller : MonoBehaviour
 
             if (!ignoreKey)
             {
+                
                 if (Input.GetKey(GameManager.GM.rightFP) && Input.GetKey(GameManager.GM.leftFP))
                 {
                     canGoXRight = false;
@@ -200,7 +220,7 @@ public class Controller : MonoBehaviour
                 }
 
 
-                if (Input.GetKey(GameManager.GM.downwardFP))// && canGoYDown == true)
+                if (Input.GetKey(GameManager.GM.downwardFP) && canGoYDown == true)
                 {
                     brakeY = false;
                     if (goesUpward == false)
@@ -265,7 +285,7 @@ public class Controller : MonoBehaviour
                 }
 
 
-                if (Input.GetKey(GameManager.GM.rightFP))// && canGoXRight == true)
+                if (Input.GetKey(GameManager.GM.rightFP) && canGoXRight == true)
                 {
                     brakeX = false;
                     if (goesLeft == false)
@@ -326,6 +346,8 @@ public class Controller : MonoBehaviour
             rb.constraints = RigidbodyConstraints.FreezeAll;
         }
         //ignoreKey = false;
+        canGoXRight = true;
+        canGoYDown = true;
         if (Input.GetKey(GameManager.GM.pause))
         {
             SceneManager.LoadScene(1);

@@ -13,9 +13,14 @@ public class CollisionSystem : MonoBehaviour
     
     private void OnParticleCollision(GameObject other)
     {
+        if (other.transform.tag == "Star" || other.transform.tag == "Black Hole")
+        {
+            PlayerStatus.deadByStar = true;
+        }
+        /*
         if (other.transform.name == "Player")
         {
             starHit = true;
-        }
+        }*/
     }
 }

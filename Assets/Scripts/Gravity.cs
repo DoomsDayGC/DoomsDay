@@ -85,6 +85,9 @@ public class Gravity : MonoBehaviour
         {
             planetAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
+            //AddGravitationalForce();
+            //earth.GetComponent<Rigidbody>().AddForce((transform.position - earth.transform.position).normalized * gravity / (transform.position - earth.transform.position).sqrMagnitude, ForceMode.Impulse);
+            //earth.GetComponent<Rigidbody>().AddForce(offset.normalized * gravity * 20 / offset.sqrMagnitude, ForceMode.Acceleration);
 
             if (earth.transform.position.z >= this.transform.position.z && PlayerStatus.isAlive)
             {
@@ -137,7 +140,15 @@ public class Gravity : MonoBehaviour
         //(this.transform.position.z + this.transform.localScale.z))//
         }
     }
-
+    /*
+    void AddGravitationalForce()
+    {
+        Vector3 force = (earth.transform.position - transform.position);
+        force = force.normalized / force.sqrMagnitude;
+        force *= gravity * Time.deltaTime;
+        earth.GetComponent<Rigidbody>().AddForce(new Vector2(force.x, force.y), ForceMode.Acceleration);
+    }
+    */
     /*
     void SetGravity()
     {

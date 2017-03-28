@@ -5,13 +5,20 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    private string timerLabel;
+    private float time;
+    private float minutes;
+
+    // Font used for labels
     public Font starFont;
     public static bool showLabel;
 
+    // Saving the closest planet
     private GameObject gravityPlanet;
     private GameObject gravityStar;
     private Gravity gravityScriptPlanet;
     private StarGravity gravityScriptStar;
+    private float customDistance;
 
     //public static bool isAttracted;
     public static string planetName;
@@ -19,6 +26,7 @@ public class PlayerStatus : MonoBehaviour
 
     // When killed be meteors
     private bool deadBySnuSnu;
+    public static bool deadByStar;
 
     // A vector that contains the number of lives the player has
     static bool[] HP;
@@ -37,10 +45,24 @@ public class PlayerStatus : MonoBehaviour
     public static bool warning = false;
     public static bool itsAGo = false;
 
+    private void Start()
+    {
+        heatAmount = 100f; // The amount of heat when the game starts
+
+        count = 0;
+        HP = new bool[3];
+        for (int i = 0; i < HP.Length; i++)
+            HP[i] = true;
+
+        deadByStar = false;
+        deadBySnuSnu = false;
+        showLabel = false;
+        customDistance = 0f;
+        minutes = 0;
+    }
+
     private void Update()
     {
-        float customDistance = 0f;
-
         if (planetName != null)
         {
             gravityPlanet = GameObject.Find(planetName);
@@ -51,7 +73,9 @@ public class PlayerStatus : MonoBehaviour
             gravityStar = GameObject.Find(starName);
             gravityScriptStar = gravityStar.GetComponent<StarGravity>();
         }
-        
+        Debug.Log(deadByStar);
+        //Debug.Log(StarGravity.atras);
+        //Debug.Log(planetName + " " + gravityScriptPlanet.earthToPlanetDist.magnitude + " " + gravityScriptStar.isAttractedByStar);
         switch(planetName)
         {
             case "Jupiter":
@@ -78,19 +102,19 @@ public class PlayerStatus : MonoBehaviour
         {
             ResetLevel();
         }
-    }
 
-    private void Start()
-    {
-        heatAmount = 100f; // The amount of heat when the game starts
+        ////// Timer
+        if(isAlive)
+            time += Time.deltaTime;
 
-        count = 0;
-        HP = new bool[3];
-        for (int i = 0; i < HP.Length; i++)
-            HP[i] = true;
+        if (time / 60 == 1)
+        {
+            minutes++; //Divide the guiTime by sixty to get the minutes.
+        }
+        var seconds = time % 60; //Use the euclidean division for the seconds.
 
-        deadBySnuSnu = false;
-        showLabel = false;
+        timerLabel = string.Format("{0:00} : {1:00}", minutes, seconds);
+
     }
 
     private void OnGUI()
@@ -99,15 +123,14 @@ public class PlayerStatus : MonoBehaviour
         GUIStyle starStyle = new GUIStyle();
         starStyle.fontSize = 40;
         GUI.skin.font = starFont;
-        //GUI.color = new Color(4,208,220);
-        starStyle.normal.textColor = new Color(4, 208, 220);
+        starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);//(4, 208, 220);
 
 
 
-        GUI.BeginGroup(new Rect(0, 0, 1000, 1000));
+        GUI.BeginGroup(new Rect(0, 0, 300, 300));
 
-        GUI.Label(new Rect(0, 30, 200, 200), GetComponent<Rigidbody>().velocity.ToString(), starStyle);
-        GUI.Label(new Rect(0, 60, 200, 200), "Max Speed: " + Controller.maxSpeedStatic.ToString(), starStyle);
+        GUI.Label(new Rect(0, 0, 200, 200), GetComponent<Rigidbody>().velocity.ToString(), starStyle);
+        GUI.Label(new Rect(0, 30, 200, 200), "Max Speed: " + Controller.maxSpeedStatic.ToString(), starStyle);
 
         for (int i = 0; i < HP.Length; i++)
         {
@@ -116,12 +139,22 @@ public class PlayerStatus : MonoBehaviour
         }
 
         GUI.Label(new Rect(0, 120, 200, 200), warning ? "WARNING" : "", starStyle);
-        GUI.Label(new Rect(0, 150, 200, 200), "Heat: " + heatAmount.ToString(), starStyle);
+        GUI.Label(new Rect(0, 150, 200, 200), "Heat: " + string.Format("{0:00.00}", heatAmount), starStyle);
 
         GUI.Label(new Rect(0, 180, 100, 100), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
+        GUI.EndGroup();
 
-        GUI.Label(new Rect(0, 210, 600, 400), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", starStyle);
+        GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+        if (isAlive)
+        {
+            GUI.Label(new Rect(Screen.width / 2 - 500, Screen.height / 2 - 400, 600, 400), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", starStyle);
+        }
+        else
+        {
+            GUI.Label(new Rect(Screen.width / 2 - 600, Screen.height / 2 - 400, 600, 400), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", starStyle);
+        }
 
+        GUI.Label(new Rect(Screen.width / 2 + 840, Screen.height / 2 - 460, 300, 300), timerLabel, starStyle);
         GUI.EndGroup();
     }
 
@@ -154,7 +187,7 @@ public class PlayerStatus : MonoBehaviour
         cameraFollow = true;
         warning = false;
     }
-
+    /*
     public void ResetLevel(Vector3 poz, bool[] HP, float Heat)
     {
         ResetLevel();
@@ -162,5 +195,5 @@ public class PlayerStatus : MonoBehaviour
         for (int i = 0; i < HP.Length; i++)
             PlayerStatus.HP[i] = HP[i];
         heatAmount = Heat;
-    }
+    }*/
 }
