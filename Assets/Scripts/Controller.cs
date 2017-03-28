@@ -16,7 +16,7 @@ public class Controller : MonoBehaviour
     public float maxSpeed;
     public float forwardSpeed; // The speed the player is moving forward in the universe
 
-    //  The maximum radius the player can go until leaving the area
+    // The maximum radius the player can go until leaving the area
     public float maxRadius;
     public static float maxRadiusStatic;
 

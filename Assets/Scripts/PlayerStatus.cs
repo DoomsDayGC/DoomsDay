@@ -5,11 +5,16 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    // Checks if the player is attracted by a black hole, used for timer
+    public static bool feelingOldYet;
+
+    // Saves the tag of who killed the player
     public static string killedBy;
 
+    // Used for timer
     private string timerLabel;
-    private float time;
-    private float minutes;
+    public static float time;
+    private float startTime;
 
     // Font used for labels
     public Font starFont;
@@ -58,14 +63,19 @@ public class PlayerStatus : MonoBehaviour
         deadBySnuSnu = false;
         showLabel = false;
         customDistance = 0f;
-        minutes = 0;
         killedBy = "Eter";
+        feelingOldYet = false;
+        startTime = Time.time;
+        time = 0.0f;
     }
 
     private void Update()
     {
         if (heatAmount <= 0)
+        {
             isAlive = false;
+        }
+
         if (planetName != null)
         {
             gravityPlanet = GameObject.Find(planetName);
@@ -99,20 +109,29 @@ public class PlayerStatus : MonoBehaviour
                 break;   
         }
         /*
-        if (!isAlive && gravityScriptPlanet.earthToPlanetDist.magnitude >= customDistance && !deadBySnuSnu && killedBy == "Eter")// (killedBy != "Star" || killedBy != "Heat"))
+        if (!isAlive && gravityScriptPlanet.earthToPlanetDist.magnitude >= customDistance && !deadBySnuSnu && killedBy == "Eter")
         {
             ResetLevel();
         }*/
-
+        //Debug.Log(0.02f * 1 / StarGravity.earthToStarDist.magnitude);
         ////// Timer
-        if(isAlive)
-            time += Time.deltaTime;
-
-        if (time / 60 == 1)
+        if (isAlive)
         {
-            minutes++; //Divide the guiTime by sixty to get the minutes.
+            if (feelingOldYet)
+            {
+                if (time < 30)
+                    time += 0.02f * 1 / StarGravity.earthToStarDist.magnitude * 200;
+                else
+                    time += 0.02f * 1 / StarGravity.earthToStarDist.magnitude * 100;
+            }
+            else
+            {
+                time += 1.0f * 0.02f;
+            }
         }
-        var seconds = time % 60; //Use the euclidean division for the seconds.
+
+        var minutes = (int)(time / 60);
+        var seconds = (int)(time % 60); //Use the euclidean division for the seconds.
 
         timerLabel = string.Format("{0:00} : {1:00}", minutes, seconds);
 
@@ -122,9 +141,12 @@ public class PlayerStatus : MonoBehaviour
     {
         var k = 0;
         GUIStyle starStyle = new GUIStyle();
-        starStyle.fontSize = 40;
+        starStyle.fontSize = 30;
+        var textStyle = new GUIStyle();
+        textStyle.fontSize = 40;
         GUI.skin.font = starFont;
         starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);//(4, 208, 220);
+        textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 
         GUI.BeginGroup(new Rect(0, 0, 300, 300));
 
@@ -146,14 +168,14 @@ public class PlayerStatus : MonoBehaviour
         GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
         if (isAlive)
         {
-            GUI.Label(new Rect(Screen.width / 2 - 500, Screen.height / 2 - 400, 600, 400), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", starStyle);
+            GUI.Label(new Rect(Screen.width / 2 - 500, Screen.height / 2 - 400, 600, 400), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", textStyle);
         }
         else
         {
-            GUI.Label(new Rect(Screen.width / 2 - 600, Screen.height / 2 - 400, 600, 400), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", starStyle);
+            GUI.Label(new Rect(Screen.width / 2 - 600, Screen.height / 2 - 400, 600, 400), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", textStyle);
         }
 
-        GUI.Label(new Rect(Screen.width / 2 + 840, Screen.height / 2 - 460, 300, 300), timerLabel, starStyle);
+        GUI.Label(new Rect(Screen.width / 2 + 860, Screen.height / 2 - 460, 300, 300), timerLabel, starStyle);
         GUI.EndGroup();
     }
 
@@ -185,6 +207,7 @@ public class PlayerStatus : MonoBehaviour
         Controller.ignoreKey = false;
         cameraFollow = true;
         warning = false;
+        time = startTime;
     }
     /*
     public void ResetLevel(Vector3 poz, bool[] HP, float Heat)

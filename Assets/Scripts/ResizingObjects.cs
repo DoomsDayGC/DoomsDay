@@ -22,37 +22,37 @@ public class ResizingObjects : MonoBehaviour
     {
 	    foreach(var obj in Prefabs)
         {
-            if(obj.name == "Mercury")
+            if(obj.tag == "Mercury")
             {
                 float dim = 38 / 100.0f * playerScale * 5;
                 obj.transform.localScale = new Vector3(dim,dim,dim);
             }
 
-            if (obj.name == "Mars")
+            if (obj.tag == "Mars")
             {
                 float dim = 53 / 100.0f * playerScale * 4;
                 obj.transform.localScale = new Vector3(dim, dim, dim);
             }
 
-            if (obj.name == "Venus")
+            if (obj.tag == "Venus")
             {
                 float dim = 95 / 100.0f * playerScale * 3;
                 obj.transform.localScale = new Vector3(dim, dim, dim);
             }
 
-            if (obj.name == "Neptune")
+            if (obj.tag == "Neptune")
             {
                 float dim = 388 / 100.0f * playerScale;
                 obj.transform.localScale = new Vector3(dim, dim, dim);
             }
 
-            if (obj.name == "Saturn")
+            if (obj.tag == "Saturn")
             {
                 float dim = 945 / 100.0f * playerScale;
                 obj.transform.localScale = new Vector3(dim, dim, dim);
             }
 
-            if (obj.name == "Jupiter")
+            if (obj.tag == "Jupiter")
             {
                 float dim = 1120 / 100.0f * playerScale;
                 obj.transform.localScale = new Vector3(dim, dim, dim);

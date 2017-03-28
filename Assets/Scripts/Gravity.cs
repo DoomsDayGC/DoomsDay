@@ -59,8 +59,6 @@ public class Gravity : MonoBehaviour
         direction = offset;
         direction.z = 0;
 
-        //Debug.Log(offset.magnitude + " " + ((maxRadius - this.transform.localScale.x) / 2 + 10));
-
         var x = Mathf.Pow((earth.transform.position.x - xC), 2);
         var y = Mathf.Pow((earth.transform.position.y - yC), 2);
         var z = Mathf.Pow((earth.transform.position.z - zC), 2);
@@ -124,7 +122,6 @@ public class Gravity : MonoBehaviour
         //////
         if (planetAttraction)
         {
-            //Debug.Log(offset.magnitude);
             PlayerStatus.planetName = this.name;
             if (offset.magnitude <= (/*1 / 2.0 **/ (maxRadius - this.transform.localScale.x) / 2 + 10) && (this.transform.position.z + this.transform.localScale.z / 2) - 25 >= earth.GetComponent<Rigidbody>().transform.position.z)
             {

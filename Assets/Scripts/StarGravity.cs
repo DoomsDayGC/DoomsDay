@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class StarGravity : MonoBehaviour
 {
-    //public Vector3 distToStar;
+    public static Vector3 earthToStarDist;
+
     public bool isAttractedByStar;
 
     // The, uhm.. Earth
@@ -20,7 +21,7 @@ public class StarGravity : MonoBehaviour
     public float maxRadius;
 
     // Checks if the player is attracted by a sun or not
-    private bool sunAttraction = false;
+    private bool starAttraction = false;
 
     // Checks if the player got passed the sun
     private bool beyond2Souls = false;
@@ -51,11 +52,10 @@ public class StarGravity : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate ()
+    void Update ()
     {
         var distance = this.transform.position - earth.GetComponent<Rigidbody>().transform.position;
         offset = earth.transform.position - this.transform.position;
-
 
         direction = offset;
         direction.z = 0;
@@ -70,33 +70,33 @@ public class StarGravity : MonoBehaviour
         {
             beyond2Souls = true;
         }
-        
+
         ///////
-        if (gravity >= 0 && sunAttraction && ((Input.GetKey(GameManager.GM.leftFP) && this.transform.position.x > earth.transform.position.x)
+        if (gravity >= 0 && starAttraction && ((Input.GetKey(GameManager.GM.leftFP) && this.transform.position.x > earth.transform.position.x)
             || (Input.GetKey(GameManager.GM.rightFP) && this.transform.position.x < earth.transform.position.x)
             || (Input.GetKey(GameManager.GM.upwardFP) && this.transform.position.y < earth.transform.position.y)
             || (Input.GetKey(GameManager.GM.downwardFP) && this.transform.position.y > earth.transform.position.y)))
         {
-            gravity -= powerPerFrame * Time.deltaTime;
+            gravity -= powerPerFrame * 0.02f;
             runYouFool = true;
         }
 
-        if (gravity <= gravitationalPull && sunAttraction && !runYouFool)
+        if (gravity <= gravitationalPull && starAttraction && !runYouFool)
         {
-            gravity += powerPerFrame * Time.deltaTime;
+            gravity += powerPerFrame * 0.02f;
         }
 
         
         //////
         if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls)
         {
-            sunAttraction = true;
+            starAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
         }
         else
         {
             gravity = 0.0f;
-            sunAttraction = false;
+            starAttraction = false;
             beyond2Souls = false;
             if (PlayerStatus.isAlive)
             {
@@ -114,11 +114,21 @@ public class StarGravity : MonoBehaviour
         }
 
         runYouFool = false;
-
+        if(this.tag == "Black Hole")
+        {
+            PlayerStatus.feelingOldYet = false;
+            earthToStarDist = offset;
+        }
         /////
-        if (sunAttraction)
+        if (starAttraction)
         {
             PlayerStatus.starName = this.name;
+            if (this.tag == "Black Hole")
+            {
+                PlayerStatus.feelingOldYet = true;
+                //PlayerStatus.time = Time.time + 2f;
+            }
+
             if (distance.magnitude <= 25 && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.warning = true;
@@ -169,6 +179,5 @@ public class StarGravity : MonoBehaviour
                 }
             }
         }
-        
 	}
 }
