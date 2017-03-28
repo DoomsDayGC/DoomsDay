@@ -119,6 +119,7 @@
     <Compile Include="Assets\test.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Materials\Shaders\unlit_noz.shader" />
     <None Include="Assets\Media\Materials\Unity UI Sample\Fonts\Jupiter\LICENSE.txt" />
     <None Include="Assets\Media\Materials\Unity UI Sample\Materials\UI-Default-No-Alpha.shader" />
     <None Include="Assets\Media\Materials\Unity UI Sample\Textures and Sprites\SF UI\Background\LICENSE.txt" />

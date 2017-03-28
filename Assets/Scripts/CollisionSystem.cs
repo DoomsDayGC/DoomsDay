@@ -4,23 +4,24 @@ using UnityEngine;
 
 public class CollisionSystem : MonoBehaviour
 {
-    static public bool starHit = false; 
-    
+    private GameObject earth;
+
+    private void Start()
+    {
+        earth = GameObject.Find("Player");
+    }
+
     private void OnCollisionEnter(Collision col)
     {
-        PlayerStatus.isAlive = false;
+        //if((earth.transform.position - (Controller.maxRadiusStatic - this.transform.localScale.x) / 2 + 10)) > 10)
+        if (col.transform.tag == "Player")
+        {
+            PlayerStatus.isAlive = false;
+            PlayerStatus.killedBy = "Planet";
+        }
     }
     
     private void OnParticleCollision(GameObject other)
     {
-        if (other.transform.tag == "Star" || other.transform.tag == "Black Hole")
-        {
-            PlayerStatus.deadByStar = true;
-        }
-        /*
-        if (other.transform.name == "Player")
-        {
-            starHit = true;
-        }*/
     }
 }

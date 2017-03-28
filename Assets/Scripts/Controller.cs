@@ -150,9 +150,10 @@ public class Controller : MonoBehaviour
                 }
                 else
                 {
-                    if (PlayerStatus.heatAmount >= 0 && PlayerStatus.heatAmount < 1)
+                    if ((PlayerStatus.heatAmount >= 0 && PlayerStatus.heatAmount < 1) || PlayerStatus.heatAmount<0)
                     {
                         PlayerStatus.isAlive = false;
+                        PlayerStatus.killedBy = "Heat";
                     }
                 }
             }

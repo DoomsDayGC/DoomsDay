@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    public static string killedBy;
+
     private string timerLabel;
     private float time;
     private float minutes;
@@ -26,7 +28,6 @@ public class PlayerStatus : MonoBehaviour
 
     // When killed be meteors
     private bool deadBySnuSnu;
-    public static bool deadByStar;
 
     // A vector that contains the number of lives the player has
     static bool[] HP;
@@ -54,15 +55,17 @@ public class PlayerStatus : MonoBehaviour
         for (int i = 0; i < HP.Length; i++)
             HP[i] = true;
 
-        deadByStar = false;
         deadBySnuSnu = false;
         showLabel = false;
         customDistance = 0f;
         minutes = 0;
+        killedBy = "Eter";
     }
 
     private void Update()
     {
+        if (heatAmount <= 0)
+            isAlive = false;
         if (planetName != null)
         {
             gravityPlanet = GameObject.Find(planetName);
@@ -73,9 +76,7 @@ public class PlayerStatus : MonoBehaviour
             gravityStar = GameObject.Find(starName);
             gravityScriptStar = gravityStar.GetComponent<StarGravity>();
         }
-        Debug.Log(deadByStar);
-        //Debug.Log(StarGravity.atras);
-        //Debug.Log(planetName + " " + gravityScriptPlanet.earthToPlanetDist.magnitude + " " + gravityScriptStar.isAttractedByStar);
+
         switch(planetName)
         {
             case "Jupiter":
@@ -97,11 +98,11 @@ public class PlayerStatus : MonoBehaviour
                 customDistance = 30;
                 break;   
         }
-        
-        if (!isAlive && gravityScriptPlanet.earthToPlanetDist.magnitude >= customDistance && !deadBySnuSnu && !gravityScriptStar.isAttractedByStar)
+        /*
+        if (!isAlive && gravityScriptPlanet.earthToPlanetDist.magnitude >= customDistance && !deadBySnuSnu && killedBy == "Eter")// (killedBy != "Star" || killedBy != "Heat"))
         {
             ResetLevel();
-        }
+        }*/
 
         ////// Timer
         if(isAlive)
@@ -124,8 +125,6 @@ public class PlayerStatus : MonoBehaviour
         starStyle.fontSize = 40;
         GUI.skin.font = starFont;
         starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);//(4, 208, 220);
-
-
 
         GUI.BeginGroup(new Rect(0, 0, 300, 300));
 

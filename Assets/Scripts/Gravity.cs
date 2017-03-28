@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
+    private Vector3 distForGravity;
+
     // The, uhm.. Earth
     public GameObject earth;
 
@@ -45,15 +47,19 @@ public class Gravity : MonoBehaviour
         xC = this.transform.position.x;
         yC = this.transform.position.y;
         zC = this.transform.position.z;
+
+        distForGravity = Vector3.zero;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         offset = earth.transform.position - this.transform.position;
         earthToPlanetDist = offset;
 
         direction = offset;
         direction.z = 0;
+
+        //Debug.Log(offset.magnitude + " " + ((maxRadius - this.transform.localScale.x) / 2 + 10));
 
         var x = Mathf.Pow((earth.transform.position.x - xC), 2);
         var y = Mathf.Pow((earth.transform.position.y - yC), 2);
@@ -71,23 +77,26 @@ public class Gravity : MonoBehaviour
             || (Input.GetKey(GameManager.GM.upwardFP) && this.transform.position.y < earth.transform.position.y)
             || (Input.GetKey(GameManager.GM.downwardFP) && this.transform.position.y > earth.transform.position.y)))
         {
-            gravity -= powerPerFrame * Time.deltaTime;
+            //gravity -= 0.5f*1 / (Mathf.Abs(offset.magnitude - this.transform.localScale.x));//Time.deltaTime;
+            //gravity = Mathf.Abs(gravity);
+            gravity -= powerPerFrame * 0.02f;// Time.deltaTime;
             runYouFool = true;
         }
 
         if (gravity <= gravitationalPull && planetAttraction && !runYouFool)
         {
-            gravity += powerPerFrame * Time.deltaTime;
+            //gravity += 0.3f*1 / (Mathf.Abs(offset.magnitude - this.transform.localScale.x));//Time.deltaTime;
+            gravity += powerPerFrame * 0.02f;// Time.deltaTime;
         }
+
+        //Debug.Log(Mathf.Abs(1 / (offset.magnitude - this.transform.localScale.x))); 
+        //Debug.Log(gravity);
 
         ///////
         if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls)
         {
             planetAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
-            //AddGravitationalForce();
-            //earth.GetComponent<Rigidbody>().AddForce((transform.position - earth.transform.position).normalized * gravity / (transform.position - earth.transform.position).sqrMagnitude, ForceMode.Impulse);
-            //earth.GetComponent<Rigidbody>().AddForce(offset.normalized * gravity * 20 / offset.sqrMagnitude, ForceMode.Acceleration);
 
             if (earth.transform.position.z >= this.transform.position.z && PlayerStatus.isAlive)
             {
@@ -115,8 +124,8 @@ public class Gravity : MonoBehaviour
         //////
         if (planetAttraction)
         {
+            //Debug.Log(offset.magnitude);
             PlayerStatus.planetName = this.name;
-            //PlayerStatus.isAttracted = planetAttraction;
             if (offset.magnitude <= (/*1 / 2.0 **/ (maxRadius - this.transform.localScale.x) / 2 + 10) && (this.transform.position.z + this.transform.localScale.z / 2) - 25 >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.warning = true;
@@ -140,15 +149,6 @@ public class Gravity : MonoBehaviour
         //(this.transform.position.z + this.transform.localScale.z))//
         }
     }
-    /*
-    void AddGravitationalForce()
-    {
-        Vector3 force = (earth.transform.position - transform.position);
-        force = force.normalized / force.sqrMagnitude;
-        force *= gravity * Time.deltaTime;
-        earth.GetComponent<Rigidbody>().AddForce(new Vector2(force.x, force.y), ForceMode.Acceleration);
-    }
-    */
     /*
     void SetGravity()
     {

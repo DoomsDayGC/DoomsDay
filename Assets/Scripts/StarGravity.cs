@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class StarGravity : MonoBehaviour
 {
-    public static bool atras;
-
     //public Vector3 distToStar;
     public bool isAttractedByStar;
 
@@ -50,7 +48,6 @@ public class StarGravity : MonoBehaviour
         zC = this.transform.position.z;
 
         isAttractedByStar = false;
-        atras = false;
     }
 
     // Update is called once per frame
@@ -94,7 +91,6 @@ public class StarGravity : MonoBehaviour
         if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls)
         {
             sunAttraction = true;
-            atras = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
         }
         else
@@ -110,18 +106,14 @@ public class StarGravity : MonoBehaviour
                 }
                 else
                 {
-                    PlayerStatus.isAlive = false;
+                    if ((PlayerStatus.heatAmount >= 0 && PlayerStatus.heatAmount < 1) || PlayerStatus.heatAmount < 0)
+                        PlayerStatus.isAlive = false;
+                    PlayerStatus.killedBy = "Heat";
                 }
             }
         }
 
-        if(atras && gravity<1 && !sunAttraction && !beyond2Souls)
-        {
-            atras = false;
-        }
         runYouFool = false;
-        isAttractedByStar = sunAttraction;
-
 
         /////
         if (sunAttraction)
@@ -144,6 +136,7 @@ public class StarGravity : MonoBehaviour
             if (PlayerStatus.cameraFollow == false && distance.magnitude >= 0 && this.transform.position.z <= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.isAlive = false;
+                PlayerStatus.killedBy = "Star";
             }
             if (!PlayerStatus.cameraFollow && PlayerStatus.isAlive)
             {
@@ -168,7 +161,9 @@ public class StarGravity : MonoBehaviour
                         }
                         else
                         {
-                            PlayerStatus.isAlive = false;
+                            if ((PlayerStatus.heatAmount >= 0 && PlayerStatus.heatAmount < 1) || PlayerStatus.heatAmount < 0)
+                                PlayerStatus.isAlive = false;
+                            PlayerStatus.killedBy = "Heat";
                         }
                     }
                 }
