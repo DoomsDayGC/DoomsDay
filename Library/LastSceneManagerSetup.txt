@@ -14,3 +14,6 @@ sceneSetups:
 - path: Assets/Scenes/Level Test.unity
   isLoaded: 1
   isActive: 0
+- path: Assets/Scenes/Tutorial.unity
+  isLoaded: 0
+  isActive: 0

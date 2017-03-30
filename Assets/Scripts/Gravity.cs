@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
-    private Vector3 distForGravity;
+    private int attractionTimes = 0;
+
+    // Saves the planet's name
+    private static string planetName;
 
     // The, uhm.. Earth
     public GameObject earth;
 
+    // Distance between the planet and the player
     public Vector3 earthToPlanetDist;
 
     // The strength of the gravitational pull
@@ -48,7 +52,6 @@ public class Gravity : MonoBehaviour
         yC = this.transform.position.y;
         zC = this.transform.position.z;
 
-        distForGravity = Vector3.zero;
     }
 
     void Update()
@@ -87,9 +90,6 @@ public class Gravity : MonoBehaviour
             gravity += powerPerFrame * 0.02f;// Time.deltaTime;
         }
 
-        //Debug.Log(Mathf.Abs(1 / (offset.magnitude - this.transform.localScale.x))); 
-        //Debug.Log(gravity);
-
         ///////
         if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls)
         {
@@ -101,36 +101,48 @@ public class Gravity : MonoBehaviour
                 if (earth.GetComponent<Rigidbody>().velocity.z <= Controller.staticForwardSpeed + 30)
                     earth.GetComponent<Rigidbody>().AddForce(Vector3.forward * 100, ForceMode.Acceleration);
             }
+            planetName = this.name;
+            attractionTimes = 1;
         }
         else
         {
+            if (this.name == planetName && attractionTimes == 1)
+            {
+                PlayerStatus.yellowWarning = false;
+                PlayerStatus.orangeWarning = false;
+                attractionTimes = 0;
+            }
             gravity = 0.0f;
             planetAttraction = false;
             beyond2Souls = false;
         }
-
+        //Debug.Log(PlayerStatus.yellowWarning + " " + planetAttraction);
         runYouFool = false;
-        //Debug.Log(offset.magnitude + " " + ((maxRadius - this.transform.localScale.x) / 2 + 10));
-        /*
-        Debug.Log("Planet: " + this.name + " " +
-            "Attracted: " + planetAttraction + " " + 
-            "Warning: " + PlayerStatus.warning + " " +
-            "Alive: " + PlayerStatus.isAlive + " " + 
-            "Camera: " + PlayerStatus.cameraFollow + " " +
-            "Key: " + Controller.ignoreKey);
-            */
+
         //////
         if (planetAttraction)
         {
-            PlayerStatus.planetName = this.name;
-            if (offset.magnitude <= (/*1 / 2.0 **/ (maxRadius - this.transform.localScale.x) / 2 + 10) && (this.transform.position.z + this.transform.localScale.z / 2) - 25 >= earth.GetComponent<Rigidbody>().transform.position.z)
+            //PlayerStatus.planetName = this.name;
+            PlayerStatus.yellowWarning = true;
+
+            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) - 30) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(this.transform.position.z + this.transform.localScale.z / 2) >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
             {
-                PlayerStatus.warning = true;
-                PlayerStatus.itsAGo = true;
+               PlayerStatus.yellowWarning = false;
+               PlayerStatus.orangeWarning = true;
             }
             else
             {
-                PlayerStatus.warning = false;
+                PlayerStatus.orangeWarning = false;
+            }
+
+            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / 2 + 10) && (this.transform.position.z + this.transform.localScale.z / 2) - 25 >= earth.GetComponent<Rigidbody>().transform.position.z)
+            {
+                PlayerStatus.orangeWarning = false;
+                PlayerStatus.redWarning = true;
+            }
+            else
+            {
+                PlayerStatus.redWarning = false;
             }
 
             if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / 3 + 7) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(this.transform.position.z + this.transform.localScale.z / 2) >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
@@ -142,8 +154,6 @@ public class Gravity : MonoBehaviour
             {
                 earth.GetComponent<Rigidbody>().AddForce(-direction * 5, ForceMode.Acceleration);
             }
-
-        //(this.transform.position.z + this.transform.localScale.z))//
         }
     }
     /*

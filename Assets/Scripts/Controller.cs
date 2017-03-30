@@ -130,11 +130,13 @@ public class Controller : MonoBehaviour
             transform.position.y <= initialPos.y - maxRadius + 30)
         {
             PlayerStatus.showLabel = true;
+            PlayerStatus.blueWarning = true;
             //rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0);
         }
         else
         {
             PlayerStatus.showLabel = false;
+            PlayerStatus.blueWarning = false;
         }
 
         if (transform.position.x >= initialPos.x + maxRadius ||
@@ -163,7 +165,7 @@ public class Controller : MonoBehaviour
     private void Update()
     {
         if (GetComponent<Rigidbody>().velocity.z >= staticForwardSpeed)
-            GetComponent<Rigidbody>().AddForce(Vector3.back * 10, ForceMode.Acceleration);
+             GetComponent<Rigidbody>().AddForce(Vector3.back * 10, ForceMode.Acceleration);
 
         if (PlayerStatus.isAlive)
         {
@@ -318,7 +320,7 @@ public class Controller : MonoBehaviour
 
                 if (Input.GetKey(GameManager.GM.pause))
                 {
-                    SceneManager.LoadScene(1);
+                    //SceneManager.LoadScene(1);
                 }
 
                 if (brakeY && !Input.GetKey(GameManager.GM.upwardFP))
@@ -349,10 +351,11 @@ public class Controller : MonoBehaviour
         //ignoreKey = false;
         canGoXRight = true;
         canGoYDown = true;
+        /*
         if (Input.GetKey(GameManager.GM.pause))
         {
             SceneManager.LoadScene(1);
             GetComponent<PlayerStatus>().ResetLevel();
-        }
+        }*/
     }
 }

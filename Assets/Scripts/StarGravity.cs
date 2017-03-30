@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class StarGravity : MonoBehaviour
 {
-    public static Vector3 earthToStarDist;
+    private int attractionTimes = 0;
 
-    public bool isAttractedByStar;
+    // Saves the star's name
+    private string starName;
+
+    // Used to save the dist to the nearest Black Hole
+    public static Vector3 earthToStarDist;
 
     // The, uhm.. Earth
     public GameObject earth;
@@ -47,8 +51,6 @@ public class StarGravity : MonoBehaviour
         xC = this.transform.position.x;
         yC = this.transform.position.y;
         zC = this.transform.position.z;
-
-        isAttractedByStar = false;
     }
 
     // Update is called once per frame
@@ -92,17 +94,28 @@ public class StarGravity : MonoBehaviour
         {
             starAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
+
+            starName = this.name;
+            attractionTimes = 1;
         }
         else
         {
+            if (this.name == starName && attractionTimes == 1)
+            {
+                PlayerStatus.yellowWarning = false;
+                PlayerStatus.orangeWarning = false;
+                attractionTimes = 0;
+            }
+
             gravity = 0.0f;
             starAttraction = false;
             beyond2Souls = false;
+
             if (PlayerStatus.isAlive)
             {
                 if (PlayerStatus.heatAmount >= 0)
                 {
-                    PlayerStatus.heatAmount -= 0.5f * Time.deltaTime;
+                    PlayerStatus.heatAmount -= PlayerStatus.heatDamageStatic * Time.deltaTime;
                 }
                 else
                 {
@@ -114,29 +127,41 @@ public class StarGravity : MonoBehaviour
         }
 
         runYouFool = false;
+
         if(this.tag == "Black Hole")
         {
             PlayerStatus.feelingOldYet = false;
             earthToStarDist = offset;
         }
+
         /////
         if (starAttraction)
         {
-            PlayerStatus.starName = this.name;
+            PlayerStatus.yellowWarning = true;
+            //PlayerStatus.starName = this.name;
             if (this.tag == "Black Hole")
             {
                 PlayerStatus.feelingOldYet = true;
-                //PlayerStatus.time = Time.time + 2f;
+            }
+
+            if (distance.magnitude <= 50 && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
+            {
+                PlayerStatus.yellowWarning = false;
+                PlayerStatus.orangeWarning = true;
+            }
+            else
+            {
+                PlayerStatus.orangeWarning = false;
             }
 
             if (distance.magnitude <= 25 && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
-                PlayerStatus.warning = true;
-                PlayerStatus.itsAGo = true;
+                PlayerStatus.redWarning = true;
+                PlayerStatus.orangeWarning = false;
             }
             else
             {
-                PlayerStatus.warning = false;
+                PlayerStatus.redWarning = false;
             }
             if (distance.magnitude <= 8 && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
@@ -158,7 +183,7 @@ public class StarGravity : MonoBehaviour
                 {
                     if (PlayerStatus.heatAmount <= 100)
                     {
-                        PlayerStatus.heatAmount += 3 * Time.deltaTime;
+                        PlayerStatus.heatAmount += PlayerStatus.heatGainStatic * Time.deltaTime; // 3
                     }
                 }
                 else
@@ -167,7 +192,7 @@ public class StarGravity : MonoBehaviour
                     {
                         if (PlayerStatus.heatAmount >= 0)
                         {
-                            PlayerStatus.heatAmount -= 0.5f * Time.deltaTime;
+                            PlayerStatus.heatAmount -= PlayerStatus.heatDamageStatic * Time.deltaTime; // 0.5f
                         }
                         else
                         {

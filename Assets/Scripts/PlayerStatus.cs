@@ -5,6 +5,15 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    public static bool redWarning = false;
+    public static bool orangeWarning = false;
+    public static bool yellowWarning = false;
+    public static bool blueWarning = false;
+
+    // Checks if there is no sun around
+    private GameObject[] suns;
+    private GameObject[] bHoles;
+    private bool foreverAlone;
     // Checks if the player is attracted by a black hole, used for timer
     public static bool feelingOldYet;
 
@@ -21,18 +30,20 @@ public class PlayerStatus : MonoBehaviour
     public static bool showLabel;
 
     // Saving the closest planet
+    /*
     private GameObject gravityPlanet;
     private GameObject gravityStar;
     private Gravity gravityScriptPlanet;
     private StarGravity gravityScriptStar;
     private float customDistance;
+    */
 
-    //public static bool isAttracted;
-    public static string planetName;
-    public static string starName;
+    ////public static bool isAttracted;
+    //public static string planetName;
+    //public static string starName;
 
-    // When killed be meteors
-    private bool deadBySnuSnu;
+    //// When killed be meteors
+    //private bool deadBySnuSnu;
 
     // A vector that contains the number of lives the player has
     static bool[] HP;
@@ -46,23 +57,41 @@ public class PlayerStatus : MonoBehaviour
 
     // The amount of maximum heat
     public static float heatAmount;
+    
+        // If we ever want to change the heat from only one place which we should though
+        // but what do i know
+    public static float heatDamageStatic;
+    public float heatDamage;
+    public static float heatGainStatic;
+    public float heatGain;
+    
 
     // Shows a warning if the player is on a collision course with a planet / star
     public static bool warning = false;
     public static bool itsAGo = false;
 
     private void Start()
-    {
+    {  
+        suns = GameObject.FindGameObjectsWithTag("Star");
+        bHoles = GameObject.FindGameObjectsWithTag("Black Hole");
+
+        if (suns.Length == 0 && bHoles.Length == 0)
+        {
+            foreverAlone = true;
+        }
+
         heatAmount = 100f; // The amount of heat when the game starts
+        heatDamageStatic = heatDamage;
+        heatGainStatic = heatGain;
 
         count = 0;
         HP = new bool[3];
         for (int i = 0; i < HP.Length; i++)
             HP[i] = true;
 
-        deadBySnuSnu = false;
+        //deadBySnuSnu = false;
         showLabel = false;
-        customDistance = 0f;
+        //customDistance = 0f;
         killedBy = "Eter";
         feelingOldYet = false;
         startTime = Time.time;
@@ -71,22 +100,45 @@ public class PlayerStatus : MonoBehaviour
 
     private void Update()
     {
+        if(foreverAlone)
+        {
+            if (isAlive)
+            {
+                if (heatAmount >= 0)
+                {
+                    heatAmount -= heatDamage * Time.deltaTime;
+                }
+                else
+                {
+                    if ((heatAmount >= 0 && heatAmount < 1) || heatAmount < 0)
+                    {
+                        isAlive = false;
+                        killedBy = "Heat";
+                    }
+                }
+            }
+        }
+
         if (heatAmount <= 0)
         {
             isAlive = false;
         }
 
+        ///////
+        /*
         if (planetName != null)
         {
             gravityPlanet = GameObject.Find(planetName);
             gravityScriptPlanet = gravityPlanet.GetComponent<Gravity>();
         }
+        Debug.Log(planetName + " " + gravityScriptPlanet.earthToPlanetDist.magnitude);
+        /*
         if (starName != null)
         {
             gravityStar = GameObject.Find(starName);
             gravityScriptStar = gravityStar.GetComponent<StarGravity>();
         }
-
+        
         switch(planetName)
         {
             case "Jupiter":
@@ -113,7 +165,8 @@ public class PlayerStatus : MonoBehaviour
         {
             ResetLevel();
         }*/
-        //Debug.Log(0.02f * 1 / StarGravity.earthToStarDist.magnitude);
+
+
         ////// Timer
         if (isAlive)
         {
@@ -131,9 +184,10 @@ public class PlayerStatus : MonoBehaviour
         }
 
         var minutes = (int)(time / 60);
-        var seconds = (int)(time % 60); //Use the euclidean division for the seconds.
+        var seconds = (int)(time % 60); 
+        var fraction = (int)(time * 100) % 100;
 
-        timerLabel = string.Format("{0:00} : {1:00}", minutes, seconds);
+        timerLabel = string.Format("{0:00} : {1:00} : {2:00}", minutes, seconds, fraction);
 
     }
 
@@ -165,17 +219,17 @@ public class PlayerStatus : MonoBehaviour
         GUI.Label(new Rect(0, 180, 100, 100), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
         GUI.EndGroup();
 
-        GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+        GUI.BeginGroup(new Rect(0, 0, 3000, 3000));//946, 444));
         if (isAlive)
         {
-            GUI.Label(new Rect(Screen.width / 2 - 500, Screen.height / 2 - 400, 600, 400), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", textStyle);
+            GUI.Label(new Rect(443, 72, 100, 100), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", textStyle);
         }
         else
         {
-            GUI.Label(new Rect(Screen.width / 2 - 600, Screen.height / 2 - 400, 600, 400), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", textStyle);
+            GUI.Label(new Rect(373, 72, 100, 100), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", textStyle);
         }
 
-        GUI.Label(new Rect(Screen.width / 2 + 860, Screen.height / 2 - 460, 300, 300), timerLabel, starStyle);
+        GUI.Label(new Rect(1750, 2, 300, 300), timerLabel, textStyle);
         GUI.EndGroup();
     }
 
@@ -197,7 +251,7 @@ public class PlayerStatus : MonoBehaviour
         if (count == HP.Length)
         {
             isAlive = false;
-            deadBySnuSnu = true;
+            //deadBySnuSnu = true;
         }
     }
 
