@@ -116,6 +116,7 @@
     <Compile Include="Assets\Scripts\SelectOnInput.cs" />
     <Compile Include="Assets\Scripts\StarGravity.cs" />
     <Compile Include="Assets\Scripts\StarsController.cs" />
+    <Compile Include="Assets\Scripts\Transparent.cs" />
     <Compile Include="Assets\test.cs" />
   </ItemGroup>
   <ItemGroup>
