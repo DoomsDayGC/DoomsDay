@@ -72,8 +72,6 @@ public class Tutorial : MonoBehaviour {
         }
 
         GUI.Label(new Rect(400, 72, 100, 100), content, starStyle);
-
-        //Debug.Log(t);
     }
 
     void PauseGame()

@@ -6,7 +6,6 @@ public class CollisionSystem : MonoBehaviour
 {
     private void OnCollisionEnter(Collision col)
     {
-        //if((earth.transform.position - (Controller.maxRadiusStatic - this.transform.localScale.x) / 2 + 10)) > 10)
         if (col.transform.tag == "Player")
         {
             PlayerStatus.isAlive = false;

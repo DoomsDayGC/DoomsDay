@@ -116,7 +116,7 @@ public class Gravity : MonoBehaviour
             planetAttraction = false;
             beyond2Souls = false;
         }
-        //Debug.Log(PlayerStatus.yellowWarning + " " + planetAttraction);
+
         runYouFool = false;
 
         //////
@@ -145,7 +145,7 @@ public class Gravity : MonoBehaviour
                 PlayerStatus.redWarning = false;
             }
 
-            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / 6 + 7) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(this.transform.position.z + this.transform.localScale.z / 2) >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
+            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / 3 + 7) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(this.transform.position.z + this.transform.localScale.z / 2) >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
             {
                 PlayerStatus.cameraFollow = false;
                 Controller.ignoreKey = true;

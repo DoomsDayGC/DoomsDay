@@ -116,11 +116,8 @@
     <Compile Include="Assets\Scripts\SelectOnInput.cs" />
     <Compile Include="Assets\Scripts\StarGravity.cs" />
     <Compile Include="Assets\Scripts\StarsController.cs" />
-<<<<<<< HEAD
-    <Compile Include="Assets\Scripts\Tutorial.cs" />
-=======
     <Compile Include="Assets\Scripts\Transparent.cs" />
->>>>>>> design-branch
+    <Compile Include="Assets\Scripts\Tutorial.cs" />
     <Compile Include="Assets\test.cs" />
   </ItemGroup>
   <ItemGroup>

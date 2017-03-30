@@ -131,7 +131,6 @@ public class Controller : MonoBehaviour
         {
             PlayerStatus.showLabel = true;
             PlayerStatus.blueWarning = true;
-            //rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0);
         }
         else
         {
