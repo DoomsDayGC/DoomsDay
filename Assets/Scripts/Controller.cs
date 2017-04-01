@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour
 {
-    private Vector3 initialPos;
+    public static Vector3 initialPos;
 
     // Used to ignore the keys the user is pressing when the planet is about to die
     public static bool ignoreKey;
@@ -174,7 +174,7 @@ public class Controller : MonoBehaviour
 
             if (!ignoreKey)
             {
-                
+
                 if (Input.GetKey(GameManager.GM.rightFP) && Input.GetKey(GameManager.GM.leftFP))
                 {
                     canGoXRight = false;
@@ -345,7 +345,8 @@ public class Controller : MonoBehaviour
         else
         {
             rb.velocity = Vector3.zero;
-            rb.constraints = RigidbodyConstraints.FreezeAll;
+            Checkpoint.Revive();
+            //rb.constraints = RigidbodyConstraints.FreezeAll;
         }
         //ignoreKey = false;
         canGoXRight = true;

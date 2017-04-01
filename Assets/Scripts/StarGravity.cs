@@ -71,8 +71,11 @@ public class StarGravity : MonoBehaviour
         if (earth.transform.position.z >= (this.transform.position.z + this.transform.localScale.z))
         {
             beyond2Souls = true;
+            //if (this.tag == "Save Star")
+            //{
+                Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, (this.transform.position.z + this.transform.localScale.z) + 5);
+            //}
         }
-
         ///////
         if (gravity >= 0 && starAttraction && ((Input.GetKey(GameManager.GM.leftFP) && this.transform.position.x > earth.transform.position.x)
             || (Input.GetKey(GameManager.GM.rightFP) && this.transform.position.x < earth.transform.position.x)
@@ -83,14 +86,14 @@ public class StarGravity : MonoBehaviour
             runYouFool = true;
         }
 
-        if (gravity <= gravitationalPull && starAttraction && !runYouFool)
+        if (gravity <= gravitationalPull && starAttraction && !runYouFool && !PlayerStatus.reviveProtection)
         {
             gravity += powerPerFrame * 0.02f;
         }
 
         
         //////
-        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls)
+        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls && !PlayerStatus.reviveProtection)
         {
             starAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
@@ -179,6 +182,12 @@ public class StarGravity : MonoBehaviour
             }
             if (PlayerStatus.isAlive)
             {
+                /*
+                if(this.tag == "Save Star")
+                {
+
+                }
+                */
                 if (this.tag == "Star")
                 {
                     if (PlayerStatus.heatAmount <= 100)

@@ -5,6 +5,17 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    // Can't be attracted for x seconds after he revived
+    public static bool reviveProtection = false;
+    public static float protectionTimer = 3f;
+
+    // Hearts
+    public Texture hearts;
+
+    private float heartWidth;
+    private float heartHeight;
+
+    // Warning
     public static bool redWarning = false;
     public static bool orangeWarning = false;
     public static bool yellowWarning = false;
@@ -13,7 +24,9 @@ public class PlayerStatus : MonoBehaviour
     // Checks if there is no sun around
     private GameObject[] suns;
     private GameObject[] bHoles;
+    private GameObject[] sSuns;
     private bool foreverAlone;
+
     // Checks if the player is attracted by a black hole, used for timer
     public static bool feelingOldYet;
 
@@ -71,11 +84,15 @@ public class PlayerStatus : MonoBehaviour
     public static bool itsAGo = false;
 
     private void Start()
-    {  
+    {
+        heartHeight = hearts.width;
+        heartWidth = hearts.height;
+
         suns = GameObject.FindGameObjectsWithTag("Star");
         bHoles = GameObject.FindGameObjectsWithTag("Black Hole");
+        sSuns = GameObject.FindGameObjectsWithTag("Save Star");
 
-        if (suns.Length == 0 && bHoles.Length == 0)
+        if (suns.Length == 0 && bHoles.Length == 0 && sSuns.Length == 0)
         {
             foreverAlone = true;
         }
@@ -100,6 +117,16 @@ public class PlayerStatus : MonoBehaviour
 
     private void Update()
     {
+        if(reviveProtection)
+        {
+            protectionTimer -= Time.deltaTime;
+            if((int)protectionTimer == 0)
+            {
+                reviveProtection = false;
+                protectionTimer = 3f;
+            }
+        }
+
         if(foreverAlone)
         {
             if (isAlive)
@@ -209,8 +236,18 @@ public class PlayerStatus : MonoBehaviour
 
         for (int i = 0; i < HP.Length; i++)
         {
-            GUI.Label(new Rect(k, 90, 50, 50), HP[i].ToString(), starStyle);
-            k += 90;
+        GUI.Label(new Rect(k, 90, 50, 50), HP[i].ToString(), starStyle);
+        //if (count != HP.Length)
+        //{
+            //var posRect = new Rect(50, 50, heartWidth / 5 * count, heartHeight);
+            //var textRect = new Rect(0, 0, 1.0f / 5 * count, 1.0f);
+            //GUI.DrawTextureWithTexCoords(posRect, hearts, textRect);
+            //GUI.BeginGroup(new Rect(300, 300, 100, 100));
+           // GUILayout.Label(hearts);
+            //GUI.EndGroup();
+            //GUI.Label(new Rect(0, 90, 50, 50), "da");
+        //}
+          k += 90;
         }
 
         GUI.Label(new Rect(0, 120, 200, 200), warning ? "WARNING" : "", starStyle);
@@ -263,6 +300,16 @@ public class PlayerStatus : MonoBehaviour
         warning = false;
         time = startTime;
     }
+
+    public void ResetLife()
+    {
+        for (int i = 0; i < HP.Length; i++)
+        {
+            HP[i] = true;
+        }
+        count = 0;
+    }
+
     /*
     public void ResetLevel(Vector3 poz, bool[] HP, float Heat)
     {

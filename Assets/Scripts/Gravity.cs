@@ -13,7 +13,7 @@ public class Gravity : MonoBehaviour
     public GameObject earth;
 
     // Distance between the planet and the player
-    public Vector3 earthToPlanetDist;
+    private Vector3 earthToPlanetDist;
 
     // The strength of the gravitational pull
     public float gravitationalPull;
@@ -84,14 +84,14 @@ public class Gravity : MonoBehaviour
             runYouFool = true;
         }
 
-        if (gravity <= gravitationalPull && planetAttraction && !runYouFool)
+        if (gravity <= gravitationalPull && planetAttraction && !runYouFool && !PlayerStatus.reviveProtection)
         {
             //gravity += 0.3f*1 / (Mathf.Abs(offset.magnitude - this.transform.localScale.x));//Time.deltaTime;
             gravity += powerPerFrame * 0.02f;// Time.deltaTime;
         }
 
         ///////
-        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls)
+        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls && !PlayerStatus.reviveProtection)
         {
             planetAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);

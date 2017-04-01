@@ -20,45 +20,55 @@ public class MainCameraScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (PlayerStatus.blueWarning)
-        {
-            GetComponent<GravityWarning>().FadeInBlue();
-        }
-        else
-        {
-            GetComponent<GravityWarning>().FadeOutBlue();
-        }
-
-        if (PlayerStatus.yellowWarning)
-        {
-            GetComponent<GravityWarning>().FadeOutBlue();
-            GetComponent<GravityWarning>().FadeInYellow();
-        }
-        else
-        {
-            GetComponent<GravityWarning>().FadeOutYellow();
-        }
-
-        if (PlayerStatus.orangeWarning)
+        if (PlayerStatus.redWarning && (PlayerStatus.blueWarning || PlayerStatus.yellowWarning || PlayerStatus.orangeWarning))
         {
             GetComponent<GravityWarning>().FadeOutBlue();
             GetComponent<GravityWarning>().FadeOutYellow();
-            GetComponent<GravityWarning>().FadeInOrange();
-        }
-        else
-        {
-            GetComponent<GravityWarning>().FadeOutOrange();
-        }
-
-        if (PlayerStatus.redWarning)
-        {
-            GetComponent<GravityWarning>().FadeOutBlue();
             GetComponent<GravityWarning>().FadeOutOrange();
             GetComponent<GravityWarning>().FadeInRed();
         }
         else
         {
-            GetComponent<GravityWarning>().FadeOutRed();
+            if (PlayerStatus.blueWarning)
+            {
+                GetComponent<GravityWarning>().FadeInBlue();
+            }
+            else
+            {
+                GetComponent<GravityWarning>().FadeOutBlue();
+            }
+
+            if (PlayerStatus.yellowWarning)
+            {
+                GetComponent<GravityWarning>().FadeOutBlue();
+                GetComponent<GravityWarning>().FadeInYellow();
+            }
+            else
+            {
+                GetComponent<GravityWarning>().FadeOutYellow();
+            }
+
+            if (PlayerStatus.orangeWarning)
+            {
+                GetComponent<GravityWarning>().FadeOutBlue();
+                GetComponent<GravityWarning>().FadeOutYellow();
+                GetComponent<GravityWarning>().FadeInOrange();
+            }
+            else
+            {
+                GetComponent<GravityWarning>().FadeOutOrange();
+            }
+
+            if (PlayerStatus.redWarning)
+            {
+                GetComponent<GravityWarning>().FadeOutBlue();
+                GetComponent<GravityWarning>().FadeOutOrange();
+                GetComponent<GravityWarning>().FadeInRed();
+            }
+            else
+            {
+                GetComponent<GravityWarning>().FadeOutRed();
+            }
         }
 
         /*
