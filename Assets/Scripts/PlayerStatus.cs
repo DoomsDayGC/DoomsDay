@@ -39,6 +39,7 @@ public class PlayerStatus : MonoBehaviour
     private float startTime;
 
     // Font used for labels
+    private float uiBaseScreenHeight = 700f;
     public Font starFont;
     public static bool showLabel;
 
@@ -222,21 +223,22 @@ public class PlayerStatus : MonoBehaviour
     {
         var k = 0;
         GUIStyle starStyle = new GUIStyle();
-        starStyle.fontSize = 30;
+        starStyle.fontSize = GetScaledFontSize(30);
         var textStyle = new GUIStyle();
-        textStyle.fontSize = 40;
+        textStyle.fontSize = GetScaledFontSize(35);
         GUI.skin.font = starFont;
+
         starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);//(4, 208, 220);
         textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 
         GUI.BeginGroup(new Rect(0, 0, 300, 300));
 
-        GUI.Label(new Rect(0, 0, 200, 200), GetComponent<Rigidbody>().velocity.ToString(), starStyle);
-        GUI.Label(new Rect(0, 30, 200, 200), "Max Speed: " + Controller.maxSpeedStatic.ToString(), starStyle);
+        GUI.Label(ResizeGUI(new Rect(0, 0, 200, 200)), GetComponent<Rigidbody>().velocity.ToString(), starStyle);
+        GUI.Label(ResizeGUI(new Rect(0, 30, 200, 200)), "Max Speed: " + Controller.maxSpeedStatic.ToString(), starStyle);
 
         for (int i = 0; i < HP.Length; i++)
         {
-        GUI.Label(new Rect(k, 90, 50, 50), HP[i].ToString(), starStyle);
+        GUI.Label(ResizeGUI(new Rect(k, 90, 50, 50)), HP[i].ToString(), starStyle);
         //if (count != HP.Length)
         //{
             //var posRect = new Rect(50, 50, heartWidth / 5 * count, heartHeight);
@@ -250,24 +252,43 @@ public class PlayerStatus : MonoBehaviour
           k += 90;
         }
 
-        GUI.Label(new Rect(0, 120, 200, 200), warning ? "WARNING" : "", starStyle);
-        GUI.Label(new Rect(0, 150, 200, 200), "Heat: " + string.Format("{0:00.00}", heatAmount), starStyle);
+        GUI.Label(ResizeGUI(new Rect(0, 120, 200, 200)), warning ? "WARNING" : "", starStyle);
+        GUI.Label(ResizeGUI(new Rect(0, 150, 200, 200)), "Heat: " + string.Format("{0:00.00}", heatAmount), starStyle);
 
-        GUI.Label(new Rect(0, 180, 100, 100), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
+        GUI.Label(ResizeGUI(new Rect(0, 180, 100, 100)), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
         GUI.EndGroup();
 
-        GUI.BeginGroup(new Rect(0, 0, 3000, 3000));//946, 444));
+        GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
         if (isAlive)
         {
-            GUI.Label(new Rect(443, 72, 100, 100), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", textStyle);
+            GUI.Label(ResizeGUI(new Rect(443, 72, 100, 100)), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", textStyle);
         }
         else
         {
-            GUI.Label(new Rect(373, 72, 100, 100), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", textStyle);
+            GUI.Label(ResizeGUI(new Rect(373, 72, 100, 100)), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", textStyle);
         }
 
-        GUI.Label(new Rect(1750, 2, 300, 300), timerLabel, textStyle);
+        GUI.Label(ResizeGUI(new Rect(1700, 2, 100, 100)), timerLabel, textStyle);
         GUI.EndGroup();
+    }
+
+    Rect ResizeGUI(Rect _rect)
+    {
+        float FilScreenWidth = _rect.width / 1920;
+        float rectWidth = FilScreenWidth * Screen.width;
+        float FilScreenHeight = _rect.height / 1080;
+        float rectHeight = FilScreenHeight * Screen.height;
+        float rectX = (_rect.x / 1920) * Screen.width;
+        float rectY = (_rect.y / 1080) * Screen.height;
+
+        return new Rect(rectX, rectY, rectWidth, rectHeight);
+    }
+
+    private int GetScaledFontSize(int baseFontSize)
+    {
+        float uiScale = Screen.height / uiBaseScreenHeight;
+        int scaledFontSize = Mathf.RoundToInt(baseFontSize * uiScale);
+        return scaledFontSize;
     }
 
     private void OnCollisionEnter(Collision col)

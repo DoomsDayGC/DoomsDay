@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
+    private float uiBaseScreenHeight = 700f;
+
     private static Font starFont;
 
     public static GameObject player;
@@ -56,12 +58,12 @@ public class Checkpoint : MonoBehaviour
             int t = Mathf.FloorToInt(time);
 
             GUIStyle starStyle = new GUIStyle();
-            starStyle.fontSize = 50;
+            starStyle.fontSize = GetScaledFontSize(35);
             starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
-            starStyle.alignment = TextAnchor.MiddleCenter;
+            //starStyle.alignment = TextAnchor.MiddleCenter;
             GUI.skin.font = starFont;
 
-            GUI.Label(new Rect(Screen.width/2, Screen.height/2 - 370, 100, 100), "Reviving in", starStyle);
+            GUI.Label(ResizeGUI(new Rect(900, 120, 100, 100)), "Reviving in", starStyle);
 
             switch (t)
             {
@@ -82,7 +84,27 @@ public class Checkpoint : MonoBehaviour
                     break;
             }
 
-            GUI.Label(new Rect(Screen.width / 2, Screen.height / 2 - 330, 100, 100), content, starStyle);
+            GUI.Label(ResizeGUI(new Rect(970, 160, 100, 100)), content, starStyle);
         }
     }
+
+    Rect ResizeGUI(Rect _rect)
+    {
+        float FilScreenWidth = _rect.width / 1920;
+        float rectWidth = FilScreenWidth * Screen.width;
+        float FilScreenHeight = _rect.height / 1080;
+        float rectHeight = FilScreenHeight * Screen.height;
+        float rectX = (_rect.x / 1920) * Screen.width;
+        float rectY = (_rect.y / 1080) * Screen.height;
+
+        return new Rect(rectX, rectY, rectWidth, rectHeight);
+    }
+
+    private int GetScaledFontSize(int baseFontSize)
+    {
+        float uiScale = Screen.height / uiBaseScreenHeight;
+        int scaledFontSize = Mathf.RoundToInt(baseFontSize * uiScale);
+        return scaledFontSize;
+    }
+
 }
