@@ -100,6 +100,7 @@ public class StarGravity : MonoBehaviour
 
             starName = this.name;
             attractionTimes = 1;
+            Checkpoint.showChk = true;
         }
         else
         {
@@ -108,6 +109,7 @@ public class StarGravity : MonoBehaviour
                 PlayerStatus.yellowWarning = false;
                 PlayerStatus.orangeWarning = false;
                 attractionTimes = 0;
+                Checkpoint.showChk = false;
             }
 
             gravity = 0.0f;

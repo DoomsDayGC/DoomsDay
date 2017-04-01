@@ -231,27 +231,31 @@ public class PlayerStatus : MonoBehaviour
         starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);//(4, 208, 220);
         textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 
-        GUI.BeginGroup(new Rect(0, 0, 300, 300));
+        GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
 
         GUI.Label(ResizeGUI(new Rect(0, 0, 200, 200)), GetComponent<Rigidbody>().velocity.ToString(), starStyle);
         GUI.Label(ResizeGUI(new Rect(0, 30, 200, 200)), "Max Speed: " + Controller.maxSpeedStatic.ToString(), starStyle);
 
-        for (int i = 0; i < HP.Length; i++)
+        // THE HEARTS MAN, THE HEARTS
+        if(count==0)
         {
-        GUI.Label(ResizeGUI(new Rect(k, 90, 50, 50)), HP[i].ToString(), starStyle);
-        //if (count != HP.Length)
-        //{
-            //var posRect = new Rect(50, 50, heartWidth / 5 * count, heartHeight);
-            //var textRect = new Rect(0, 0, 1.0f / 5 * count, 1.0f);
-            //GUI.DrawTextureWithTexCoords(posRect, hearts, textRect);
-            //GUI.BeginGroup(new Rect(300, 300, 100, 100));
-           // GUILayout.Label(hearts);
-            //GUI.EndGroup();
-            //GUI.Label(new Rect(0, 90, 50, 50), "da");
-        //}
-          k += 90;
+            GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
+            GUI.DrawTexture(ResizeGUI(new Rect(50, 80, 50, 50)), hearts);
+            GUI.DrawTexture(ResizeGUI(new Rect(100, 80, 50, 50)), hearts);
+        }
+        else
+        if(count==1)
+        {
+            GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
+            GUI.DrawTexture(ResizeGUI(new Rect(50, 80, 50, 50)), hearts);
+        }
+        else
+            if(count==2)
+        {
+            GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
         }
 
+        ////
         GUI.Label(ResizeGUI(new Rect(0, 120, 200, 200)), warning ? "WARNING" : "", starStyle);
         GUI.Label(ResizeGUI(new Rect(0, 150, 200, 200)), "Heat: " + string.Format("{0:00.00}", heatAmount), starStyle);
 

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
+    private float chkTimer;
+    public static bool showChk = false;
+
     private float uiBaseScreenHeight = 700f;
 
     private static Font starFont;
@@ -25,6 +28,11 @@ public class Checkpoint : MonoBehaviour
 
     private void Update()
     {
+        if (showChk)
+        {
+            chkTimer += Time.deltaTime;
+        }
+
         if (!PlayerStatus.isAlive)
         {
             time -= Time.deltaTime;
@@ -53,15 +61,27 @@ public class Checkpoint : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!PlayerStatus.isAlive)
-        { 
-            int t = Mathf.FloorToInt(time);
+        GUIStyle starStyle = new GUIStyle();
+        starStyle.fontSize = GetScaledFontSize(35);
+        starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
+        //starStyle.alignment = TextAnchor.MiddleCenter;
+        GUI.skin.font = starFont;
 
-            GUIStyle starStyle = new GUIStyle();
-            starStyle.fontSize = GetScaledFontSize(35);
-            starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
-            //starStyle.alignment = TextAnchor.MiddleCenter;
-            GUI.skin.font = starFont;
+        if (showChk)
+        {
+            if ((int)chkTimer <= 2)
+            {
+                GUI.Label(ResizeGUI(new Rect(800, 60, 100, 100)), "Checkpoint reached", starStyle);
+            }
+            else
+            {
+                showChk = false;
+            }
+        }
+
+        if (!PlayerStatus.isAlive)
+        {
+            int t = Mathf.FloorToInt(time);
 
             GUI.Label(ResizeGUI(new Rect(900, 120, 100, 100)), "Reviving in", starStyle);
 
