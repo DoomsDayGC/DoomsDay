@@ -9,11 +9,11 @@ sceneSetups:
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/Main Menu.unity
-  isLoaded: 1
-  isActive: 1
+  isLoaded: 0
+  isActive: 0
 - path: Assets/Scenes/Level Test.unity
   isLoaded: 1
-  isActive: 0
+  isActive: 1
 - path: Assets/Scenes/FirstLevel.unity
   isLoaded: 0
   isActive: 0

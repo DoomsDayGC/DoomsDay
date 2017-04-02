@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
+    public float deadRadius;
+
     private int attractionTimes = 0;
 
     // Saves the planet's name

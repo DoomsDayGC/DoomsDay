@@ -6,12 +6,17 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    private bool timeAdded = false;
+
+    private float distanceToWin = 1500f;
+    public static bool atTheEnd = false;
+
     /// Heat bar
     Vector2 barPos = new Vector2(0, 145);
     Vector2 barSize = new Vector2(200, 25);
 
-    public Texture2D barEmpty;
-    public Texture2D barFull;
+    //public Texture2D barEmpty;
+    //public Texture2D barFull;
 
 
     // Can't be attracted for x seconds after he revived
@@ -20,9 +25,6 @@ public class PlayerStatus : MonoBehaviour
 
     // Hearts
     public Texture hearts;
-
-    private float heartWidth;
-    private float heartHeight;
 
     // Warning
     public static bool redWarning = false;
@@ -95,9 +97,6 @@ public class PlayerStatus : MonoBehaviour
 
     private void Start()
     {
-        heartHeight = hearts.width;
-        heartWidth = hearts.height;
-
         suns = GameObject.FindGameObjectsWithTag("Star");
         bHoles = GameObject.FindGameObjectsWithTag("Black Hole");
         sSuns = GameObject.FindGameObjectsWithTag("Save Star");
@@ -207,6 +206,7 @@ public class PlayerStatus : MonoBehaviour
         ////// Timer
         if (isAlive)
         {
+            timeAdded = true;
             if (feelingOldYet)
             {
                 if (time < 30)
@@ -219,12 +219,27 @@ public class PlayerStatus : MonoBehaviour
                 time += 1.0f * 0.02f;
             }
         }
+        else
+        {
+            if (timeAdded)
+            {
+                time += 5.0f;
+                timeAdded = false;
+            }
+        }
 
         var minutes = (int)(time / 60);
-        var seconds = (int)(time % 60); 
+        var seconds = (int)(time % 60);
         var fraction = (int)(time * 100) % 100;
 
         timerLabel = string.Format("{0:00} : {1:00} : {2:00}", minutes, seconds, fraction);
+
+        ///
+        if(this.transform.position.z >= distanceToWin)
+        {
+            atTheEnd = true;
+            //PlayerPrefs.SetFloat("highscore", time);
+        }
     }
 
     private void OnGUI()

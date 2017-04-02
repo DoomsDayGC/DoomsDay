@@ -73,7 +73,7 @@ public class StarGravity : MonoBehaviour
             beyond2Souls = true;
             //if (this.tag == "Save Star")
             //{
-                Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, (this.transform.position.z + this.transform.localScale.z) - 5);
+            Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, (this.transform.position.z + this.transform.localScale.z));
             //}
         }
         ///////
