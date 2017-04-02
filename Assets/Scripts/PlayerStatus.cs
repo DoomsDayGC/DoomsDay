@@ -1,10 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    /// Heat bar
+    Vector2 barPos = new Vector2(0, 145);
+    Vector2 barSize = new Vector2(200, 25);
+
+    public Texture2D barEmpty;
+    public Texture2D barFull;
+
+
     // Can't be attracted for x seconds after he revived
     public static bool reviveProtection = false;
     public static float protectionTimer = 3f;
@@ -216,20 +225,21 @@ public class PlayerStatus : MonoBehaviour
         var fraction = (int)(time * 100) % 100;
 
         timerLabel = string.Format("{0:00} : {1:00} : {2:00}", minutes, seconds, fraction);
-
     }
 
     private void OnGUI()
     {
-        var k = 0;
         GUIStyle starStyle = new GUIStyle();
         starStyle.fontSize = GetScaledFontSize(30);
         var textStyle = new GUIStyle();
         textStyle.fontSize = GetScaledFontSize(35);
+        var heatTextStyle = new GUIStyle();
+        heatTextStyle.fontSize = GetScaledFontSize(20);
         GUI.skin.font = starFont;
 
         starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);//(4, 208, 220);
         textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
+        heatTextStyle.normal.textColor = new Color(0, 0, 0);
 
         GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
 
@@ -255,9 +265,11 @@ public class PlayerStatus : MonoBehaviour
             GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
         }
 
-        ////
-        GUI.Label(ResizeGUI(new Rect(0, 120, 200, 200)), warning ? "WARNING" : "", starStyle);
-        GUI.Label(ResizeGUI(new Rect(0, 150, 200, 200)), "Heat: " + string.Format("{0:00.00}", heatAmount), starStyle);
+        //// 
+
+        EditorGUI.ProgressBar(ResizeGUI(new Rect(barPos.x, barPos.y, barSize.x - 6, barSize.y)), heatAmount / 100, "");
+
+        GUI.Label(ResizeGUI(new Rect(60, 140, 200, 200)), string.Format("{0:00.00}", heatAmount), heatTextStyle);
 
         GUI.Label(ResizeGUI(new Rect(0, 180, 100, 100)), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
         GUI.EndGroup();
