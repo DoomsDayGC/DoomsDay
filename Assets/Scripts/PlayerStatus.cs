@@ -71,7 +71,7 @@ public class PlayerStatus : MonoBehaviour
     //private bool deadBySnuSnu;
 
     // A vector that contains the number of lives the player has
-    static bool[] HP;
+    static bool[] HP = new bool[3];
     private int count; // Vector's length
 
     // Checks if the camera should follow the player or not
@@ -99,6 +99,13 @@ public class PlayerStatus : MonoBehaviour
 
     private void Start()
     {
+<<<<<<< HEAD
+=======
+        
+        heartHeight = hearts.width;
+        heartWidth = hearts.height;
+
+>>>>>>> level-branch
         suns = GameObject.FindGameObjectsWithTag("Star");
         bHoles = GameObject.FindGameObjectsWithTag("Black Hole");
         sSuns = GameObject.FindGameObjectsWithTag("Save Star");
@@ -114,7 +121,7 @@ public class PlayerStatus : MonoBehaviour
         chkHeatGainStatic = chkHeatGain;
 
         count = 0;
-        HP = new bool[3];
+        //HP = new bool[3];
         for (int i = 0; i < HP.Length; i++)
             HP[i] = true;
 
