@@ -82,7 +82,6 @@ public class MainCameraScript : MonoBehaviour {
         }*/
 
         offset = new Vector3(playerRb.transform.position.x, playerRb.transform.position.y + 0.50f, playerRb.transform.position.z - 3.2f);
-
         if (PlayerStatus.cameraFollow)
         {
             this.transform.position = offset;
