@@ -11,7 +11,7 @@ public class Gravity : MonoBehaviour
     public float deadRadius;
 
     private int attractionTimes = 0;
-    public float deadRadius;
+
     // Saves the planet's name
     private static string planetName;
 

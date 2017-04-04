@@ -10,9 +10,6 @@ sceneSetups:
   isActive: 0
 - path: Assets/Scenes/Main Menu.unity
   isLoaded: 1
-  isActive: 0
-- path: Assets/Scenes/Level Test.unity
-  isLoaded: 1
   isActive: 1
 - path: Assets/Scenes/FirstLevel.unity
   isLoaded: 0
@@ -21,5 +18,8 @@ sceneSetups:
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/Lets call it a test.unity
-  isLoaded: 1
-  isActive: 1
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/Level Test.unity
+  isLoaded: 0
+  isActive: 0

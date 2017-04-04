@@ -99,13 +99,6 @@ public class PlayerStatus : MonoBehaviour
 
     private void Start()
     {
-<<<<<<< HEAD
-=======
-        
-        heartHeight = hearts.width;
-        heartWidth = hearts.height;
-
->>>>>>> level-branch
         suns = GameObject.FindGameObjectsWithTag("Star");
         bHoles = GameObject.FindGameObjectsWithTag("Black Hole");
         sSuns = GameObject.FindGameObjectsWithTag("Save Star");
