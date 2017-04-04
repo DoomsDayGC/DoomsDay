@@ -20,3 +20,6 @@ sceneSetups:
 - path: Assets/Scenes/Tutorial.unity
   isLoaded: 0
   isActive: 0
+- path: Assets/Scenes/Lets call it a test.unity
+  isLoaded: 1
+  isActive: 1
