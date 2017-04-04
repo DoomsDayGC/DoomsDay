@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Tutorial : MonoBehaviour
 {
+    private float upAndDownArrow = 0f;
+    private bool showArrow = true;
+
+    public Texture arrow;
+
     private float uiBaseScreenHeight = 700f;
 
     public Font starFont;
@@ -12,6 +18,10 @@ public class Tutorial : MonoBehaviour
     private bool counter = false;
 
     private string content = "";
+
+    private int xPos, yPos;
+
+    private GUIStyle currentStyle = null;
 
     // Use this for initialization
     void Start () {
@@ -33,6 +43,15 @@ public class Tutorial : MonoBehaviour
         }*/
 
         time += Time.deltaTime;
+
+        //if(showArrow)
+        //{
+        upAndDownArrow += Time.deltaTime;
+        if ((int)upAndDownArrow == 2)
+        {
+            upAndDownArrow = 0f;
+        }
+        //}
 	}
 
     private void OnGUI()
@@ -52,8 +71,6 @@ public class Tutorial : MonoBehaviour
         GUI.skin.font = starFont;
         starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 
-        //GUI.Label(new Rect(800, 72, 100, 100), "Welcome to the tutorial", starStyle);
-
         switch(t)
         {
             case 1:
@@ -62,14 +79,51 @@ public class Tutorial : MonoBehaviour
             case 5:
                 content = "To move the player use " + GameManager.GM.upwardFP + ", " + GameManager.GM.downwardFP + ", " + GameManager.GM.leftFP + ", " + GameManager.GM.rightFP;
                 break;
+            case 9:
+                content = "The hearts represents the number of times you can survive until you are getting hit by meteors.";
+                xPos = 180;
+                yPos = 63;
+                if(showArrow)
+                {
+                    GUI.DrawTexture(ResizeGUI(new Rect(xPos, yPos, 140, 100)), arrow);
+                }
+                break;
             case 13:
+                showArrow = false;
                 counter = true;
                 break;
         }
 
-        GUI.Box(ResizeGUI(new Rect(200, 200, 300, 300)), "");
-        //GUI.Label(ResizeGUI(new Rect(200, 200, 300, 300)), "", Color.red);
+        //if (!counter)
+        //{
+        //InitStyles();
+        //GUI.Box(ResizeGUI(new Rect(xPos, yPos, xSize, ySize)), "", currentStyle);
+        
+        //}
+
         GUI.Label(ResizeGUI(new Rect(130, 900, 100, 100)), content, starStyle);
+    }
+
+    private Texture2D MakeTex(int width, int height, Color col)
+    {
+        Color[] pix = new Color[width * height];
+        for (int i = 0; i < pix.Length; ++i)
+        {
+            pix[i] = col;
+        }
+        Texture2D result = new Texture2D(width, height);
+        result.SetPixels(pix);
+        result.Apply();
+        return result;
+    }
+
+    private void InitStyles()
+    {
+        if (currentStyle == null)
+        {
+            currentStyle = new GUIStyle(GUI.skin.box);
+            currentStyle.normal.background = MakeTex(2, 2, Color.red);//new Color(0f, 1f, 0f, 0.5f));
+        }
     }
 
     void PauseGame()

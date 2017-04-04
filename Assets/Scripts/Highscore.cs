@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Highscore : MonoBehaviour
 {
+    private bool inTutorial = false;
+
     private float uiBaseScreenHeight = 700f;
 
     public static float highScore;
@@ -14,7 +17,18 @@ public class Highscore : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        if(PlayerPrefs.GetFloat("highscore") == 0f)
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        if (currentScene.name == "Tutorial")
+        {
+            inTutorial = true;
+        }
+        else
+        {
+            inTutorial = false;
+        }
+
+        if (PlayerPrefs.GetFloat("highscore") == 0f)
         {
             PlayerPrefs.SetFloat("highscore", 200f);
         }
@@ -51,7 +65,7 @@ public class Highscore : MonoBehaviour
 
         textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 
-        GUI.Label(ResizeGUI(new Rect(1570, 1000, 100, 100)), "Best time: " + highScoreLabel, textStyle);
+        GUI.Label(ResizeGUI(new Rect(1570, 1000, 100, 100)), "Best time: " + (inTutorial ? string.Format("00 : 00 : 00") : highScoreLabel), textStyle);
     }
 
 

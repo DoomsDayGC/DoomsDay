@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class StarGravity : MonoBehaviour
 {
-    private static float checkTime = 0f;
-
     // Used for black magic when knowing if it's the same star that makes trouble or not
     private int attractionTimes = 0;
 
@@ -29,7 +27,6 @@ public class StarGravity : MonoBehaviour
 
     // Checks if the player is attracted by a sun or not
     private bool starAttraction = false;
-    public static bool starAttractionStatic;
 
     // Checks if the player got passed the sun
     private bool beyond2Souls = false;
@@ -134,7 +131,6 @@ public class StarGravity : MonoBehaviour
                 }
             }
         }
-        starAttractionStatic = starAttraction;
 
         // If it got passed the Save Star it is now attracted by, here comes a checkpoint
         if (earth.transform.position.z >= (this.transform.position.z + this.transform.localScale.z))
