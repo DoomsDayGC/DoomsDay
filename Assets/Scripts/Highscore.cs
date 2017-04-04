@@ -7,7 +7,6 @@ public class Highscore : MonoBehaviour
     private float uiBaseScreenHeight = 700f;
 
     public static float highScore;
-    private static float possibleScore;
 
     private float minutes, seconds, fraction;
     private string highScoreLabel;
@@ -15,6 +14,10 @@ public class Highscore : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
+        if(PlayerPrefs.GetFloat("highscore") == 0f)
+        {
+            PlayerPrefs.SetFloat("highscore", 200f);
+        }
         highScore = PlayerPrefs.GetFloat("highscore");
 	}
 	

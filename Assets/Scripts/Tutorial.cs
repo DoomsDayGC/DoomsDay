@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tutorial : MonoBehaviour {
+public class Tutorial : MonoBehaviour
+{
+    private float uiBaseScreenHeight = 700f;
 
     public Font starFont;
 
@@ -10,12 +12,9 @@ public class Tutorial : MonoBehaviour {
     private bool counter = false;
 
     private string content = "";
-    
-    private bool paused;
 
-	// Use this for initialization
-	void Start () {
-        paused = false;
+    // Use this for initialization
+    void Start () {
         //PauseGame();
         time = 0.0f;
 	}
@@ -49,7 +48,7 @@ public class Tutorial : MonoBehaviour {
         int t = Mathf.FloorToInt(time);
 
         GUIStyle starStyle = new GUIStyle();
-        starStyle.fontSize = 50;
+        starStyle.fontSize = GetScaledFontSize(30);
         GUI.skin.font = starFont;
         starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 
@@ -58,12 +57,9 @@ public class Tutorial : MonoBehaviour {
         switch(t)
         {
             case 1:
-                content = "Welcome to the tutorial";
+                content = "Welcome to the tutorial where we will show you the basics";
                 break;
-            case 4:
-                content = "Here we will teach you the basics";
-                break;
-            case 7:
+            case 5:
                 content = "To move the player use " + GameManager.GM.upwardFP + ", " + GameManager.GM.downwardFP + ", " + GameManager.GM.leftFP + ", " + GameManager.GM.rightFP;
                 break;
             case 13:
@@ -71,18 +67,37 @@ public class Tutorial : MonoBehaviour {
                 break;
         }
 
-        GUI.Label(new Rect(400, 72, 100, 100), content, starStyle);
+        GUI.Box(ResizeGUI(new Rect(200, 200, 300, 300)), "");
+        //GUI.Label(ResizeGUI(new Rect(200, 200, 300, 300)), "", Color.red);
+        GUI.Label(ResizeGUI(new Rect(130, 900, 100, 100)), content, starStyle);
     }
 
     void PauseGame()
     {
         Time.timeScale = 0.0f;
-        paused = true;
     }
 
     void ResumeGame()
     {
         Time.timeScale = 1.0f;
-        paused = false;
+    }
+
+    Rect ResizeGUI(Rect _rect)
+    {
+        float FilScreenWidth = _rect.width / 1920;
+        float rectWidth = FilScreenWidth * Screen.width;
+        float FilScreenHeight = _rect.height / 1080;
+        float rectHeight = FilScreenHeight * Screen.height;
+        float rectX = (_rect.x / 1920) * Screen.width;
+        float rectY = (_rect.y / 1080) * Screen.height;
+
+        return new Rect(rectX, rectY, rectWidth, rectHeight);
+    }
+
+    private int GetScaledFontSize(int baseFontSize)
+    {
+        float uiScale = Screen.height / uiBaseScreenHeight;
+        int scaledFontSize = Mathf.RoundToInt(baseFontSize * uiScale);
+        return scaledFontSize;
     }
 }

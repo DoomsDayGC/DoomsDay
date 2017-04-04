@@ -87,9 +87,11 @@ public class PlayerStatus : MonoBehaviour
         // but what do i know
     public static float heatDamageStatic;
     public float heatDamage;
-    public static float heatGainStatic;
-    public float heatGain;
-    
+    public static float sunHeatGainStatic;
+    public float sunHeatGain;
+    public static float chkHeatGainStatic;
+    public float chkHeatGain;
+
 
     // Shows a warning if the player is on a collision course with a planet / star
     public static bool warning = false;
@@ -108,7 +110,8 @@ public class PlayerStatus : MonoBehaviour
 
         heatAmount = 100f; // The amount of heat when the game starts
         heatDamageStatic = heatDamage;
-        heatGainStatic = heatGain;
+        sunHeatGainStatic = sunHeatGain;
+        chkHeatGainStatic = chkHeatGain;
 
         count = 0;
         HP = new bool[3];

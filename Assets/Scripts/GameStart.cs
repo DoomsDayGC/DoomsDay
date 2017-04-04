@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameStart : MonoBehaviour
 {
-    public GameObject MenuCanvas;
+    //public GameObject MenuCanvas;
 
 	// Use this for initialization
 	void Start ()

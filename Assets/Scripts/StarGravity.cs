@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class StarGravity : MonoBehaviour
 {
+    private static float checkTime = 0f;
+
+    // Used for black magic when knowing if it's the same star that makes trouble or not
     private int attractionTimes = 0;
 
     // Saves the star's name
-    private string starName;
+    private static string starName;
 
     // Used to save the dist to the nearest Black Hole
     public static Vector3 earthToStarDist;
@@ -26,6 +29,7 @@ public class StarGravity : MonoBehaviour
 
     // Checks if the player is attracted by a sun or not
     private bool starAttraction = false;
+    public static bool starAttractionStatic;
 
     // Checks if the player got passed the sun
     private bool beyond2Souls = false;
@@ -54,7 +58,7 @@ public class StarGravity : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
         var distance = this.transform.position - earth.GetComponent<Rigidbody>().transform.position;
         offset = earth.transform.position - this.transform.position;
@@ -66,16 +70,13 @@ public class StarGravity : MonoBehaviour
         var y = Mathf.Pow((earth.transform.position.y - yC), 2);
         var z = Mathf.Pow((earth.transform.position.z - zC), 2);
 
-        
+
         ///////
         if (earth.transform.position.z >= (this.transform.position.z + this.transform.localScale.z))
         {
             beyond2Souls = true;
-            //if (this.tag == "Save Star")
-            //{
-            Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, (this.transform.position.z + this.transform.localScale.z));
-            //}
         }
+
         ///////
         if (gravity >= 0 && starAttraction && ((Input.GetKey(GameManager.GM.leftFP) && this.transform.position.x > earth.transform.position.x)
             || (Input.GetKey(GameManager.GM.rightFP) && this.transform.position.x < earth.transform.position.x)
@@ -91,7 +92,7 @@ public class StarGravity : MonoBehaviour
             gravity += powerPerFrame * 0.02f;
         }
 
-        
+
         //////
         if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls && !PlayerStatus.reviveProtection)
         {
@@ -100,7 +101,11 @@ public class StarGravity : MonoBehaviour
 
             starName = this.name;
             attractionTimes = 1;
-            Checkpoint.showChk = true;
+            if (this.tag == "Save Star")
+            {
+                Checkpoint.touchTooMuch = 1;
+                Checkpoint.passed = true;
+            }
         }
         else
         {
@@ -109,7 +114,6 @@ public class StarGravity : MonoBehaviour
                 PlayerStatus.yellowWarning = false;
                 PlayerStatus.orangeWarning = false;
                 attractionTimes = 0;
-                Checkpoint.showChk = false;
             }
 
             gravity = 0.0f;
@@ -130,10 +134,26 @@ public class StarGravity : MonoBehaviour
                 }
             }
         }
+        starAttractionStatic = starAttraction;
 
+        // If it got passed the Save Star it is now attracted by, here comes a checkpoint
+        if (earth.transform.position.z >= (this.transform.position.z + this.transform.localScale.z))
+        {
+            if(this.name == starName)
+            if (this.tag == "Save Star")
+            {
+                Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, (this.transform.position.z + this.transform.localScale.z));
+                if (Checkpoint.passed)
+                {
+                    Checkpoint.showChk = true;
+                }
+            }
+        }
+
+        ///////
         runYouFool = false;
 
-        if(this.tag == "Black Hole")
+        if (this.tag == "Black Hole")
         {
             PlayerStatus.feelingOldYet = false;
             earthToStarDist = offset;
@@ -184,17 +204,20 @@ public class StarGravity : MonoBehaviour
             }
             if (PlayerStatus.isAlive)
             {
-                /*
-                if(this.tag == "Save Star")
-                {
 
+                if (this.tag == "Save Star")
+                {
+                    if (PlayerStatus.heatAmount <= 100)
+                    {
+                        PlayerStatus.heatAmount += PlayerStatus.chkHeatGainStatic * Time.deltaTime; // 3
+                    }
                 }
-                */
+                else
                 if (this.tag == "Star")
                 {
                     if (PlayerStatus.heatAmount <= 100)
                     {
-                        PlayerStatus.heatAmount += PlayerStatus.heatGainStatic * Time.deltaTime; // 3
+                        PlayerStatus.heatAmount += PlayerStatus.sunHeatGainStatic * Time.deltaTime; // 3
                     }
                 }
                 else
@@ -215,5 +238,5 @@ public class StarGravity : MonoBehaviour
                 }
             }
         }
-	}
+    }
 }

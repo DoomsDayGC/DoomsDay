@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
+    public static float touchTooMuch = 0;
+    public static bool passed = true;
     private float chkTimer;
     public static bool showChk = false;
 
@@ -28,7 +30,7 @@ public class Checkpoint : MonoBehaviour
 
     private void Update()
     {
-        if (showChk)
+        if (showChk && touchTooMuch == 1)
         {
             chkTimer += Time.deltaTime;
         }
@@ -67,14 +69,17 @@ public class Checkpoint : MonoBehaviour
         //starStyle.alignment = TextAnchor.MiddleCenter;
         GUI.skin.font = starFont;
 
-        if (showChk)
+        if (showChk && passed)
         {
-            if ((int)chkTimer <= 2)
+            if ((int)chkTimer <= 2 && touchTooMuch == 1)
             {
                 GUI.Label(ResizeGUI(new Rect(800, 60, 100, 100)), "Checkpoint reached", starStyle);
             }
             else
             {
+                passed = false;
+                touchTooMuch = 0;
+                chkTimer = 0f;
                 showChk = false;
             }
         }

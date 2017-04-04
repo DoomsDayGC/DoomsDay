@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
+    // If some seconds passed after the camera stopped following him, he dead mate
+    private float deadTime = 0f;
+
+    // The radius the player has no chance to escape
     public float deadRadius;
 
     private int attractionTimes = 0;
@@ -15,7 +19,7 @@ public class Gravity : MonoBehaviour
     public GameObject earth;
 
     // Distance between the planet and the player
-    private Vector3 earthToPlanetDist;
+    //private Vector3 earthToPlanetDist;
 
     // The strength of the gravitational pull
     public float gravitationalPull;
@@ -58,8 +62,13 @@ public class Gravity : MonoBehaviour
 
     void Update()
     {
+        if(!PlayerStatus.cameraFollow)
+        {
+            deadTime += Time.deltaTime;
+        }
+
         offset = earth.transform.position - this.transform.position;
-        earthToPlanetDist = offset;
+        //earthToPlanetDist = offset;
 
         direction = offset;
         direction.z = 0;
@@ -147,7 +156,7 @@ public class Gravity : MonoBehaviour
                 PlayerStatus.redWarning = false;
             }
 
-            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / 3 + 7) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(this.transform.position.z + this.transform.localScale.z / 2) >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
+            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / deadRadius + 7) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(this.transform.position.z + this.transform.localScale.z / 2) >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
             {
                 PlayerStatus.cameraFollow = false;
                 Controller.ignoreKey = true;
@@ -156,6 +165,11 @@ public class Gravity : MonoBehaviour
             {
                 earth.GetComponent<Rigidbody>().AddForce(-direction * 5, ForceMode.Acceleration);
             }
+        }
+        if ((int)deadTime == 3)
+        {
+            PlayerStatus.isAlive = false;
+            deadTime = 0f;
         }
     }
     /*
