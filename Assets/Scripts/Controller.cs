@@ -147,7 +147,7 @@ public class Controller : MonoBehaviour
             {
                 if (PlayerStatus.heatAmount >= 0)
                 {
-                    PlayerStatus.heatAmount -= 10f * Time.deltaTime;
+                    PlayerStatus.heatAmount -= 10f * 0.02f;//
                 }
                 else
                 {
@@ -345,8 +345,8 @@ public class Controller : MonoBehaviour
         else
         {
             rb.velocity = Vector3.zero;
-            Checkpoint.Revive();
             //rb.constraints = RigidbodyConstraints.FreezeAll;
+            Checkpoint.Revive();
         }
         //ignoreKey = false;
         canGoXRight = true;

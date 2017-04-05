@@ -5,8 +5,36 @@ using UnityEngine.SceneManagement;
 
 public class Tutorial : MonoBehaviour
 {
+    private bool checkpoint0 = false;
+    private bool checkpoint1 = false;
+    private bool checkpoint2 = false;
+
+    // Checks if died before the age
+    private bool prematureDeath = false;
+    private bool canSuicide = false;
+
+    // Used to save the content it displayed before the player being an explorer
+    private bool doraCheck = false;
+
+    // If the player already leaves the area won't show again
+    private bool butDidItHappen = false;
+
+    public GameObject player;
+
+    // Checks if the player goes exploring.
+    private bool heSheApacheTried = false;
+    private bool DoraTheExplorer = false;
+    private float msgShow = 0f;
+    private bool paused = false;
+
+    // Arrow cases
+    private bool showCaseArrow = false;
+
+    // Use to flicker the arrow
+    private float waitTime = 0f;
     private float upAndDownArrow = 0f;
-    private bool showArrow = true;
+    private bool showArrow = false;
+    private bool waitFor = false;
 
     public Texture arrow;
 
@@ -17,6 +45,7 @@ public class Tutorial : MonoBehaviour
     private float time;
     private bool counter = false;
 
+    private string saveContent = "";
     private string content = "";
 
     private int xPos, yPos;
@@ -24,35 +53,108 @@ public class Tutorial : MonoBehaviour
     private GUIStyle currentStyle = null;
 
     // Use this for initialization
-    void Start () {
-        //PauseGame();
+    void Start ()
+    {
         time = 0.0f;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        /*
-        Debug.Log(paused);
-	    if(Input.GetKey(GameManager.GM.pause))
+        if(!PlayerStatus.isAlive && checkpoint1 == true)
         {
-            if (!paused)
-                PauseGame();
-            else
-                ResumeGame();
-        }*/
+            Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, 2200);
+            Checkpoint.Revive();
+        }
+        if (!PlayerStatus.isAlive && checkpoint2 == true)
+        {
+            Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, 4000);
+            Checkpoint.Revive();
+        }
 
-        time += Time.deltaTime;
+        if (!PlayerStatus.isAlive)
+        {
+            prematureDeath = true;
+        }
 
-        //if(showArrow)
-        //{
-        upAndDownArrow += Time.deltaTime;
-        if ((int)upAndDownArrow == 2)
+        if (!prematureDeath)
+        {
+            time += 0.02f;//
+        }
+
+        if (showCaseArrow && !paused)
+        {
+            Flicker();
+        }
+
+        if ((int)time <= 18 && !butDidItHappen)
+        {
+            DoraTheExplorer = CheckForBounds();
+        }
+
+        if (DoraTheExplorer && !butDidItHappen)
+        {
+            if(!doraCheck)
+            {
+                saveContent = content;
+                doraCheck = true;
+            }
+            heSheApacheTried = true;
+        }
+
+        if(heSheApacheTried && !butDidItHappen)
+        { 
+            msgShow += 0.02f;
+            if((int)msgShow == 5)
+            {
+                paused = false;
+                DoraTheExplorer = false;
+                heSheApacheTried = false;
+                butDidItHappen = true;
+                content = saveContent;
+            }
+        }
+        //Debug.Log(time);
+    }
+
+    bool CheckForBounds()
+    {
+        if (player.transform.position.x >= Controller.initialPos.x + Controller.maxRadiusStatic ||
+            player.transform.position.x <= Controller.initialPos.x - Controller.maxRadiusStatic ||
+            player.transform.position.y >= Controller.initialPos.y + Controller.maxRadiusStatic ||
+            player.transform.position.y <= Controller.initialPos.y - Controller.maxRadiusStatic)
+        {
+            paused = true;
+            return true;
+        }
+        return false;
+    }
+
+    /// Making the arrow flicker and stuff
+    void Flicker()
+    {
+        if (!waitFor)
+        {
+            upAndDownArrow += 0.02f;
+            showArrow = true;
+        }
+        else
+        {
+            waitTime += 0.02f;
+            if ((int)waitTime == 1)
+            {
+                waitFor = false;
+            }
+        }
+        if ((int)upAndDownArrow == 1)
         {
             upAndDownArrow = 0f;
+            waitTime = 0f;
+            waitFor = true;
+            showArrow = false;
         }
-        //}
-	}
+        Debug.Log(time);
+    }
 
     private void OnGUI()
     {
@@ -71,59 +173,139 @@ public class Tutorial : MonoBehaviour
         GUI.skin.font = starFont;
         starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 
-        switch(t)
+        if (prematureDeath)
         {
-            case 1:
-                content = "Welcome to the tutorial where we will show you the basics";
-                break;
-            case 5:
-                content = "To move the player use " + GameManager.GM.upwardFP + ", " + GameManager.GM.downwardFP + ", " + GameManager.GM.leftFP + ", " + GameManager.GM.rightFP;
-                break;
-            case 9:
-                content = "The hearts represents the number of times you can survive until you are getting hit by meteors.";
-                xPos = 180;
-                yPos = 63;
-                if(showArrow)
+            showCaseArrow = false;
+            showArrow = false;
+            if (checkpoint0)
+            {
+                content = "Really? Died already? Let's give it another try.";
+            }
+            if (checkpoint1)
+            {
+                content = "It's alright. Let's try again.";
+            }
+            if (checkpoint2)
+            {
+                content = "A bit tricky? You can do it.";
+            }
+
+            if (PlayerStatus.isAlive)
+            {
+                if (checkpoint0)
                 {
-                    GUI.DrawTexture(ResizeGUI(new Rect(xPos, yPos, 140, 100)), arrow);
+                    time = 0f;
+                    prematureDeath = false;
+                    checkpoint0 = false;
                 }
-                break;
-            case 13:
-                showArrow = false;
-                counter = true;
-                break;
+                if (checkpoint1) 
+                {
+                    time = 35f;
+                    checkpoint1 = false;
+                    prematureDeath = false;
+                }
+                if (checkpoint2)
+                {
+                    time = 55f;
+                    checkpoint1 = false;
+                    prematureDeath = false;
+                }
+                content = "";
+            }
         }
 
-        //if (!counter)
-        //{
-        //InitStyles();
-        //GUI.Box(ResizeGUI(new Rect(xPos, yPos, xSize, ySize)), "", currentStyle);
-        
-        //}
+        if (!DoraTheExplorer || prematureDeath)
+        {
+            switch (t)
+            {
+                case 1:
+                    checkpoint0 = true;
+                    content = "Welcome to the tutorial where we will show you the basics";
+                    break;
+                case 5:
+                    content = "To move the player use " + GameManager.GM.upwardFP + ", " + GameManager.GM.downwardFP + ", " + GameManager.GM.leftFP + ", " + GameManager.GM.rightFP;
+                    break;
+                case 11:
+                    /*
+                    content = "The hearts represents the number of times you can survive until you are getting hit by meteors.";
+                    xPos = 180;
+                    yPos = 60;
+                    heartCase = true;*/
+                    content = "The bar represents the amount of heat you have. When you get to 0 you will freeze and die. So don't get to 0.";
+                    xPos = 190;
+                    yPos = 110;
+                    showCaseArrow = true;
+                    break;
+                case 19:
+                    DoraTheExplorer = false;
+                    doraCheck = false;
+                    showCaseArrow = false;
+                    showArrow = false;
+                    content = "Passing the arrows on the sides will make your heat deplete faster.";
+                    break;
+                case 26:
+                    DoraTheExplorer = false;
+                    doraCheck = false;
+                    showCaseArrow = false;
+                    showArrow = false;
+                    //canSuicide = true;
+                    content = "Hitting a planet will result in your death. Try to avoid them.";
+                    break;
+                case 33:
+                    content = "";
+                    break;
+                case 48:
+                    content = "Great job avoiding those planets. Let's see how you can handle their gravity now.";
+                    break;
+                case 55:
+                    content = "The colors are meant to help you. Yellow means you are attracted, up to red which means that you are too close.";
+                    break;
+                case 80:
+                    counter = true;
+                    break;
+            }
+
+            if ((int)time<32)
+            {
+                checkpoint0 = true;
+            }
+            else
+            {
+                checkpoint0 = false;
+            }
+
+            if ((int)time>=32 && (int)time<=48)
+            {
+                checkpoint1 = true;
+            }
+            else
+            {
+                checkpoint1 = false;
+            }
+
+            if((int)time>48)
+            {
+                checkpoint2 = true;
+            }
+            else
+            {
+                checkpoint2 = false;
+            }
+        }
+        else
+        {
+            if (DoraTheExplorer)
+            {
+                content = "I can see that you can't stay put. This zone is dangerous for your heat. Your heat depletes faster beyond the bounds.";
+            }
+        }
+
+        if (showCaseArrow && showArrow)
+        {
+            GUI.DrawTexture(ResizeGUI(new Rect(xPos, yPos, 140, 100)), arrow);
+        }
 
         GUI.Label(ResizeGUI(new Rect(130, 900, 100, 100)), content, starStyle);
-    }
-
-    private Texture2D MakeTex(int width, int height, Color col)
-    {
-        Color[] pix = new Color[width * height];
-        for (int i = 0; i < pix.Length; ++i)
-        {
-            pix[i] = col;
-        }
-        Texture2D result = new Texture2D(width, height);
-        result.SetPixels(pix);
-        result.Apply();
-        return result;
-    }
-
-    private void InitStyles()
-    {
-        if (currentStyle == null)
-        {
-            currentStyle = new GUIStyle(GUI.skin.box);
-            currentStyle.normal.background = MakeTex(2, 2, Color.red);//new Color(0f, 1f, 0f, 0.5f));
-        }
     }
 
     void PauseGame()

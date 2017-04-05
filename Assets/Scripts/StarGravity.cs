@@ -91,7 +91,7 @@ public class StarGravity : MonoBehaviour
 
 
         //////
-        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls && !PlayerStatus.reviveProtection)
+        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls && !PlayerStatus.reviveProtection && PlayerStatus.isAlive)
         {
             starAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
@@ -108,6 +108,7 @@ public class StarGravity : MonoBehaviour
         {
             if (this.name == starName && attractionTimes == 1)
             {
+                PlayerStatus.redWarning = false;
                 PlayerStatus.yellowWarning = false;
                 PlayerStatus.orangeWarning = false;
                 attractionTimes = 0;
@@ -121,7 +122,7 @@ public class StarGravity : MonoBehaviour
             {
                 if (PlayerStatus.heatAmount >= 0)
                 {
-                    PlayerStatus.heatAmount -= PlayerStatus.heatDamageStatic * Time.deltaTime;
+                    PlayerStatus.heatAmount -= PlayerStatus.heatDamageStatic * 0.02f;//
                 }
                 else
                 {
@@ -205,7 +206,7 @@ public class StarGravity : MonoBehaviour
                 {
                     if (PlayerStatus.heatAmount <= 100)
                     {
-                        PlayerStatus.heatAmount += PlayerStatus.chkHeatGainStatic * Time.deltaTime; // 3
+                        PlayerStatus.heatAmount += PlayerStatus.chkHeatGainStatic * 0.02f;// // 3
                     }
                 }
                 else
@@ -213,7 +214,7 @@ public class StarGravity : MonoBehaviour
                 {
                     if (PlayerStatus.heatAmount <= 100)
                     {
-                        PlayerStatus.heatAmount += PlayerStatus.sunHeatGainStatic * Time.deltaTime; // 3
+                        PlayerStatus.heatAmount += PlayerStatus.sunHeatGainStatic * 0.02f;// // 3
                     }
                 }
                 else
@@ -222,7 +223,7 @@ public class StarGravity : MonoBehaviour
                     {
                         if (PlayerStatus.heatAmount >= 0)
                         {
-                            PlayerStatus.heatAmount -= PlayerStatus.heatDamageStatic * Time.deltaTime; // 0.5f
+                            PlayerStatus.heatAmount -= PlayerStatus.heatDamageStatic * 0.02f;// // 0.5f
                         }
                         else
                         {

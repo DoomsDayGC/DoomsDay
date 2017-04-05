@@ -35,7 +35,7 @@ namespace DigitalRuby.PyroParticles
 
         private void UpdateMovement()
         {
-            float speed = 5.0f * Time.deltaTime;
+            float speed = 5.0f * 0.02f;//
 
             if (Input.GetKey(KeyCode.W))
             {

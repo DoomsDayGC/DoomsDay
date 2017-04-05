@@ -6,10 +6,13 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
-    private bool timeAdded = false;
-
     private float distanceToWin = 1500f;
     public static bool atTheEnd = false;
+
+    // Adding seconds if the player died
+    private bool showTimeAddition = false;
+    private bool timeAdded = false;
+    private bool relativityIsReal = false;
 
     /// Heat bar
     Vector2 barPos = new Vector2(0, 145);
@@ -53,22 +56,6 @@ public class PlayerStatus : MonoBehaviour
     private float uiBaseScreenHeight = 700f;
     public Font starFont;
     public static bool showLabel;
-
-    // Saving the closest planet
-    /*
-    private GameObject gravityPlanet;
-    private GameObject gravityStar;
-    private Gravity gravityScriptPlanet;
-    private StarGravity gravityScriptStar;
-    private float customDistance;
-    */
-
-    ////public static bool isAttracted;
-    //public static string planetName;
-    //public static string starName;
-
-    //// When killed be meteors
-    //private bool deadBySnuSnu;
 
     // A vector that contains the number of lives the player has
     static bool[] HP = new bool[3];
@@ -118,9 +105,7 @@ public class PlayerStatus : MonoBehaviour
         for (int i = 0; i < HP.Length; i++)
             HP[i] = true;
 
-        //deadBySnuSnu = false;
         showLabel = false;
-        //customDistance = 0f;
         killedBy = "Eter";
         feelingOldYet = false;
         startTime = Time.time;
@@ -131,8 +116,8 @@ public class PlayerStatus : MonoBehaviour
     {
         if(reviveProtection)
         {
-            protectionTimer -= Time.deltaTime;
-            if((int)protectionTimer == 0)
+            protectionTimer -= 0.02f;//0.02f;//
+            if ((int)protectionTimer == 0)
             {
                 reviveProtection = false;
                 protectionTimer = 3f;
@@ -145,7 +130,7 @@ public class PlayerStatus : MonoBehaviour
             {
                 if (heatAmount >= 0)
                 {
-                    heatAmount -= heatDamage * Time.deltaTime;
+                    heatAmount -= heatDamage * 0.02f;//0.02f;//
                 }
                 else
                 {
@@ -163,52 +148,10 @@ public class PlayerStatus : MonoBehaviour
             isAlive = false;
         }
 
-        ///////
-        /*
-        if (planetName != null)
-        {
-            gravityPlanet = GameObject.Find(planetName);
-            gravityScriptPlanet = gravityPlanet.GetComponent<Gravity>();
-        }
-        Debug.Log(planetName + " " + gravityScriptPlanet.earthToPlanetDist.magnitude);
-        /*
-        if (starName != null)
-        {
-            gravityStar = GameObject.Find(starName);
-            gravityScriptStar = gravityStar.GetComponent<StarGravity>();
-        }
-        
-        switch(planetName)
-        {
-            case "Jupiter":
-                customDistance = 100;
-                break;
-            case "Venus":
-                customDistance = 50;
-                break;
-            case "Mercury":
-                customDistance = 40;
-                break;
-            case "Saturn":
-                customDistance = 80;
-                break;
-            case "Neptune":
-                customDistance = 50;
-                break;
-            case "Mars":
-                customDistance = 30;
-                break;   
-        }
-        /*
-        if (!isAlive && gravityScriptPlanet.earthToPlanetDist.magnitude >= customDistance && !deadBySnuSnu && killedBy == "Eter")
-        {
-            ResetLevel();
-        }*/
-
-
         ////// Timer
         if (isAlive)
         {
+            showTimeAddition = false;
             timeAdded = true;
             if (feelingOldYet)
             {
@@ -216,10 +159,12 @@ public class PlayerStatus : MonoBehaviour
                     time += 0.02f * 1 / StarGravity.earthToStarDist.magnitude * 200;
                 else
                     time += 0.02f * 1 / StarGravity.earthToStarDist.magnitude * 100;
+                relativityIsReal = true;
             }
             else
             {
                 time += 1.0f * 0.02f;
+                relativityIsReal = false;
             }
         }
         else
@@ -227,6 +172,7 @@ public class PlayerStatus : MonoBehaviour
             if (timeAdded)
             {
                 time += 5.0f;
+                showTimeAddition = true;
                 timeAdded = false;
             }
         }
@@ -303,6 +249,16 @@ public class PlayerStatus : MonoBehaviour
         }
 
         GUI.Label(ResizeGUI(new Rect(1700, 2, 100, 100)), timerLabel, textStyle);
+
+        if (showTimeAddition)
+        {
+            GUI.Label(ResizeGUI(new Rect(1740, 35, 100, 100)), "+ 05 : 00", textStyle);
+        }  
+        if (relativityIsReal)
+        {
+            if(!showTimeAddition)
+                GUI.Label(ResizeGUI(new Rect(1810, 35, 100, 100)), "X 2", textStyle);
+        }
         GUI.EndGroup();
     }
 
@@ -343,7 +299,6 @@ public class PlayerStatus : MonoBehaviour
         if (count == HP.Length)
         {
             isAlive = false;
-            //deadBySnuSnu = true;
         }
     }
 
@@ -364,14 +319,4 @@ public class PlayerStatus : MonoBehaviour
         }
         count = 0;
     }
-
-    /*
-    public void ResetLevel(Vector3 poz, bool[] HP, float Heat)
-    {
-        ResetLevel();
-        this.transform.position = poz;
-        for (int i = 0; i < HP.Length; i++)
-            PlayerStatus.HP[i] = HP[i];
-        heatAmount = Heat;
-    }*/
 }

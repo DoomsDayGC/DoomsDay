@@ -32,12 +32,12 @@ public class Checkpoint : MonoBehaviour
     {
         if (showChk && touchTooMuch == 1)
         {
-            chkTimer += Time.deltaTime;
+            chkTimer += 0.02f;//
         }
 
         if (!PlayerStatus.isAlive)
         {
-            time -= Time.deltaTime;
+            time -= 0.02f;//
         }
     }
 

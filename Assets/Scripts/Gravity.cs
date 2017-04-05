@@ -8,7 +8,8 @@ public class Gravity : MonoBehaviour
     private float deadTime = 0f;
 
     // The radius the player has no chance to escape
-    public float deadRadius;
+    public float orangeRadius;
+    public float redRadius;
 
     private int attractionTimes = 0;
 
@@ -64,7 +65,7 @@ public class Gravity : MonoBehaviour
     {
         if(!PlayerStatus.cameraFollow)
         {
-            deadTime += Time.deltaTime;
+            deadTime += 0.02f;// 0.02f;//
         }
 
         offset = earth.transform.position - this.transform.position;
@@ -89,20 +90,17 @@ public class Gravity : MonoBehaviour
             || (Input.GetKey(GameManager.GM.upwardFP) && this.transform.position.y < earth.transform.position.y)
             || (Input.GetKey(GameManager.GM.downwardFP) && this.transform.position.y > earth.transform.position.y)))
         {
-            //gravity -= 0.5f*1 / (Mathf.Abs(offset.magnitude - this.transform.localScale.x));//Time.deltaTime;
-            //gravity = Mathf.Abs(gravity);
             gravity -= powerPerFrame * 0.02f;// Time.deltaTime;
             runYouFool = true;
         }
 
         if (gravity <= gravitationalPull && planetAttraction && !runYouFool && !PlayerStatus.reviveProtection)
         {
-            //gravity += 0.3f*1 / (Mathf.Abs(offset.magnitude - this.transform.localScale.x));//Time.deltaTime;
             gravity += powerPerFrame * 0.02f;// Time.deltaTime;
         }
 
         ///////
-        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls && !PlayerStatus.reviveProtection)
+        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls && !PlayerStatus.reviveProtection && PlayerStatus.isAlive)
         {
             planetAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
@@ -119,6 +117,7 @@ public class Gravity : MonoBehaviour
         {
             if (this.name == planetName && attractionTimes == 1)
             {
+                PlayerStatus.redWarning = false;
                 PlayerStatus.yellowWarning = false;
                 PlayerStatus.orangeWarning = false;
                 attractionTimes = 0;
@@ -136,7 +135,7 @@ public class Gravity : MonoBehaviour
             //PlayerStatus.planetName = this.name;
             PlayerStatus.yellowWarning = true;
 
-            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) - 30) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(this.transform.position.z + this.transform.localScale.z / 2) >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
+            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / orangeRadius/*- 30*/) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(this.transform.position.z + this.transform.localScale.z / 2) >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
             {
                PlayerStatus.yellowWarning = false;
                PlayerStatus.orangeWarning = true;
@@ -146,7 +145,7 @@ public class Gravity : MonoBehaviour
                 PlayerStatus.orangeWarning = false;
             }
 
-            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / 2 + 10) && (this.transform.position.z + this.transform.localScale.z / 2) - 25 >= earth.GetComponent<Rigidbody>().transform.position.z)
+            if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / redRadius/*2 + 10*/) && (this.transform.position.z + this.transform.localScale.z / 2) - 25 >= earth.GetComponent<Rigidbody>().transform.position.z)
             {
                 PlayerStatus.orangeWarning = false;
                 PlayerStatus.redWarning = true;
@@ -155,12 +154,12 @@ public class Gravity : MonoBehaviour
             {
                 PlayerStatus.redWarning = false;
             }
-
+            /*
             if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / deadRadius + 7) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(this.transform.position.z + this.transform.localScale.z / 2) >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
             {
                 PlayerStatus.cameraFollow = false;
                 Controller.ignoreKey = true;
-            }
+            }*/
             if(!PlayerStatus.cameraFollow && PlayerStatus.isAlive)
             {
                 earth.GetComponent<Rigidbody>().AddForce(-direction * 5, ForceMode.Acceleration);
@@ -172,7 +171,7 @@ public class Gravity : MonoBehaviour
             deadTime = 0f;
         }
     }
-    /*
+        /*
     void SetGravity()
     {
         var behind = false;

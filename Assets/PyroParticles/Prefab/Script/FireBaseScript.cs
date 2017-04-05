@@ -114,11 +114,11 @@ namespace DigitalRuby.PyroParticles
         protected virtual void Update()
         {
             // reduce the duration
-            Duration -= Time.deltaTime;
+            Duration -= 0.02f;//
             if (Stopping)
             {
                 // increase the stop time
-                stopTimeIncrement += Time.deltaTime;
+                stopTimeIncrement += 0.02f;//
                 if (stopTimeIncrement < StopTime)
                 {
                     StopPercent = stopTimeIncrement * stopTimeMultiplier;
@@ -127,7 +127,7 @@ namespace DigitalRuby.PyroParticles
             else if (Starting)
             {
                 // increase the start time
-                startTimeIncrement += Time.deltaTime;
+                startTimeIncrement += 0.02f;//
                 if (startTimeIncrement < StartTime)
                 {
                     StartPercent = startTimeIncrement * startTimeMultiplier;
