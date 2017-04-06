@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
-    private float distanceToWin = 1500f;
+    //private float distanceToWin = 12009f;
     public static bool atTheEnd = false;
+    public static bool canChange = false;
+    private static bool newScene = false;
+    private static float transitionTime = 3f;
 
     // Adding seconds if the player died
     private bool showTimeAddition = false;
@@ -155,10 +159,12 @@ public class PlayerStatus : MonoBehaviour
             timeAdded = true;
             if (feelingOldYet)
             {
-                if (time < 30)
-                    time += 0.02f * 1 / StarGravity.earthToStarDist.magnitude * 200;
-                else
-                    time += 0.02f * 1 / StarGravity.earthToStarDist.magnitude * 100;
+                //if (time < 30)
+                    time += 2.0f * 0.02f;
+                /*
+                time += 0.02f * 1 / StarGravity.earthToStarDist.magnitude * 200;
+            else
+                time += 0.02f * 1 / StarGravity.earthToStarDist.magnitude * 100;*/
                 relativityIsReal = true;
             }
             else
@@ -184,10 +190,27 @@ public class PlayerStatus : MonoBehaviour
         timerLabel = string.Format("{0:00} : {1:00} : {2:00}", minutes, seconds, fraction);
 
         ///
+        /*
         if(this.transform.position.z >= distanceToWin)
         {
             atTheEnd = true;
             //PlayerPrefs.SetFloat("highscore", time);
+        }*/
+
+        if (atTheEnd)
+        {
+            isAlive = true;
+            this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            if (SceneManager.GetActiveScene().name == "Tutorial")
+            {
+                AutoFade.LoadScene("Level test", 3, 1, Color.black);
+            }
+            transitionTime -= 0.02f;
+            if((int)transitionTime == 0)
+            {
+                atTheEnd = false;
+                BackToStart();
+            }
         }
     }
 
@@ -307,6 +330,17 @@ public class PlayerStatus : MonoBehaviour
         isAlive = true;
         Controller.ignoreKey = false;
         cameraFollow = true;
+        warning = false;
+        time = startTime;
+    }
+
+    private void BackToStart()
+    {
+        isAlive = true;
+        cameraFollow = true;
+        ResetLife();
+        heatAmount = 100f;
+        Controller.ignoreKey = false;
         warning = false;
         time = startTime;
     }

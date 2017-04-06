@@ -65,11 +65,10 @@ public class Gravity : MonoBehaviour
     {
         if(!PlayerStatus.cameraFollow)
         {
-            deadTime += 0.02f;// 0.02f;//
+            deadTime += 0.02f;
         }
 
         offset = earth.transform.position - this.transform.position;
-        //earthToPlanetDist = offset;
 
         direction = offset;
         direction.z = 0;
@@ -165,11 +164,13 @@ public class Gravity : MonoBehaviour
                 earth.GetComponent<Rigidbody>().AddForce(-direction * 5, ForceMode.Acceleration);
             }
         }
+        
+        /*
         if ((int)deadTime == 3)
         {
             PlayerStatus.isAlive = false;
             deadTime = 0f;
-        }
+        }*/
     }
         /*
     void SetGravity()

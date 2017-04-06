@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class Tutorial : MonoBehaviour
 {
+    // Saving checkpoints from time to time;
     private bool checkpoint0 = false;
     private bool checkpoint1 = false;
     private bool checkpoint2 = false;
+    private bool checkpoint3 = false;
+    private bool finalCheckpoint = false;
 
     // Checks if died before the age
     private bool prematureDeath = false;
@@ -36,7 +39,11 @@ public class Tutorial : MonoBehaviour
     private bool showArrow = false;
     private bool waitFor = false;
 
-    public Texture arrow;
+    private bool showLeftArrow;
+    private bool showRightArrow;
+
+    public Texture arrowLeft;
+    public Texture arrowRight;
 
     private float uiBaseScreenHeight = 700f;
 
@@ -48,16 +55,10 @@ public class Tutorial : MonoBehaviour
     private string saveContent = "";
     private string content = "";
 
-    private int xPos, yPos;
+    private float xPos, yPos;
 
     private GUIStyle currentStyle = null;
 
-    // Use this for initialization
-    void Start ()
-    {
-        time = 0.0f;
-	}
-	
 	// Update is called once per frame
 	void Update ()
     {
@@ -68,7 +69,12 @@ public class Tutorial : MonoBehaviour
         }
         if (!PlayerStatus.isAlive && checkpoint2 == true)
         {
-            Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, 4000);
+            Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, 3500);
+            Checkpoint.Revive();
+        }
+        if (!PlayerStatus.isAlive && checkpoint3 == true)
+        {
+            Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, 6340);
             Checkpoint.Revive();
         }
 
@@ -82,16 +88,21 @@ public class Tutorial : MonoBehaviour
             time += 0.02f;//
         }
 
-        if (showCaseArrow && !paused)
+        if (showCaseArrow && !paused && showLeftArrow)
         {
-            Flicker();
+            Flicker(showLeftArrow);
         }
-
+        else
+        if (showCaseArrow && !paused && showRightArrow)
+        {
+            Flicker(showRightArrow);
+        }
+        /*
         if ((int)time <= 18 && !butDidItHappen)
         {
             DoraTheExplorer = CheckForBounds();
         }
-
+        
         if (DoraTheExplorer && !butDidItHappen)
         {
             if(!doraCheck)
@@ -113,7 +124,7 @@ public class Tutorial : MonoBehaviour
                 butDidItHappen = true;
                 content = saveContent;
             }
-        }
+        }*/
         //Debug.Log(time);
     }
 
@@ -131,12 +142,13 @@ public class Tutorial : MonoBehaviour
     }
 
     /// Making the arrow flicker and stuff
-    void Flicker()
+    void Flicker(bool whatArrow)
     {
         if (!waitFor)
         {
             upAndDownArrow += 0.02f;
             showArrow = true;
+            whatArrow = true;
         }
         else
         {
@@ -152,8 +164,8 @@ public class Tutorial : MonoBehaviour
             waitTime = 0f;
             waitFor = true;
             showArrow = false;
+            whatArrow = false;
         }
-        //Debug.Log(time);
     }
 
     private void OnGUI()
@@ -189,6 +201,14 @@ public class Tutorial : MonoBehaviour
             {
                 content = "A bit tricky? You can do it.";
             }
+            if(checkpoint3)
+            {
+                content = "Don't give up, you're doing great.";
+            }
+            if(finalCheckpoint)
+            {
+                content = "Almost there, you got this.";
+            }
 
             if (PlayerStatus.isAlive)
             {
@@ -207,7 +227,18 @@ public class Tutorial : MonoBehaviour
                 if (checkpoint2)
                 {
                     time = 55f;
-                    checkpoint1 = false;
+                    checkpoint2 = false;
+                    prematureDeath = false;
+                }
+                if(checkpoint3)
+                {
+                    time = 105f;
+                    checkpoint3 = false;
+                    prematureDeath = false;
+                }
+                if (finalCheckpoint)
+                {
+                    time = 150f;
                     prematureDeath = false;
                 }
                 content = "";
@@ -225,20 +256,19 @@ public class Tutorial : MonoBehaviour
                 case 5:
                     content = "To move the player use " + GameManager.GM.upwardFP + ", " + GameManager.GM.downwardFP + ", " + GameManager.GM.leftFP + ", " + GameManager.GM.rightFP + ".";
                     break;
-                case 11:/*
-                    xPos = 180;
-                    yPos = 60;
-                    heartCase = true;*/
+                case 11:
                     content = "The bar represents the amount of heat you have. When you get to 0 you will freeze and die. So don't get to 0.";
                     xPos = 190;
                     yPos = 110;
                     showCaseArrow = true;
+                    showLeftArrow = true;
                     break;
                 case 19:
                     DoraTheExplorer = false;
                     doraCheck = false;
                     showCaseArrow = false;
                     showArrow = false;
+                    showLeftArrow = false;
                     content = "Passing the arrows on the sides will make your heat deplete faster.";
                     break;
                 case 26:
@@ -246,7 +276,7 @@ public class Tutorial : MonoBehaviour
                     doraCheck = false;
                     showCaseArrow = false;
                     showArrow = false;
-                    //canSuicide = true;
+                    showLeftArrow = false;
                     content = "Hitting a planet will result in your death. Try to avoid them.";
                     break;
                 case 33:
@@ -258,16 +288,67 @@ public class Tutorial : MonoBehaviour
                 case 55:
                     content = "The colors are meant to help you. Yellow means you are attracted, up to red which means that you are too close.";
                     break;
-                case 62:
+                case 63:
+                    content = "Getting past a planet while attracted by it gives you a slight speed boost.";
+                    break;
+                case 69:
                     content = "";
                     break;
-                case 94:
-                    content = "Great job. Let's see how you can dodge the incoming meteors now.";
+                case 95:
+                    content = "Great job back there.";
                     break;
                 case 98:
+                    content = "The hearts represents the number of times you can get hit by a meteor without dying.";
+                    xPos = 190;
+                    yPos = 60;
+                    showCaseArrow = true;
+                    showLeftArrow = true;
+                    break;
+                case 105:
+                    showCaseArrow = false;
+                    showArrow = false;
+                    showLeftArrow = false;
+                    content = "Let's see how you can dodge the incoming meteors now.";
+                    break;
+                case 110:
                     content = "";
                     break;
-                case 200:
+                case 125:
+                    content = "Quite easy, right? Here comes a Star. Gravitating around it gives you heat. You can still die if you get too close.";
+                    break;
+                case 135:
+                    content = "";
+                    break;
+                case 142:
+                    content = "Meet your new best friend, the Checkpoint Star. Passing it saves your progress.";
+                    break;
+                case 149:
+                    content = "";
+                    break;
+                case 162:
+                    showCaseArrow = true;
+                    showRightArrow = true;
+                    xPos = 1540;
+                    yPos = 1.6f;
+                    content = "Here you have the timer. If you die, 5 seconds are added to it. It's purpose is the Highscore.";
+                    break;
+                case 169:
+                    showCaseArrow = false;
+                    showArrow = false;
+                    showRightArrow = false;
+                    content = "";
+                    break;
+                case 171:
+                    content = "And finally, the Black Hole. Due to relativity times goes twice as fast near it.";
+                    break;
+                case 176:
+                    content = "";
+                    break;
+                case 186:
+                    content = "This ends the tutorial. Have fun out there and dont't forget, humanity is in your hands.";
+                    break;
+                case 192:
+                    content = "";
                     counter = true;
                     break;
             }
@@ -290,7 +371,7 @@ public class Tutorial : MonoBehaviour
                 checkpoint1 = false;
             }
 
-            if((int)time>48)
+            if ((int)time > 48 && (int)time < 97)
             {
                 checkpoint2 = true;
             }
@@ -298,31 +379,42 @@ public class Tutorial : MonoBehaviour
             {
                 checkpoint2 = false;
             }
+
+            if((int)time>=97 && (int)time<=148)
+            {
+                checkpoint3 = true;
+            }
+            else
+            {
+                checkpoint3 = false;
+            }
+            if((int)time>=150)
+            {
+                finalCheckpoint = true;
+            }
         }
         else
         {
             if (DoraTheExplorer)
             {
-                content = "I can see that you can't stay put. This zone is dangerous for your heat. Your heat depletes faster beyond the bounds.";
+               // content = "I can see that you can't stay put. This zone is dangerous for your heat. Your heat depletes faster beyond the bounds.";
             }
         }
 
         if (showCaseArrow && showArrow)
         {
-            GUI.DrawTexture(ResizeGUI(new Rect(xPos, yPos, 140, 100)), arrow);
+            if (showLeftArrow)
+            {
+                GUI.DrawTexture(ResizeGUI(new Rect(xPos, yPos, 140, 100)), arrowLeft);
+            }
+            else
+                if(showRightArrow)
+            {
+                GUI.DrawTexture(ResizeGUI(new Rect(xPos, yPos, 140, 100)), arrowRight);
+            }
         }
 
         GUI.Label(ResizeGUI(new Rect(130, 900, 100, 100)), content, starStyle);
-    }
-
-    void PauseGame()
-    {
-        Time.timeScale = 0.0f;
-    }
-
-    void ResumeGame()
-    {
-        Time.timeScale = 1.0f;
     }
 
     Rect ResizeGUI(Rect _rect)

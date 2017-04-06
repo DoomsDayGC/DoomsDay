@@ -57,6 +57,18 @@ public class StarGravity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(this.tag == "End Star")
+        {
+            PlayerStatus.redWarning = false;
+            PlayerStatus.orangeWarning = false;
+            PlayerStatus.yellowWarning = false;
+            if(starAttraction && PlayerStatus.canChange)
+            {
+                PlayerStatus.isAlive = true;
+                PlayerStatus.atTheEnd = true;
+            }
+        }
+
         var distance = this.transform.position - earth.GetComponent<Rigidbody>().transform.position;
         offset = earth.transform.position - this.transform.position;
 
@@ -192,8 +204,15 @@ public class StarGravity : MonoBehaviour
             }
             if (PlayerStatus.cameraFollow == false && distance.magnitude >= 0 && this.transform.position.z <= earth.GetComponent<Rigidbody>().transform.position.z)
             {
-                PlayerStatus.isAlive = false;
-                PlayerStatus.killedBy = "Star";
+                if (this.tag != "End Star")
+                {
+                    PlayerStatus.isAlive = false;
+                    PlayerStatus.killedBy = "Star";
+                }
+                else
+                {
+                    PlayerStatus.canChange = true;
+                }
             }
             if (!PlayerStatus.cameraFollow && PlayerStatus.isAlive)
             {

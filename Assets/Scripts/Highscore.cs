@@ -48,7 +48,7 @@ public class Highscore : MonoBehaviour
                 highScore = PlayerStatus.time;
                 PlayerPrefs.SetFloat("highscore", highScore);
             }
-            PlayerStatus.atTheEnd = false;
+            //PlayerStatus.atTheEnd = false;
 
             //Debug.Log(highScore);
             minutes = (int)(highScore / 60);

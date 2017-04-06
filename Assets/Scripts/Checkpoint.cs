@@ -73,7 +73,7 @@ public class Checkpoint : MonoBehaviour
         {
             if ((int)chkTimer <= 2 && touchTooMuch == 1)
             {
-                GUI.Label(ResizeGUI(new Rect(800, 60, 100, 100)), "Checkpoint reached", starStyle);
+                GUI.Label(ResizeGUI(new Rect(800, 40, 100, 100)), "Checkpoint reached", starStyle);
             }
             else
             {
