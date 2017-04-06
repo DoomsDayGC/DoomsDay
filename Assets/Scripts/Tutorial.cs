@@ -153,7 +153,7 @@ public class Tutorial : MonoBehaviour
             waitFor = true;
             showArrow = false;
         }
-        Debug.Log(time);
+        //Debug.Log(time);
     }
 
     private void OnGUI()
@@ -220,14 +220,12 @@ public class Tutorial : MonoBehaviour
             {
                 case 1:
                     checkpoint0 = true;
-                    content = "Welcome to the tutorial where we will show you the basics";
+                    content = "Welcome to the tutorial where we will show you the basics.";
                     break;
                 case 5:
-                    content = "To move the player use " + GameManager.GM.upwardFP + ", " + GameManager.GM.downwardFP + ", " + GameManager.GM.leftFP + ", " + GameManager.GM.rightFP;
+                    content = "To move the player use " + GameManager.GM.upwardFP + ", " + GameManager.GM.downwardFP + ", " + GameManager.GM.leftFP + ", " + GameManager.GM.rightFP + ".";
                     break;
-                case 11:
-                    /*
-                    content = "The hearts represents the number of times you can survive until you are getting hit by meteors.";
+                case 11:/*
                     xPos = 180;
                     yPos = 60;
                     heartCase = true;*/
@@ -260,7 +258,16 @@ public class Tutorial : MonoBehaviour
                 case 55:
                     content = "The colors are meant to help you. Yellow means you are attracted, up to red which means that you are too close.";
                     break;
-                case 80:
+                case 62:
+                    content = "";
+                    break;
+                case 94:
+                    content = "Great job. Let's see how you can dodge the incoming meteors now.";
+                    break;
+                case 98:
+                    content = "";
+                    break;
+                case 200:
                     counter = true;
                     break;
             }
