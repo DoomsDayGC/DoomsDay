@@ -62,6 +62,9 @@ public class Tutorial : MonoBehaviour
     private void Start()
     {
         initialLocation = Vector3.zero;
+
+        PlayerPrefs.SetInt("started", 1);
+        SceneManager.UnloadSceneAsync("Tutorial");
     }
 
     // Update is called once per frame

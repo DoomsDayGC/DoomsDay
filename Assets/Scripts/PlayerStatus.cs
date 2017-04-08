@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    public static bool showUI = true;
+
     private bool savedLocation = false;
 
     //private float distanceToWin = 12009f;
@@ -115,6 +117,8 @@ public class PlayerStatus : MonoBehaviour
         feelingOldYet = false;
         startTime = Time.time;
         time = 0.0f;
+
+        Credits.crawling = true;
     }
 
     private void Update()
@@ -206,9 +210,14 @@ public class PlayerStatus : MonoBehaviour
             {
                 AutoFade.LoadScene("Level Test", 3, 1, Color.black);
             }
+            if (SceneManager.GetActiveScene().name == "Level Test")
+            {
+                AutoFade.LoadScene("Credits", 3, 2, Color.black);
+            }
             transitionTime -= 0.02f;
             if((int)transitionTime == 0)
             {
+                showUI = false;
                 atTheEnd = false;
                 BackToStart();
             }
@@ -217,6 +226,7 @@ public class PlayerStatus : MonoBehaviour
         {
             if (!savedLocation)
             {
+                showUI = true;
                 Checkpoint.savedPosition = this.transform.position;
                 savedLocation = true;
             }
@@ -225,73 +235,76 @@ public class PlayerStatus : MonoBehaviour
 
     private void OnGUI()
     {
-        GUIStyle starStyle = new GUIStyle();
-        starStyle.fontSize = GetScaledFontSize(30);
-        var textStyle = new GUIStyle();
-        textStyle.fontSize = GetScaledFontSize(35);
-        var heatTextStyle = new GUIStyle();
-        heatTextStyle.fontSize = GetScaledFontSize(20);
-        GUI.skin.font = starFont;
-
-        starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);//(4, 208, 220);
-        textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
-        heatTextStyle.normal.textColor = new Color(0, 0, 0);
-
-        GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
-
-        GUI.Label(ResizeGUI(new Rect(0, 0, 200, 200)), GetComponent<Rigidbody>().velocity.ToString(), starStyle);
-        GUI.Label(ResizeGUI(new Rect(0, 30, 200, 200)), "Max Speed: " + Controller.maxSpeedStatic.ToString(), starStyle);
-
-        // THE HEARTS MAN, THE HEARTS
-        if(count==0)
+        if (showUI)
         {
-            GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
-            GUI.DrawTexture(ResizeGUI(new Rect(50, 80, 50, 50)), hearts);
-            GUI.DrawTexture(ResizeGUI(new Rect(100, 80, 50, 50)), hearts);
+            GUIStyle starStyle = new GUIStyle();
+            starStyle.fontSize = GetScaledFontSize(30);
+            var textStyle = new GUIStyle();
+            textStyle.fontSize = GetScaledFontSize(35);
+            var heatTextStyle = new GUIStyle();
+            heatTextStyle.fontSize = GetScaledFontSize(20);
+            GUI.skin.font = starFont;
+
+            starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);//(4, 208, 220);
+            textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
+            heatTextStyle.normal.textColor = new Color(0, 0, 0);
+
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+
+            GUI.Label(ResizeGUI(new Rect(0, 0, 200, 200)), GetComponent<Rigidbody>().velocity.ToString(), starStyle);
+            GUI.Label(ResizeGUI(new Rect(0, 30, 200, 200)), "Max Speed: " + Controller.maxSpeedStatic.ToString(), starStyle);
+
+            // THE HEARTS MAN, THE HEARTS
+            if (count == 0)
+            {
+                GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
+                GUI.DrawTexture(ResizeGUI(new Rect(50, 80, 50, 50)), hearts);
+                GUI.DrawTexture(ResizeGUI(new Rect(100, 80, 50, 50)), hearts);
+            }
+            else
+            if (count == 1)
+            {
+                GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
+                GUI.DrawTexture(ResizeGUI(new Rect(50, 80, 50, 50)), hearts);
+            }
+            else
+                if (count == 2)
+            {
+                GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
+            }
+
+            //// 
+
+            EditorGUI.ProgressBar(ResizeGUI(new Rect(barPos.x, barPos.y, barSize.x - 6, barSize.y)), heatAmount / 100, "");
+
+            GUI.Label(ResizeGUI(new Rect(75, 140, 200, 200)), string.Format("{0:00.00}", heatAmount), heatTextStyle);
+
+            GUI.Label(ResizeGUI(new Rect(0, 180, 100, 100)), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
+            GUI.EndGroup();
+
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            if (isAlive)
+            {
+                GUI.Label(ResizeGUI(new Rect(443, 72, 100, 100)), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", textStyle);
+            }
+            else
+            {
+                GUI.Label(ResizeGUI(new Rect(373, 72, 100, 100)), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", textStyle);
+            }
+
+            GUI.Label(ResizeGUI(new Rect(1700, 2, 100, 100)), timerLabel, textStyle);
+
+            if (showTimeAddition)
+            {
+                GUI.Label(ResizeGUI(new Rect(1740, 35, 100, 100)), "+ 05 : 00", textStyle);
+            }
+            if (relativityIsReal)
+            {
+                if (!showTimeAddition)
+                    GUI.Label(ResizeGUI(new Rect(1810, 35, 100, 100)), "X 2", textStyle);
+            }
+            GUI.EndGroup();
         }
-        else
-        if(count==1)
-        {
-            GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
-            GUI.DrawTexture(ResizeGUI(new Rect(50, 80, 50, 50)), hearts);
-        }
-        else
-            if(count==2)
-        {
-            GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
-        }
-
-        //// 
-
-        EditorGUI.ProgressBar(ResizeGUI(new Rect(barPos.x, barPos.y, barSize.x - 6, barSize.y)), heatAmount / 100, "");
-
-        GUI.Label(ResizeGUI(new Rect(75, 140, 200, 200)), string.Format("{0:00.00}", heatAmount), heatTextStyle);
-
-        GUI.Label(ResizeGUI(new Rect(0, 180, 100, 100)), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
-        GUI.EndGroup();
-
-        GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
-        if (isAlive)
-        {
-            GUI.Label(ResizeGUI(new Rect(443, 72, 100, 100)), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", textStyle);
-        }
-        else
-        {
-            GUI.Label(ResizeGUI(new Rect(373, 72, 100, 100)), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", textStyle);
-        }
-
-        GUI.Label(ResizeGUI(new Rect(1700, 2, 100, 100)), timerLabel, textStyle);
-
-        if (showTimeAddition)
-        {
-            GUI.Label(ResizeGUI(new Rect(1740, 35, 100, 100)), "+ 05 : 00", textStyle);
-        }  
-        if (relativityIsReal)
-        {
-            if(!showTimeAddition)
-                GUI.Label(ResizeGUI(new Rect(1810, 35, 100, 100)), "X 2", textStyle);
-        }
-        GUI.EndGroup();
     }
 
     Rect ResizeGUI(Rect _rect)

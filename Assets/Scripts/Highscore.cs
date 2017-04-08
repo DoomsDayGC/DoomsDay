@@ -60,12 +60,15 @@ public class Highscore : MonoBehaviour
 
     private void OnGUI()
     {
-        var textStyle = new GUIStyle();
-        textStyle.fontSize = GetScaledFontSize(35);
+        if (PlayerStatus.showUI)
+        {
+            var textStyle = new GUIStyle();
+            textStyle.fontSize = GetScaledFontSize(35);
 
-        textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
+            textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 
-        GUI.Label(ResizeGUI(new Rect(1570, 1000, 100, 100)), "Best time: " + (inTutorial ? string.Format("00 : 00 : 00") : highScoreLabel), textStyle);
+            GUI.Label(ResizeGUI(new Rect(1570, 1000, 100, 100)), "Best time: " + (inTutorial ? string.Format("00 : 00 : 00") : highScoreLabel), textStyle);
+        }
     }
 
 

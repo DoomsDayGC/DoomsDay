@@ -3,10 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadSceneOnClick : MonoBehaviour {
+public class LoadSceneOnClick : MonoBehaviour
+{
 
+    private GameObject canvasObject;
     public void LoadByIndex(int sceneIndex)
     {
-        //SceneManager.LoadScene(1);
+        /*
+        if (PlayerPrefs.GetInt("started") == 1)
+        {
+            Debug.Log("da");
+            //canvasObject = GameObject.Find("TutorialPanel");
+            //canvasObject.SetActive(true);
+            canvasObject = GameObject.Find("MainMenuPanel");
+            canvasObject.SetActive(false);
+        }
+        else
+        {*/
+        if (this.name == "StartButton")
+        {
+            if (PlayerPrefs.GetInt("started") == 0)
+                SceneManager.LoadScene(sceneIndex);
+        }
+        else
+        {
+            SceneManager.LoadScene(sceneIndex); 
+        }
+        //}
     }
 }

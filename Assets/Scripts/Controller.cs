@@ -58,7 +58,7 @@ public class Controller : MonoBehaviour
         if (GameObject.Find("MainMenuCanvas"))
         {
             canvasObject = GameObject.Find("MainMenuCanvas");
-            canvasObject.SetActive(false);
+            //canvasObject.SetActive(false);
         }
 
         rb = GetComponent<Rigidbody>();
