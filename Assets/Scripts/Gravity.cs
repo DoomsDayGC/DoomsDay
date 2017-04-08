@@ -99,6 +99,11 @@ public class Gravity : MonoBehaviour
         }
 
         ///////
+        if(maxRadius == 0)
+        {
+            maxRadius = this.transform.localScale.x;
+        }
+
         if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls && !PlayerStatus.reviveProtection && PlayerStatus.isAlive)
         {
             planetAttraction = true;

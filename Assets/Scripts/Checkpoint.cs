@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Checkpoint : MonoBehaviour
 {
+    public static Scene currentScene;
+
     public static float touchTooMuch = 0;
     public static bool passed = true;
     private float chkTimer;
@@ -30,6 +33,8 @@ public class Checkpoint : MonoBehaviour
 
     private void Update()
     {
+        currentScene = SceneManager.GetActiveScene();
+
         if (showChk && touchTooMuch == 1)
         {
             chkTimer += 0.02f;//

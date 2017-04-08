@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour
 {
+    private static Scene initialScene;
+
     public static Vector3 initialPos;
 
     // Used to ignore the keys the user is pressing when the planet is about to die

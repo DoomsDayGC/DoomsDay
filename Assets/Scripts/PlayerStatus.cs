@@ -7,10 +7,11 @@ using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    private bool savedLocation = false;
+
     //private float distanceToWin = 12009f;
     public static bool atTheEnd = false;
-    public static bool canChange = false;
-    private static bool newScene = false;
+    //public static bool canChange = false;
     private static float transitionTime = 3f;
 
     // Adding seconds if the player died
@@ -20,7 +21,7 @@ public class PlayerStatus : MonoBehaviour
 
     /// Heat bar
     Vector2 barPos = new Vector2(0, 145);
-    Vector2 barSize = new Vector2(200, 25);
+    Vector2 barSize = new Vector2(220, 25);
 
     //public Texture2D barEmpty;
     //public Texture2D barFull;
@@ -203,13 +204,21 @@ public class PlayerStatus : MonoBehaviour
             this.GetComponent<Rigidbody>().velocity = Vector3.zero;
             if (SceneManager.GetActiveScene().name == "Tutorial")
             {
-                AutoFade.LoadScene("Level test", 3, 1, Color.black);
+                AutoFade.LoadScene("Level Test", 3, 1, Color.black);
             }
             transitionTime -= 0.02f;
             if((int)transitionTime == 0)
             {
                 atTheEnd = false;
                 BackToStart();
+            }
+        }
+        if(SceneManager.GetActiveScene().name == "Level Test")
+        {
+            if (!savedLocation)
+            {
+                Checkpoint.savedPosition = this.transform.position;
+                savedLocation = true;
             }
         }
     }
@@ -256,7 +265,7 @@ public class PlayerStatus : MonoBehaviour
 
         EditorGUI.ProgressBar(ResizeGUI(new Rect(barPos.x, barPos.y, barSize.x - 6, barSize.y)), heatAmount / 100, "");
 
-        GUI.Label(ResizeGUI(new Rect(60, 140, 200, 200)), string.Format("{0:00.00}", heatAmount), heatTextStyle);
+        GUI.Label(ResizeGUI(new Rect(75, 140, 200, 200)), string.Format("{0:00.00}", heatAmount), heatTextStyle);
 
         GUI.Label(ResizeGUI(new Rect(0, 180, 100, 100)), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
         GUI.EndGroup();

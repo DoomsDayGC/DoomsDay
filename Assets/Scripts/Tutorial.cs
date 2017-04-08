@@ -5,29 +5,31 @@ using UnityEngine.SceneManagement;
 
 public class Tutorial : MonoBehaviour
 {
-    // Saving checkpoints from time to time;
+    private Vector3 initialLocation;
+
+    /// Saving checkpoints from time to time;
     private bool checkpoint0 = false;
     private bool checkpoint1 = false;
     private bool checkpoint2 = false;
     private bool checkpoint3 = false;
     private bool finalCheckpoint = false;
 
-    // Checks if died before the age
+    /// Checks if died before the age
     private bool prematureDeath = false;
-    private bool canSuicide = false;
+    //private bool canSuicide = false;
 
-    // Used to save the content it displayed before the player being an explorer
-    private bool doraCheck = false;
+    /// Used to save the content it displayed before the player being an explorer
+    //private bool doraCheck = false;
 
-    // If the player already leaves the area won't show again
-    private bool butDidItHappen = false;
+    /// If the player already leaves the area won't show again
+    //private bool butDidItHappen = false;
 
     public GameObject player;
 
-    // Checks if the player goes exploring.
-    private bool heSheApacheTried = false;
+    /// Checks if the player goes exploring.
+    //private bool heSheApacheTried = false;
     private bool DoraTheExplorer = false;
-    private float msgShow = 0f;
+    //private float msgShow = 0f;
     private bool paused = false;
 
     // Arrow cases
@@ -52,15 +54,18 @@ public class Tutorial : MonoBehaviour
     private float time;
     private bool counter = false;
 
-    private string saveContent = "";
+    //private string saveContent = "";
     private string content = "";
 
     private float xPos, yPos;
 
-    private GUIStyle currentStyle = null;
+    private void Start()
+    {
+        initialLocation = Vector3.zero;
+    }
 
-	// Update is called once per frame
-	void Update ()
+    // Update is called once per frame
+    void Update ()
     {
         if(!PlayerStatus.isAlive && checkpoint1 == true)
         {
@@ -125,7 +130,6 @@ public class Tutorial : MonoBehaviour
                 content = saveContent;
             }
         }*/
-        //Debug.Log(time);
     }
 
     bool CheckForBounds()
@@ -238,7 +242,7 @@ public class Tutorial : MonoBehaviour
                 }
                 if (finalCheckpoint)
                 {
-                    time = 150f;
+                    time = 155f;
                     prematureDeath = false;
                 }
                 content = "";
@@ -258,14 +262,14 @@ public class Tutorial : MonoBehaviour
                     break;
                 case 11:
                     content = "The bar represents the amount of heat you have. When you get to 0 you will freeze and die. So don't get to 0.";
-                    xPos = 190;
+                    xPos = 200;
                     yPos = 110;
                     showCaseArrow = true;
                     showLeftArrow = true;
                     break;
                 case 19:
                     DoraTheExplorer = false;
-                    doraCheck = false;
+                    //doraCheck = false;
                     showCaseArrow = false;
                     showArrow = false;
                     showLeftArrow = false;
@@ -273,7 +277,7 @@ public class Tutorial : MonoBehaviour
                     break;
                 case 26:
                     DoraTheExplorer = false;
-                    doraCheck = false;
+                    //doraCheck = false;
                     showCaseArrow = false;
                     showArrow = false;
                     showLeftArrow = false;
@@ -299,7 +303,7 @@ public class Tutorial : MonoBehaviour
                     break;
                 case 98:
                     content = "The hearts represents the number of times you can get hit by a meteor without dying.";
-                    xPos = 190;
+                    xPos = 200;
                     yPos = 60;
                     showCaseArrow = true;
                     showLeftArrow = true;
@@ -380,17 +384,13 @@ public class Tutorial : MonoBehaviour
                 checkpoint2 = false;
             }
 
-            if((int)time>=97 && (int)time<=148)
+            if((int)time>=97)
             {
                 checkpoint3 = true;
             }
-            else
+            if(initialLocation!=Checkpoint.savedPosition)
             {
                 checkpoint3 = false;
-            }
-            if((int)time>=150)
-            {
-                finalCheckpoint = true;
             }
         }
         else
