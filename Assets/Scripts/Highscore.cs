@@ -7,7 +7,7 @@ public class Highscore : MonoBehaviour
 {
     private bool inTutorial = false;
 
-    private float uiBaseScreenHeight = 700f;
+    private float uiBaseScreenHeight = 1200f;
 
     public static float highScore;
 
@@ -28,9 +28,12 @@ public class Highscore : MonoBehaviour
             inTutorial = false;
         }
 
-        if (PlayerPrefs.GetFloat("highscore") == 0f)
+        if (PlayerPrefs.GetInt("started") == 1)
         {
-            PlayerPrefs.SetFloat("highscore", 200f);
+            if (PlayerPrefs.GetFloat("highscore") <= 100f)
+            {
+                PlayerPrefs.SetFloat("highscore", 600f);
+            }
         }
         highScore = PlayerPrefs.GetFloat("highscore");
 	}
@@ -41,6 +44,7 @@ public class Highscore : MonoBehaviour
         minutes = (int)(highScore / 60);
         seconds = (int)(highScore % 60);
         fraction = (int)(highScore * 100) % 100;
+        Debug.Log(PlayerStatus.time + " " + PlayerPrefs.GetFloat("highscore") + " " + PlayerStatus.atTheEnd);
         if (PlayerStatus.atTheEnd)
         {
             if (PlayerStatus.time < highScore)
@@ -60,10 +64,14 @@ public class Highscore : MonoBehaviour
 
     private void OnGUI()
     {
+        float rx = Screen.width / 1920.0f;
+        float ry = Screen.height / 1080.0f;
+        GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+
         if (PlayerStatus.showUI)
         {
             var textStyle = new GUIStyle();
-            textStyle.fontSize = GetScaledFontSize(35);
+            textStyle.fontSize = GetScaledFontSize(45);
 
             textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 

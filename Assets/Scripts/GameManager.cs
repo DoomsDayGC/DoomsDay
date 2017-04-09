@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     public KeyCode useItemSP { get; set; }
 
-    public KeyCode pause { get; set; }
+    public KeyCode exit { get; set; }
 
     private void Awake()
     {
@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
         useItem3 = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("useItem3Key", "Slash"));
         useItemSP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("useItemSPKey", "LeftAlt"));
 
-        pause = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("pauseKey", "Escape"));
+        exit = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("pauseKey", "Escape"));
     }
 
     // Use this for initialization

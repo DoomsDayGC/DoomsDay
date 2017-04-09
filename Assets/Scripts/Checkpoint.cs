@@ -12,7 +12,7 @@ public class Checkpoint : MonoBehaviour
     private float chkTimer;
     public static bool showChk = false;
 
-    private float uiBaseScreenHeight = 700f;
+    private float uiBaseScreenHeight = 1200f;
 
     private static Font starFont;
 
@@ -68,8 +68,12 @@ public class Checkpoint : MonoBehaviour
 
     private void OnGUI()
     {
+        float rx = Screen.width / 1920.0f;
+        float ry = Screen.height / 1080.0f;
+        GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+
         GUIStyle starStyle = new GUIStyle();
-        starStyle.fontSize = GetScaledFontSize(35);
+        starStyle.fontSize = GetScaledFontSize(45);
         starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
         //starStyle.alignment = TextAnchor.MiddleCenter;
         GUI.skin.font = starFont;

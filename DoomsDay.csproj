@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AfterCredits.cs" />
     <Compile Include="Assets\Media\Materials\Unity UI Sample\Scripts\ActiveStateToggler.cs" />
     <Compile Include="Assets\Media\Materials\Unity UI Sample\Scripts\ApplicationManager.cs" />
     <Compile Include="Assets\Media\Materials\Unity UI Sample\Scripts\ChangeColor.cs" />
@@ -89,8 +90,10 @@
     <Compile Include="Assets\Media\Materials\Unity UI Sample\Scripts\ScrollDetailTexture.cs" />
     <Compile Include="Assets\Media\Materials\Unity UI Sample\Scripts\ShowSliderValue.cs" />
     <Compile Include="Assets\Media\Materials\Unity UI Sample\Scripts\TiltWindow.cs" />
+    <Compile Include="Assets\ProgressBar\Script\ProgressBarBehaviour.cs" />
+    <Compile Include="Assets\ProgressBar\Script\ProgressRadialBehaviour.cs" />
+    <Compile Include="Assets\ProgressBar\Script\Utils.cs" />
     <Compile Include="Assets\PyroParticles\Demo\DemoScript.cs" />
-    <Compile Include="Assets\PyroParticles\Demo\DemoScriptEditor.cs" />
     <Compile Include="Assets\PyroParticles\Prefab\Script\FireBaseScript.cs" />
     <Compile Include="Assets\PyroParticles\Prefab\Script\FireCollisionForwardScript.cs" />
     <Compile Include="Assets\PyroParticles\Prefab\Script\FireConstantBaseScript.cs" />
@@ -104,7 +107,6 @@
     <Compile Include="Assets\Scripts\CollisionSystem.cs" />
     <Compile Include="Assets\Scripts\ControlSaveButton.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
-    <Compile Include="Assets\Scripts\Credits.cs" />
     <Compile Include="Assets\Scripts\EndGame.cs" />
     <Compile Include="Assets\Scripts\ExitOnClick.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
@@ -119,7 +121,6 @@
     <Compile Include="Assets\Scripts\PlayerStatus.cs" />
     <Compile Include="Assets\Scripts\ResizingObjects.cs" />
     <Compile Include="Assets\Scripts\SelectOnInput.cs" />
-    <Compile Include="Assets\Scripts\SetPanelActive.cs" />
     <Compile Include="Assets\Scripts\StarGravity.cs" />
     <Compile Include="Assets\Scripts\StarsController.cs" />
     <Compile Include="Assets\Scripts\Tutorial.cs" />

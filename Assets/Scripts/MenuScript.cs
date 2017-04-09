@@ -50,7 +50,7 @@ public class MenuScript : MonoBehaviour
             else if (menuPanel.GetChild(i).name == "useItemSPKey")
                 menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.useItemSP.ToString();
             else if (menuPanel.GetChild(i).name == "pauseKey")
-                menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.pause.ToString();
+                menuPanel.GetChild(i).GetComponentInChildren<Text>().text = GameManager.GM.exit.ToString();
         }
     }
 
@@ -162,9 +162,9 @@ public class MenuScript : MonoBehaviour
                 PlayerPrefs.SetString("useItemSPKey", GameManager.GM.useItemSP.ToString());
                 break;
             case "pause":
-                GameManager.GM.pause = newKey;
-                buttonText.text = GameManager.GM.pause.ToString();
-                PlayerPrefs.SetString("pauseKey", GameManager.GM.pause.ToString());
+                GameManager.GM.exit = newKey;
+                buttonText.text = GameManager.GM.exit.ToString();
+                PlayerPrefs.SetString("pauseKey", GameManager.GM.exit.ToString());
                 break;
         }
 

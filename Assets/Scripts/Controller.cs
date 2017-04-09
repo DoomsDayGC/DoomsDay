@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour
 {
+    // Game pause
+    public static bool pause = false;
+
     private static Scene initialScene;
 
     public static Vector3 initialPos;
@@ -55,11 +58,12 @@ public class Controller : MonoBehaviour
     private void Start()
     {
         staticForwardSpeed = forwardSpeed;
+        /*
         if (GameObject.Find("MainMenuCanvas"))
         {
             canvasObject = GameObject.Find("MainMenuCanvas");
             //canvasObject.SetActive(false);
-        }
+        }*/
 
         rb = GetComponent<Rigidbody>();
         upSpeed = (Vector3.up * maxSpeed).y;
@@ -319,9 +323,10 @@ public class Controller : MonoBehaviour
                     brakeX = true;
                 }
 
-                if (Input.GetKey(GameManager.GM.pause))
+                if (Input.GetKeyDown(GameManager.GM.exit))
                 {
-                    //SceneManager.LoadScene(1);
+                    pause = true;
+                    SceneManager.LoadScene(0);
                 }
 
                 if (brakeY && !Input.GetKey(GameManager.GM.upwardFP))

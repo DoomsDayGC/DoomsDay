@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
+    public Image heatBar;
+
     public static bool showUI = true;
 
     private bool savedLocation = false;
@@ -22,7 +23,7 @@ public class PlayerStatus : MonoBehaviour
     private bool relativityIsReal = false;
 
     /// Heat bar
-    Vector2 barPos = new Vector2(0, 145);
+    Vector2 barPos = new Vector2(0, /*145*/90);
     Vector2 barSize = new Vector2(220, 25);
 
     //public Texture2D barEmpty;
@@ -60,7 +61,7 @@ public class PlayerStatus : MonoBehaviour
     private float startTime;
 
     // Font used for labels
-    private float uiBaseScreenHeight = 700f;
+    private float uiBaseScreenHeight = 1200f;
     public Font starFont;
     public static bool showLabel;
 
@@ -93,6 +94,12 @@ public class PlayerStatus : MonoBehaviour
 
     private void Start()
     {
+        yellowWarning = false;
+        orangeWarning = false;
+        redWarning = false;
+        blueWarning = false;
+        cameraFollow = true;
+
         suns = GameObject.FindGameObjectsWithTag("Star");
         bHoles = GameObject.FindGameObjectsWithTag("Black Hole");
         sSuns = GameObject.FindGameObjectsWithTag("Save Star");
@@ -117,12 +124,12 @@ public class PlayerStatus : MonoBehaviour
         feelingOldYet = false;
         startTime = Time.time;
         time = 0.0f;
-
-        Credits.crawling = true;
     }
 
     private void Update()
     {
+        heatBar.fillAmount = heatAmount / 100f;
+
         if(reviveProtection)
         {
             protectionTimer -= 0.02f;//0.02f;//
@@ -165,7 +172,7 @@ public class PlayerStatus : MonoBehaviour
             if (feelingOldYet)
             {
                 //if (time < 30)
-                    time += 2.0f * 0.02f;
+                time += 2.0f * 0.02f;
                 /*
                 time += 0.02f * 1 / StarGravity.earthToStarDist.magnitude * 200;
             else
@@ -174,7 +181,10 @@ public class PlayerStatus : MonoBehaviour
             }
             else
             {
-                time += 1.0f * 0.02f;
+                if (!atTheEnd)
+                {
+                    time += 1.0f * 0.02f;
+                }
                 relativityIsReal = false;
             }
         }
@@ -187,7 +197,7 @@ public class PlayerStatus : MonoBehaviour
                 timeAdded = false;
             }
         }
-
+        
         var minutes = (int)(time / 60);
         var seconds = (int)(time % 60);
         var fraction = (int)(time * 100) % 100;
@@ -213,15 +223,21 @@ public class PlayerStatus : MonoBehaviour
             if (SceneManager.GetActiveScene().name == "Level Test")
             {
                 AutoFade.LoadScene("Credits", 3, 2, Color.black);
+                //etFini = true;
             }
             transitionTime -= 0.02f;
             if((int)transitionTime == 0)
             {
                 showUI = false;
                 atTheEnd = false;
-                BackToStart();
+                //if (!etFini)
+               // {
+                    BackToStart();
+                //atTheEnd = false;
+                //}
             }
         }
+       // etFini = false;
         if(SceneManager.GetActiveScene().name == "Level Test")
         {
             if (!savedLocation)
@@ -230,19 +246,31 @@ public class PlayerStatus : MonoBehaviour
                 Checkpoint.savedPosition = this.transform.position;
                 savedLocation = true;
             }
+            transitionTime = 3f;
+            atTheEnd = false;
         }
+        if (SceneManager.GetActiveScene().name == "Credits")
+        {
+            transitionTime = 3f;
+            //atTheEnd = false;
+        }
+
     }
 
     private void OnGUI()
     {
         if (showUI)
         {
+            float rx = Screen.width / 1920.0f;
+            float ry = Screen.height / 1080.0f;
+            GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+
             GUIStyle starStyle = new GUIStyle();
-            starStyle.fontSize = GetScaledFontSize(30);
+            starStyle.fontSize = GetScaledFontSize(40);
             var textStyle = new GUIStyle();
-            textStyle.fontSize = GetScaledFontSize(35);
+            textStyle.fontSize = GetScaledFontSize(45);
             var heatTextStyle = new GUIStyle();
-            heatTextStyle.fontSize = GetScaledFontSize(20);
+            heatTextStyle.fontSize = GetScaledFontSize(30);
             GUI.skin.font = starFont;
 
             starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);//(4, 208, 220);
@@ -251,35 +279,36 @@ public class PlayerStatus : MonoBehaviour
 
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
 
-            GUI.Label(ResizeGUI(new Rect(0, 0, 200, 200)), GetComponent<Rigidbody>().velocity.ToString(), starStyle);
-            GUI.Label(ResizeGUI(new Rect(0, 30, 200, 200)), "Max Speed: " + Controller.maxSpeedStatic.ToString(), starStyle);
+            //GUI.Label(ResizeGUI(new Rect(0, 0, 200, 200)), GetComponent<Rigidbody>().velocity.ToString(), starStyle);
+            //GUI.Label(ResizeGUI(new Rect(0, 30, 200, 200)), "Max Speed: " + Controller.maxSpeedStatic.ToString(), starStyle);
 
             // THE HEARTS MAN, THE HEARTS
             if (count == 0)
             {
-                GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
-                GUI.DrawTexture(ResizeGUI(new Rect(50, 80, 50, 50)), hearts);
-                GUI.DrawTexture(ResizeGUI(new Rect(100, 80, 50, 50)), hearts);
+                GUI.DrawTexture(ResizeGUI(new Rect(0, /*80*/20, 50, 50)), hearts);
+                GUI.DrawTexture(ResizeGUI(new Rect(50, 20, 50, 50)), hearts);
+                GUI.DrawTexture(ResizeGUI(new Rect(100, 20, 50, 50)), hearts);
             }
             else
             if (count == 1)
             {
-                GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
-                GUI.DrawTexture(ResizeGUI(new Rect(50, 80, 50, 50)), hearts);
+                GUI.DrawTexture(ResizeGUI(new Rect(0, 20, 50, 50)), hearts);
+                GUI.DrawTexture(ResizeGUI(new Rect(50, 20, 50, 50)), hearts);
             }
             else
                 if (count == 2)
             {
-                GUI.DrawTexture(ResizeGUI(new Rect(0, 80, 50, 50)), hearts);
+                GUI.DrawTexture(ResizeGUI(new Rect(0, 20, 50, 50)), hearts);
             }
 
             //// 
+#if UNITY_EDITOR
+            //UnityEditor.EditorGUI.ProgressBar(ResizeGUI(new Rect(barPos.x, barPos.y, barSize.x - 6, barSize.y)), heatAmount / 100, "");
+#endif
+            GameObject.Find("HeatCanvas").SetActive(true);
+            GUI.Label(ResizeGUI(new Rect(85, /*140*/86, 200, 200)), string.Format("{0:00.00}", heatAmount), heatTextStyle);
 
-            EditorGUI.ProgressBar(ResizeGUI(new Rect(barPos.x, barPos.y, barSize.x - 6, barSize.y)), heatAmount / 100, "");
-
-            GUI.Label(ResizeGUI(new Rect(75, 140, 200, 200)), string.Format("{0:00.00}", heatAmount), heatTextStyle);
-
-            GUI.Label(ResizeGUI(new Rect(0, 180, 100, 100)), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
+            //GUI.Label(ResizeGUI(new Rect(0, 180, 100, 100)), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
             GUI.EndGroup();
 
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
@@ -304,6 +333,10 @@ public class PlayerStatus : MonoBehaviour
                     GUI.Label(ResizeGUI(new Rect(1810, 35, 100, 100)), "X 2", textStyle);
             }
             GUI.EndGroup();
+        }
+        else
+        {
+            GameObject.Find("HeatCanvas").SetActive(false);
         }
     }
 
@@ -375,4 +408,12 @@ public class PlayerStatus : MonoBehaviour
         }
         count = 0;
     }
+    /*
+    public void SaveSettings()
+    {
+        pSavedLocation = this.transform.position;
+        pSavedHeat = heatAmount;
+        pTime = time;
+        pMeteorLife = count;
+    }*/
 }

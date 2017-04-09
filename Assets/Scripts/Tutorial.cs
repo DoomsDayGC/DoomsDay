@@ -47,7 +47,7 @@ public class Tutorial : MonoBehaviour
     public Texture arrowLeft;
     public Texture arrowRight;
 
-    private float uiBaseScreenHeight = 700f;
+    private float uiBaseScreenHeight = 1200f;
 
     public Font starFont;
 
@@ -64,7 +64,7 @@ public class Tutorial : MonoBehaviour
         initialLocation = Vector3.zero;
 
         PlayerPrefs.SetInt("started", 1);
-        SceneManager.UnloadSceneAsync("Tutorial");
+        //SceneManager.UnloadSceneAsync("Tutorial");
     }
 
     // Update is called once per frame
@@ -177,6 +177,10 @@ public class Tutorial : MonoBehaviour
 
     private void OnGUI()
     {
+        float rx = Screen.width / 1920.0f;
+        float ry = Screen.height / 1080.0f;
+        GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+
         CountDown();
     }
 
@@ -188,7 +192,7 @@ public class Tutorial : MonoBehaviour
         int t = Mathf.FloorToInt(time);
 
         GUIStyle starStyle = new GUIStyle();
-        starStyle.fontSize = GetScaledFontSize(30);
+        starStyle.fontSize = GetScaledFontSize(45);
         GUI.skin.font = starFont;
         starStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 
@@ -265,8 +269,8 @@ public class Tutorial : MonoBehaviour
                     break;
                 case 11:
                     content = "The bar represents the amount of heat you have. When you get to 0 you will freeze and die. So don't get to 0.";
-                    xPos = 200;
-                    yPos = 110;
+                    xPos = 220;
+                    yPos = 55;
                     showCaseArrow = true;
                     showLeftArrow = true;
                     break;
@@ -306,8 +310,8 @@ public class Tutorial : MonoBehaviour
                     break;
                 case 98:
                     content = "The hearts represents the number of times you can get hit by a meteor without dying.";
-                    xPos = 200;
-                    yPos = 60;
+                    xPos = 220;
+                    yPos = 10;
                     showCaseArrow = true;
                     showLeftArrow = true;
                     break;
@@ -352,7 +356,7 @@ public class Tutorial : MonoBehaviour
                     content = "";
                     break;
                 case 186:
-                    content = "This ends the tutorial. Have fun out there and dont't forget, humanity is in your hands.";
+                    content = "This ends the tutorial. Have fun out there and don't forget, humanity is in your hands.";
                     break;
                 case 192:
                     content = "";

@@ -21,7 +21,7 @@ public class PauseGame : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
-	    if(Input.GetKey(GameManager.GM.pause))
+	    if(Input.GetKey(GameManager.GM.exit))
         {
             pressed = true;
             paused = togglePause();
