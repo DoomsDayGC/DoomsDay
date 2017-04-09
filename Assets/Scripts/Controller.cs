@@ -326,7 +326,7 @@ public class Controller : MonoBehaviour
                 if (Input.GetKeyDown(GameManager.GM.exit))
                 {
                     pause = true;
-                    SceneManager.LoadScene(0);
+                    SceneManager.LoadScene(1);
                 }
 
                 if (brakeY && !Input.GetKey(GameManager.GM.upwardFP))

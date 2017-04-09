@@ -218,9 +218,9 @@ public class PlayerStatus : MonoBehaviour
             this.GetComponent<Rigidbody>().velocity = Vector3.zero;
             if (SceneManager.GetActiveScene().name == "Tutorial")
             {
-                AutoFade.LoadScene("Level Test", 3, 1, Color.black);
+                AutoFade.LoadScene("Lets call it a test", 3, 1, Color.black);
             }
-            if (SceneManager.GetActiveScene().name == "Level Test")
+            if (SceneManager.GetActiveScene().name == "Lets call it a test")
             {
                 AutoFade.LoadScene("Credits", 3, 2, Color.black);
                 //etFini = true;
@@ -238,7 +238,7 @@ public class PlayerStatus : MonoBehaviour
             }
         }
        // etFini = false;
-        if(SceneManager.GetActiveScene().name == "Level Test")
+        if(SceneManager.GetActiveScene().name == "Lets call it a test")
         {
             if (!savedLocation)
             {
@@ -252,7 +252,7 @@ public class PlayerStatus : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Credits")
         {
             transitionTime = 3f;
-            //atTheEnd = false;
+            atTheEnd = false;
         }
 
     }
