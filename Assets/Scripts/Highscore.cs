@@ -44,7 +44,7 @@ public class Highscore : MonoBehaviour
         minutes = (int)(highScore / 60);
         seconds = (int)(highScore % 60);
         fraction = (int)(highScore * 100) % 100;
-        Debug.Log(PlayerStatus.time + " " + PlayerPrefs.GetFloat("highscore") + " " + PlayerStatus.atTheEnd);
+        //Debug.Log(PlayerStatus.time + " " + PlayerPrefs.GetFloat("highscore") + " " + PlayerStatus.atTheEnd);
         if (PlayerStatus.atTheEnd)
         {
             if (PlayerStatus.time < highScore)
