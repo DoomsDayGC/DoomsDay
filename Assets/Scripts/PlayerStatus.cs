@@ -34,8 +34,9 @@ public class PlayerStatus : MonoBehaviour
     // Can't be attracted for x seconds after he revived
     public static bool reviveProtection = false;
     public static float protectionTimer = 3f;
-    public static float inviTimer = 10f;
+    public static float inviTimer = 5f;
     public static bool inviProtection = false;
+    public static bool canDie = true;
 
     // Hearts
     public Texture hearts;
@@ -149,7 +150,7 @@ public class PlayerStatus : MonoBehaviour
             if ((int)inviTimer == 0)
             {
                 inviProtection = false;
-                inviTimer = 10f;
+                inviTimer = 5f;
             }
         }
 
@@ -385,7 +386,7 @@ public class PlayerStatus : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
     {
-        if(col.collider.tag == "Meteor")
+        if(col.collider.tag == "Meteor" && canDie)
         {
             for (int i = 0; i < HP.Length; i++)
             {

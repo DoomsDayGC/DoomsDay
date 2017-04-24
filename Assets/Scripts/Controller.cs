@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour
 {
+    private float canDieTime = 3f;
+
     // Game pause
     public static bool pause = false;
 
@@ -364,14 +366,47 @@ public class Controller : MonoBehaviour
             SceneManager.LoadScene(1);
             GetComponent<PlayerStatus>().ResetLevel();
         }*/
-    }
 
+        if (!PlayerStatus.canDie)
+        {
+            canDieTime -= 0.02f;
+            if ((int)canDieTime == 0)
+            {
+                PlayerStatus.canDie = true;
+                canDieTime = 3f;
+            }
+        }
+    }
+    /*
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Pick Up Invi")
         {
             PlayerStatus.inviProtection = true;
-            other.gameObject.SetActive(false);
+            //other.gameObject.SetActive(false);
         }
+    }*/
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Pick Up AntiGrav")
+        {
+            //PlayerStatus.inviProtection = true;
+            ItemStatus.hasAntiGrav = true;
+        }
+        else
+            if(collision.gameObject.tag == "Pick Up Heat")
+        {
+            //PlayerStatus.heatAmount = 100;
+            ItemStatus.hasHeat = true;
+        }
+        else
+            if(collision.gameObject.tag == "Pick Up Invi")
+        {
+            //PlayerStatus.canDie = false;
+            ItemStatus.hasInvi = true;
+        }
+        ItemStatus.ItemNumber += 1;
+        collision.gameObject.SetActive(false);
     }
 }
