@@ -365,4 +365,13 @@ public class Controller : MonoBehaviour
             GetComponent<PlayerStatus>().ResetLevel();
         }*/
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Pick Up Invi")
+        {
+            PlayerStatus.inviProtection = true;
+            other.gameObject.SetActive(false);
+        }
+    }
 }

@@ -84,14 +84,15 @@ public class StarGravity : MonoBehaviour
             runYouFool = true;
         }
 
-        if (gravity <= gravitationalPull && starAttraction && !runYouFool && !PlayerStatus.reviveProtection)
+        if (gravity <= gravitationalPull && starAttraction && !runYouFool && !PlayerStatus.reviveProtection && !PlayerStatus.inviProtection)
         {
             gravity += powerPerFrame * 0.02f;
         }
 
 
         //////
-        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls && !PlayerStatus.reviveProtection && PlayerStatus.isAlive)
+        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) 
+            && !beyond2Souls && !PlayerStatus.reviveProtection && !PlayerStatus.inviProtection && PlayerStatus.isAlive)
         {
             starAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);
@@ -118,7 +119,7 @@ public class StarGravity : MonoBehaviour
             starAttraction = false;
             beyond2Souls = false;
 
-            if (PlayerStatus.isAlive)
+            if (PlayerStatus.isAlive || !PlayerStatus.atTheEnd)
             {
                 if (PlayerStatus.heatAmount >= 0)
                 {
@@ -220,7 +221,7 @@ public class StarGravity : MonoBehaviour
                 }
                 else
                 {
-                    if (PlayerStatus.isAlive)
+                    if (PlayerStatus.isAlive || !PlayerStatus.atTheEnd)
                     {
                         if (PlayerStatus.heatAmount >= 0)
                         {

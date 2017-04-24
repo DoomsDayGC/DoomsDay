@@ -93,7 +93,7 @@ public class Gravity : MonoBehaviour
             runYouFool = true;
         }
 
-        if (gravity <= gravitationalPull && planetAttraction && !runYouFool && !PlayerStatus.reviveProtection)
+        if (gravity <= gravitationalPull && planetAttraction && !runYouFool && !PlayerStatus.reviveProtection && !PlayerStatus.inviProtection)
         {
             gravity += powerPerFrame * 0.02f;// Time.deltaTime;
         }
@@ -104,7 +104,8 @@ public class Gravity : MonoBehaviour
             maxRadius = this.transform.localScale.x;
         }
 
-        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2) && !beyond2Souls && !PlayerStatus.reviveProtection && PlayerStatus.isAlive)
+        if ((x + y + z) <= Mathf.Pow(maxRadius - this.transform.localScale.x, 2)
+            && !beyond2Souls && !PlayerStatus.reviveProtection && !PlayerStatus.inviProtection && PlayerStatus.isAlive)
         {
             planetAttraction = true;
             earth.GetComponent<Rigidbody>().AddForce(-direction * gravity, ForceMode.Acceleration);

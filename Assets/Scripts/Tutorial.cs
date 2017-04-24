@@ -412,16 +412,16 @@ public class Tutorial : MonoBehaviour
         {
             if (showLeftArrow)
             {
-                GUI.DrawTexture(ResizeGUI(new Rect(xPos, yPos, 140, 100)), arrowLeft);
+                GUI.DrawTexture((new Rect(xPos, yPos, 140, 100)), arrowLeft);
             }
             else
                 if(showRightArrow)
             {
-                GUI.DrawTexture(ResizeGUI(new Rect(xPos, yPos, 140, 100)), arrowRight);
+                GUI.DrawTexture((new Rect(xPos, yPos, 140, 100)), arrowRight);
             }
         }
 
-        GUI.Label(ResizeGUI(new Rect(130, 900, 100, 100)), content, starStyle);
+        GUI.Label((new Rect(130, 900, 100, 100)), content, starStyle);
     }
 
     Rect ResizeGUI(Rect _rect)

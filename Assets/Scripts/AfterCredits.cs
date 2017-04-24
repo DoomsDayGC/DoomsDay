@@ -11,7 +11,8 @@ public class AfterCredits : MonoBehaviour
     {
 		if(Input.GetKeyDown(GameManager.GM.exit))
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
         }
-	}
+        Cursor.visible = false;
+    }
 }

@@ -70,7 +70,8 @@ public class Checkpoint : MonoBehaviour
     {
         float rx = Screen.width / 1920.0f;
         float ry = Screen.height / 1080.0f;
-        GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+        //GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.AngleAxis(0, new Vector3(0, 1, 0)), new Vector3(rx, ry, 1));
 
         GUIStyle starStyle = new GUIStyle();
         starStyle.fontSize = GetScaledFontSize(45);
@@ -82,7 +83,7 @@ public class Checkpoint : MonoBehaviour
         {
             if ((int)chkTimer <= 2 && touchTooMuch == 1)
             {
-                GUI.Label(ResizeGUI(new Rect(800, 40, 100, 100)), "Checkpoint reached", starStyle);
+                GUI.Label((new Rect(800, 40, 100, 100)), "Checkpoint reached", starStyle);
             }
             else
             {
@@ -97,7 +98,7 @@ public class Checkpoint : MonoBehaviour
         {
             int t = Mathf.FloorToInt(time);
 
-            GUI.Label(ResizeGUI(new Rect(900, 120, 100, 100)), "Reviving in", starStyle);
+            GUI.Label((new Rect(900, 120, 100, 100)), "Reviving in", starStyle);
 
             switch (t)
             {
@@ -118,7 +119,7 @@ public class Checkpoint : MonoBehaviour
                     break;
             }
 
-            GUI.Label(ResizeGUI(new Rect(970, 160, 100, 100)), content, starStyle);
+            GUI.Label((new Rect(970, 160, 100, 100)), content, starStyle);
         }
     }
 

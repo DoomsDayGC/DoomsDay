@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -47,9 +48,9 @@ public class GameManager : MonoBehaviour
         leftSP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("leftSPKey", "A"));
         rightSP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("rightSPKey", "D"));
 
-        useItem1 = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("useItem1Key", "Comma"));
-        useItem2 = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("useItem2Key", "Period"));
-        useItem3 = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("useItem3Key", "Slash"));
+        useItem1 = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("useItem1Key", "Alpha1"));
+        useItem2 = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("useItem2Key", "Alpha2"));
+        useItem3 = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("useItem3Key", "Alpha3"));
         useItemSP = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("useItemSPKey", "LeftAlt"));
 
         exit = (KeyCode)System.Enum.Parse(typeof(KeyCode), PlayerPrefs.GetString("pauseKey", "Escape"));
@@ -64,6 +65,13 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(SceneManager.GetActiveScene().name == "Main Menu")
+        {
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.visible = false;
+        }
     }
 }

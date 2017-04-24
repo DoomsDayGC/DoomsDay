@@ -6,9 +6,11 @@ using UnityEngine.UI;
 [RequireComponent(typeof(AudioSource))]
 
 public class Intro : MonoBehaviour
-{
+{ 
     public MovieTexture movie;
     private AudioSource audio;
+    public static bool faster = false;
+    public static bool stopIntro = false;   
 
     private float time = 15f;
 
@@ -26,9 +28,14 @@ public class Intro : MonoBehaviour
     void Update()
     {
         time -= 0.02f;
-        if ((int)time == 0f)
+        if ((int)time == 0f && !faster)
         {
             AutoFade.LoadScene("Main Menu", 3, 1, Color.black);
+        }
+        if(stopIntro)
+        {
+            movie.Stop();
+            audio.Stop();
         }
     }
 }

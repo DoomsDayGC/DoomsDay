@@ -33,7 +33,7 @@ public class PauseGame : MonoBehaviour {
         }
         if(pressed == true)
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(1);
         }
 	}
 

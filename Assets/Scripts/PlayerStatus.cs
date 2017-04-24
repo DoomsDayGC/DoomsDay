@@ -16,6 +16,7 @@ public class PlayerStatus : MonoBehaviour
     public static bool atTheEnd = false;
     //public static bool canChange = false;
     private static float transitionTime = 3f;
+    private bool inTransition = false;
 
     // Adding seconds if the player died
     private bool showTimeAddition = false;
@@ -33,6 +34,8 @@ public class PlayerStatus : MonoBehaviour
     // Can't be attracted for x seconds after he revived
     public static bool reviveProtection = false;
     public static float protectionTimer = 3f;
+    public static float inviTimer = 10f;
+    public static bool inviProtection = false;
 
     // Hearts
     public Texture hearts;
@@ -140,9 +143,19 @@ public class PlayerStatus : MonoBehaviour
             }
         }
 
-        if(foreverAlone)
+        if (inviProtection)
         {
-            if (isAlive)
+            inviTimer -= 0.02f;//0.02f;//
+            if ((int)inviTimer == 0)
+            {
+                inviProtection = false;
+                inviTimer = 10f;
+            }
+        }
+
+        if (foreverAlone)
+        {
+            if (isAlive || !atTheEnd)
             {
                 if (heatAmount >= 0)
                 {
@@ -216,13 +229,15 @@ public class PlayerStatus : MonoBehaviour
         {
             isAlive = true;
             this.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            if (SceneManager.GetActiveScene().name == "Tutorial")
+            if (SceneManager.GetActiveScene().name == "Tutorial" && !inTransition)
             {
                 AutoFade.LoadScene("Lets call it a test", 3, 1, Color.black);
+                inTransition = true;
             }
-            if (SceneManager.GetActiveScene().name == "Lets call it a test")
+            if (SceneManager.GetActiveScene().name == "Lets call it a test" && !inTransition)
             {
                 AutoFade.LoadScene("Credits", 3, 2, Color.black);
+                inTransition = true;
                 //etFini = true;
             }
             transitionTime -= 0.02f;
@@ -246,12 +261,18 @@ public class PlayerStatus : MonoBehaviour
                 Checkpoint.savedPosition = this.transform.position;
                 savedLocation = true;
             }
+            if (inTransition)
+            {
+                time = 0f;
+            }
             transitionTime = 3f;
+            inTransition = false;
             atTheEnd = false;
         }
         if (SceneManager.GetActiveScene().name == "Credits")
         {
             transitionTime = 3f;
+            inTransition = false;
             atTheEnd = false;
         }
 
@@ -263,7 +284,8 @@ public class PlayerStatus : MonoBehaviour
         {
             float rx = Screen.width / 1920.0f;
             float ry = Screen.height / 1080.0f;
-            GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+            //GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+            GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.AngleAxis(0, new Vector3(0, 1, 0)), new Vector3(rx, ry, 1));
 
             GUIStyle starStyle = new GUIStyle();
             starStyle.fontSize = GetScaledFontSize(40);
@@ -277,7 +299,7 @@ public class PlayerStatus : MonoBehaviour
             textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
             heatTextStyle.normal.textColor = new Color(0, 0, 0);
 
-            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            //GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
 
             //GUI.Label(ResizeGUI(new Rect(0, 0, 200, 200)), GetComponent<Rigidbody>().velocity.ToString(), starStyle);
             //GUI.Label(ResizeGUI(new Rect(0, 30, 200, 200)), "Max Speed: " + Controller.maxSpeedStatic.ToString(), starStyle);
@@ -285,20 +307,20 @@ public class PlayerStatus : MonoBehaviour
             // THE HEARTS MAN, THE HEARTS
             if (count == 0)
             {
-                GUI.DrawTexture(ResizeGUI(new Rect(0, /*80*/20, 50, 50)), hearts);
-                GUI.DrawTexture(ResizeGUI(new Rect(50, 20, 50, 50)), hearts);
-                GUI.DrawTexture(ResizeGUI(new Rect(100, 20, 50, 50)), hearts);
+                GUI.DrawTexture((new Rect(0, /*80*/20, 50, 50)), hearts);
+                GUI.DrawTexture((new Rect(50, 20, 50, 50)), hearts);
+                GUI.DrawTexture((new Rect(100, 20, 50, 50)), hearts);
             }
             else
             if (count == 1)
             {
-                GUI.DrawTexture(ResizeGUI(new Rect(0, 20, 50, 50)), hearts);
-                GUI.DrawTexture(ResizeGUI(new Rect(50, 20, 50, 50)), hearts);
+                GUI.DrawTexture((new Rect(0, 20, 50, 50)), hearts);
+                GUI.DrawTexture((new Rect(50, 20, 50, 50)), hearts);
             }
             else
                 if (count == 2)
             {
-                GUI.DrawTexture(ResizeGUI(new Rect(0, 20, 50, 50)), hearts);
+                GUI.DrawTexture((new Rect(0, 20, 50, 50)), hearts);
             }
 
             //// 
@@ -306,38 +328,40 @@ public class PlayerStatus : MonoBehaviour
             //UnityEditor.EditorGUI.ProgressBar(ResizeGUI(new Rect(barPos.x, barPos.y, barSize.x - 6, barSize.y)), heatAmount / 100, "");
 #endif
             GameObject.Find("HeatCanvas").SetActive(true);
-            GUI.Label(ResizeGUI(new Rect(85, /*140*/86, 200, 200)), string.Format("{0:00.00}", heatAmount), heatTextStyle);
+            //GameObject.Find("BckHeat").transform.position = new Vector2(110, 970);
+            GameObject.Find("HeatText").GetComponent<Text>().text = string.Format("{0:00.00}", heatAmount);
+            //GUI.Label((new Rect(85, /*140*/86, 200, 200)), string.Format("{0:00.00}", heatAmount), heatTextStyle);
 
             //GUI.Label(ResizeGUI(new Rect(0, 180, 100, 100)), "Status: " + (isAlive == false || count == HP.Length ? "Dead" : "Alive"), starStyle);
-            GUI.EndGroup();
+            // GUI.EndGroup();
 
-            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            //GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
             if (isAlive)
             {
-                GUI.Label(ResizeGUI(new Rect(443, 72, 100, 100)), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", textStyle);
+                GUI.Label((new Rect(443, 72, 100, 100)), showLabel ? "YOU ARE REACHING THE OUTER BORDER OF THE GALAXY, RETURN!" : "", textStyle);
             }
             else
             {
-                GUI.Label(ResizeGUI(new Rect(373, 72, 100, 100)), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", textStyle);
+                GUI.Label((new Rect(373, 72, 100, 100)), "YOU HAVE FAILED TO BRING HUMANITY TO SAFETY, THEREFOR, YOU SHALL DIE WITH IT!", textStyle);
             }
 
-            GUI.Label(ResizeGUI(new Rect(1700, 2, 100, 100)), timerLabel, textStyle);
+            GUI.Label((new Rect(1700, 2, 100, 100)), timerLabel, textStyle);
 
             if (showTimeAddition)
             {
-                GUI.Label(ResizeGUI(new Rect(1740, 35, 100, 100)), "+ 05 : 00", textStyle);
+                GUI.Label((new Rect(1740, 35, 100, 100)), "+ 05 : 00", textStyle);
             }
             if (relativityIsReal)
             {
                 if (!showTimeAddition)
-                    GUI.Label(ResizeGUI(new Rect(1810, 35, 100, 100)), "X 2", textStyle);
+                    GUI.Label((new Rect(1810, 35, 100, 100)), "X 2", textStyle);
             }
-            GUI.EndGroup();
+            //GUI.EndGroup();
         }
-        else
-        {
-            GameObject.Find("HeatCanvas").SetActive(false);
-        }
+        //else
+        //{
+        //    GameObject.Find("HeatCanvas").SetActive(false);
+        //}
     }
 
     Rect ResizeGUI(Rect _rect)

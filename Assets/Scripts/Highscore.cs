@@ -28,12 +28,9 @@ public class Highscore : MonoBehaviour
             inTutorial = false;
         }
 
-        if (PlayerPrefs.GetInt("started") == 1)
+        if (PlayerPrefs.GetInt("started") == 0)
         {
-            if (PlayerPrefs.GetFloat("highscore") <= 100f)
-            {
-                PlayerPrefs.SetFloat("highscore", 600f);
-            }
+            PlayerPrefs.SetFloat("highscore", 600f);
         }
         highScore = PlayerPrefs.GetFloat("highscore");
 	}
@@ -66,7 +63,8 @@ public class Highscore : MonoBehaviour
     {
         float rx = Screen.width / 1920.0f;
         float ry = Screen.height / 1080.0f;
-        GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+        //GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(rx, ry, 1));
+        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.AngleAxis(0, new Vector3(0, 1, 0)), new Vector3(rx, ry, 1));
 
         if (PlayerStatus.showUI)
         {
@@ -75,7 +73,7 @@ public class Highscore : MonoBehaviour
 
             textStyle.normal.textColor = new Color(0.01569f, 0.81569f, 0.86275f);
 
-            GUI.Label(ResizeGUI(new Rect(1570, 1000, 100, 100)), "Best time: " + (inTutorial ? string.Format("00 : 00 : 00") : highScoreLabel), textStyle);
+            GUI.Label((new Rect(1570, 1000, 100, 100)), "Best time: " + (inTutorial ? string.Format("00 : 00 : 00") : highScoreLabel), textStyle);
         }
     }
 
