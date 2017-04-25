@@ -119,7 +119,7 @@ public class StarGravity : MonoBehaviour
             starAttraction = false;
             beyond2Souls = false;
 
-            if (PlayerStatus.isAlive || !PlayerStatus.atTheEnd)
+            if (PlayerStatus.isAlive && !PlayerStatus.atTheEnd)
             {
                 if (PlayerStatus.heatAmount >= 0)
                 {
@@ -221,7 +221,7 @@ public class StarGravity : MonoBehaviour
                 }
                 else
                 {
-                    if (PlayerStatus.isAlive || !PlayerStatus.atTheEnd)
+                    if (PlayerStatus.isAlive && !PlayerStatus.atTheEnd)
                     {
                         if (PlayerStatus.heatAmount >= 0)
                         {

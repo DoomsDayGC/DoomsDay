@@ -171,6 +171,11 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
+        if (PlayerStatus.isAlive)
+        {
+            transform.Rotate(transform.up * 2 * 0.02f);
+        }
+
         if (GetComponent<Rigidbody>().velocity.z >= staticForwardSpeed)
              GetComponent<Rigidbody>().AddForce(Vector3.back * 10, ForceMode.Acceleration);
 

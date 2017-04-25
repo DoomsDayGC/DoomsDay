@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
+    // The speed which the planet rotates on its axes
     private float planetRotateSpeed = 20f;
 
     // If some seconds passed after the camera stopped following him, he dead mate
@@ -65,7 +66,10 @@ public class Gravity : MonoBehaviour
 
     void Update()
     {
-        transform.Rotate(transform.up * planetRotateSpeed * 0.02f);
+        if (PlayerStatus.isAlive)
+        {
+            transform.Rotate(transform.up * planetRotateSpeed * 0.02f);
+        }
 
         if (!PlayerStatus.cameraFollow)
         {

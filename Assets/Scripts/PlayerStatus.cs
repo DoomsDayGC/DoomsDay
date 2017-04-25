@@ -169,7 +169,7 @@ public class PlayerStatus : MonoBehaviour
 
         if (foreverAlone)
         {
-            if (isAlive || !atTheEnd)
+            if (isAlive && !atTheEnd)
             {
                 if (heatAmount >= 0)
                 {

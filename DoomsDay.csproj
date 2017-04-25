@@ -121,10 +121,14 @@
     <Compile Include="Assets\Scripts\PauseGame.cs" />
     <Compile Include="Assets\Scripts\PlayerStatus.cs" />
     <Compile Include="Assets\Scripts\ResizingObjects.cs" />
+    <Compile Include="Assets\Scripts\SaveSoundOnExit.cs" />
     <Compile Include="Assets\Scripts\SelectOnInput.cs" />
+    <Compile Include="Assets\Scripts\SoundScript.cs" />
     <Compile Include="Assets\Scripts\StarGravity.cs" />
     <Compile Include="Assets\Scripts\StarsController.cs" />
     <Compile Include="Assets\Scripts\Tutorial.cs" />
+    <Compile Include="Assets\Scripts\VideoButtons.cs" />
+    <Compile Include="Assets\Scripts\VideoConfig.cs" />
     <Compile Include="Assets\test.cs" />
   </ItemGroup>
   <ItemGroup>
