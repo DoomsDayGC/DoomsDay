@@ -28,7 +28,7 @@ public class Intro : MonoBehaviour
     void Update()
     {
         time -= 0.02f;
-        if ((int)time == 0f && !faster)
+        if ((int)time <= 0f && !faster)
         {
             AutoFade.LoadScene("Main Menu", 3, 1, Color.black);
         }

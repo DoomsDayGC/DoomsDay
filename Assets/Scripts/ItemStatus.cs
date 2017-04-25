@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class ItemStatus : MonoBehaviour
 {
+    public static bool pickedItem = false;
+
+    public static bool hasInvi = false;
+    public static bool hasAntiGrav = false;
+    public static bool hasHeat = false;
+
     private float uiBaseScreenHeight = 1200f;
 
     private int itemNumber = 0;
@@ -22,16 +28,35 @@ public class ItemStatus : MonoBehaviour
             }
         }
     }
-    
-    public static bool hasInvi = false;
-    public static bool hasAntiGrav = false;
-    public static bool hasHeat = false;
 	
 	// Update is called once per frame
 	void Update ()
-    {
-		
-	}
+    {		
+        if(Input.GetKey(GameManager.GM.useItem1))
+        {
+            if(hasAntiGrav)
+            {
+                PlayerStatus.inviProtection = true;
+                hasAntiGrav = false;
+            }
+        }
+        if (Input.GetKey(GameManager.GM.useItem2))
+        {
+            if (hasHeat)
+            {
+                PlayerStatus.heatAmount = 100f;
+                hasHeat = false;
+            }
+        }
+        if (Input.GetKey(GameManager.GM.useItem3))
+        {
+            if (hasInvi)
+            {
+                PlayerStatus.canDie = false;
+                hasInvi = false;
+            }
+        }
+    }
 
     private void OnGUI()
     {
@@ -49,9 +74,12 @@ public class ItemStatus : MonoBehaviour
         GUI.Label(new Rect(Screen.width / 2 + 20, Screen.height, 100, 100), "da2");
         GUI.Label(new Rect(Screen.width / 2 + 40, Screen.height, 100, 100), "da3");
         */
-        GUI.Label(new Rect(850, 1000, 100, 100), "da1", starStyle);
-        GUI.Label(new Rect(850 + 80, 1000, 100, 100), "da2", starStyle);
-        GUI.Label(new Rect(850 + 160, 1000, 100, 100), "da3", starStyle);
+
+
+        GUI.Label(new Rect(720, 1000, 100, 100), hasAntiGrav? "Anti Gravity" : "", starStyle);
+        GUI.Label(new Rect(720 + 190, 1000, 100, 100), hasHeat? "Heat Refill" : "", starStyle);
+        GUI.Label(new Rect(720 + 350, 1000, 100, 100), hasInvi? "No Meteor Allowed" : "", starStyle);
+
         GUI.EndGroup();
     }
 

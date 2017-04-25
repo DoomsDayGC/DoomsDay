@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour
 {
+    private bool isItem = false;
+
     private float canDieTime = 3f;
 
     // Game pause
@@ -393,20 +395,29 @@ public class Controller : MonoBehaviour
         {
             //PlayerStatus.inviProtection = true;
             ItemStatus.hasAntiGrav = true;
+            isItem = true;
         }
         else
             if(collision.gameObject.tag == "Pick Up Heat")
         {
             //PlayerStatus.heatAmount = 100;
             ItemStatus.hasHeat = true;
+            ItemStatus.hasAntiGrav = true;
+            isItem = true;
         }
         else
             if(collision.gameObject.tag == "Pick Up Invi")
         {
             //PlayerStatus.canDie = false;
             ItemStatus.hasInvi = true;
+            isItem = true;
         }
-        ItemStatus.ItemNumber += 1;
-        collision.gameObject.SetActive(false);
+        if (isItem)
+        {
+            ItemStatus.ItemNumber += 1;
+            ItemStatus.pickedItem = true;
+            collision.gameObject.SetActive(false);
+            isItem = false;
+        }
     }
 }

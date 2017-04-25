@@ -137,7 +137,7 @@ public class PlayerStatus : MonoBehaviour
         if(reviveProtection)
         {
             protectionTimer -= 0.02f;//0.02f;//
-            if ((int)protectionTimer == 0)
+            if ((int)protectionTimer <= 0)
             {
                 reviveProtection = false;
                 protectionTimer = 3f;
@@ -147,7 +147,7 @@ public class PlayerStatus : MonoBehaviour
         if (inviProtection)
         {
             inviTimer -= 0.02f;//0.02f;//
-            if ((int)inviTimer == 0)
+            if ((int)inviTimer <= 0)
             {
                 inviProtection = false;
                 inviTimer = 5f;
@@ -242,7 +242,7 @@ public class PlayerStatus : MonoBehaviour
                 //etFini = true;
             }
             transitionTime -= 0.02f;
-            if((int)transitionTime == 0)
+            if((int)transitionTime <= 0)
             {
                 showUI = false;
                 atTheEnd = false;
