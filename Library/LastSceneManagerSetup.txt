@@ -1,5 +1,6 @@
 sceneSetups:
 - path: Assets/Scenes/Main Menu.unity
+<<<<<<< HEAD
   isLoaded: 1
   isActive: 1
 - path: Assets/Scenes/Credits.unity
@@ -17,3 +18,22 @@ sceneSetups:
 - path: Assets/Scenes/Level Test.unity
   isLoaded: 1
   isActive: 0
+=======
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/Tutorial.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/Lets call it a test.unity
+  isLoaded: 1
+  isActive: 1
+- path: Assets/Scenes/Credits.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/Intro.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/Scenes/Level Test.unity
+  isLoaded: 0
+  isActive: 0
+>>>>>>> level-branch
