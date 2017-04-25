@@ -109,6 +109,7 @@
     <Compile Include="Assets\Scripts\ExitOnClick.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GameStart.cs" />
+    <Compile Include="Assets\Scripts\GravitatingPlanet.cs" />
     <Compile Include="Assets\Scripts\Gravity.cs" />
     <Compile Include="Assets\Scripts\GravityWarning.cs" />
     <Compile Include="Assets\Scripts\Highscore.cs" />

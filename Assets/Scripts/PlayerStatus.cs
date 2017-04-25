@@ -34,9 +34,10 @@ public class PlayerStatus : MonoBehaviour
     // Can't be attracted for x seconds after he revived
     public static bool reviveProtection = false;
     public static float protectionTimer = 3f;
-    public static float inviTimer = 5f;
+    public static float inviTimer = 10f;
     public static bool inviProtection = false;
     public static bool canDie = true;
+    public static float canDieTime = 3f;
 
     // Hearts
     public Texture hearts;
@@ -150,7 +151,19 @@ public class PlayerStatus : MonoBehaviour
             if ((int)inviTimer <= 0)
             {
                 inviProtection = false;
-                inviTimer = 5f;
+                inviTimer = 10f;
+                ItemStatus.antiGravInUse = false;
+            }
+        }
+
+        if (!canDie)
+        {
+            canDieTime -= 0.02f;
+            if ((int)canDieTime <= 0)
+            {
+                canDie = true;
+                canDieTime = 3f;
+                ItemStatus.inviInUse = false;
             }
         }
 

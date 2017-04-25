@@ -10,21 +10,24 @@ public class ItemStatus : MonoBehaviour
     public static bool hasAntiGrav = false;
     public static bool hasHeat = false;
 
+    public static bool inviInUse = false;
+    public static bool antiGravInUse = false;
+
     private float uiBaseScreenHeight = 1200f;
 
-    private int itemNumber = 0;
+    private static int itemNumber = 0;
     public static int ItemNumber
     {
         get
         {
-            return ItemNumber;
+            return itemNumber;
         }
 
         set
         {
             if(value<=3)
             {
-                ItemNumber = value;
+                itemNumber = value;
             }
         }
     }
@@ -38,6 +41,7 @@ public class ItemStatus : MonoBehaviour
             {
                 PlayerStatus.inviProtection = true;
                 hasAntiGrav = false;
+                antiGravInUse = true;
             }
         }
         if (Input.GetKey(GameManager.GM.useItem2))
@@ -54,6 +58,7 @@ public class ItemStatus : MonoBehaviour
             {
                 PlayerStatus.canDie = false;
                 hasInvi = false;
+                inviInUse = true;
             }
         }
     }
@@ -76,9 +81,9 @@ public class ItemStatus : MonoBehaviour
         */
 
 
-        GUI.Label(new Rect(720, 1000, 100, 100), hasAntiGrav? "Anti Gravity" : "", starStyle);
+        GUI.Label(new Rect(720, 1000, 100, 100), hasAntiGrav? "Anti Gravity" : antiGravInUse? string.Format("{0:00}", PlayerStatus.inviTimer % 60) : "", starStyle);
         GUI.Label(new Rect(720 + 190, 1000, 100, 100), hasHeat? "Heat Refill" : "", starStyle);
-        GUI.Label(new Rect(720 + 350, 1000, 100, 100), hasInvi? "No Meteor Allowed" : "", starStyle);
+        GUI.Label(new Rect(720 + 350, 1000, 100, 100), hasInvi? "No Meteor Allowed" : inviInUse? string.Format("{0:00}", PlayerStatus.canDieTime % 60) : "", starStyle);
 
         GUI.EndGroup();
     }

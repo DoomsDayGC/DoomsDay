@@ -7,8 +7,6 @@ public class Controller : MonoBehaviour
 {
     private bool isItem = false;
 
-    private float canDieTime = 3f;
-
     // Game pause
     public static bool pause = false;
 
@@ -368,16 +366,6 @@ public class Controller : MonoBehaviour
             SceneManager.LoadScene(1);
             GetComponent<PlayerStatus>().ResetLevel();
         }*/
-
-        if (!PlayerStatus.canDie)
-        {
-            canDieTime -= 0.02f;
-            if ((int)canDieTime == 0)
-            {
-                PlayerStatus.canDie = true;
-                canDieTime = 3f;
-            }
-        }
     }
     /*
     private void OnTriggerEnter(Collider other)
@@ -393,22 +381,18 @@ public class Controller : MonoBehaviour
     {
         if (collision.gameObject.tag == "Pick Up AntiGrav")
         {
-            //PlayerStatus.inviProtection = true;
             ItemStatus.hasAntiGrav = true;
             isItem = true;
         }
         else
             if(collision.gameObject.tag == "Pick Up Heat")
         {
-            //PlayerStatus.heatAmount = 100;
             ItemStatus.hasHeat = true;
-            ItemStatus.hasAntiGrav = true;
             isItem = true;
         }
         else
             if(collision.gameObject.tag == "Pick Up Invi")
         {
-            //PlayerStatus.canDie = false;
             ItemStatus.hasInvi = true;
             isItem = true;
         }

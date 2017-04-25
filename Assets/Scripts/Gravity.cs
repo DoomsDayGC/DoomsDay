@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Gravity : MonoBehaviour
 {
+    private float planetRotateSpeed = 20f;
+
     // If some seconds passed after the camera stopped following him, he dead mate
     private float deadTime = 0f;
 
@@ -63,7 +65,9 @@ public class Gravity : MonoBehaviour
 
     void Update()
     {
-        if(!PlayerStatus.cameraFollow)
+        transform.Rotate(transform.up * planetRotateSpeed * 0.02f);
+
+        if (!PlayerStatus.cameraFollow)
         {
             deadTime += 0.02f;
         }
