@@ -14,6 +14,8 @@ public class GameStart : MonoBehaviour
         //PlayerPrefs.SetInt("started", 0);
         Button btn = startButton.GetComponent<Button>();
         btn.onClick.AddListener(TaskOnClick);
+
+        VideoConfig.LoadAll();
     }
 
     

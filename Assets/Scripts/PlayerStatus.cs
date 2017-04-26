@@ -416,6 +416,8 @@ public class PlayerStatus : MonoBehaviour
         {
             isAlive = false;
         }
+
+        col.gameObject.SetActive(false);
     }
 
     public void ResetLevel()

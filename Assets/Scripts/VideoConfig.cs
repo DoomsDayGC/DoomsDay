@@ -2,49 +2,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class VideoConfig : MonoBehaviour {
+
+    public Toggle full;
+    public Dropdown resDrop;
+
+    public static int fullscreen = 1;
+    public static int res;
+    public static string quality;
+
+    private void Start()
+    {
+        full.isOn = PlayerPrefs.GetInt("Custom_Full") == 0 ? false : true;
+        resDrop.value = PlayerPrefs.GetInt("Custom_Resolution");
+        LoadAll();
+    }
 
     public void SetDefaults()
     {
         SetSettings("High");
-        SetResolution(0, 1);
-        SetAA(2);
-        SetVsync(1);
+        SetResolution(0, true);
     }
 
-    public static void SetResolution(int res, int full)
+    public static void SetResolution(int res, bool full)
     {
-        bool fs = Convert.ToBoolean(full);
+        //bool fs = Convert.ToBoolean(full);
 
         switch(res)
         {
             case 0:
-                Screen.SetResolution(1920, 1080, fs);
+                Screen.SetResolution(1920, 1080, full);
                 break;
             case 1:
-                Screen.SetResolution(1600, 900, fs);
+                Screen.SetResolution(1600, 900, full);
                 break;
             case 2:
-                Screen.SetResolution(1280, 1024, fs);
+                Screen.SetResolution(1280, 1024, full);
                 break;
             case 3:
-                Screen.SetResolution(1280, 800, fs);
+                Screen.SetResolution(1280, 800, full);
                 break;
         }
-    }
-
-    public static void SetAA(int samples)
-    {
-        if (samples == 0 || samples == 2 || samples == 4 || samples == 8)
-        {
-            QualitySettings.antiAliasing = samples;
-        }
-    }
-
-    public static void SetVsync(int sync)
-    {
-        QualitySettings.vSyncCount = sync;
     }
 
     public static void SetSettings(string name)
@@ -66,8 +66,6 @@ public class VideoConfig : MonoBehaviour {
     public static void LoadAll()
     {
         SetSettings(PlayerPrefs.GetString("Custom_Settings"));
-        SetResolution(PlayerPrefs.GetInt("Custom_Resolution"), PlayerPrefs.GetInt("Custom_Full"));
-        SetAA(PlayerPrefs.GetInt("Custom_AA"));
-        SetVsync(PlayerPrefs.GetInt("Custom_Sync"));
+        SetResolution(PlayerPrefs.GetInt("Custom_Resolution"), PlayerPrefs.GetInt("Custom_Full") == 0? false : true);
     }
 }

@@ -12,8 +12,4 @@ public class CollisionSystem : MonoBehaviour
             PlayerStatus.killedBy = "Planet";
         }
     }
-    
-    private void OnParticleCollision(GameObject other)
-    {
-    }
 }

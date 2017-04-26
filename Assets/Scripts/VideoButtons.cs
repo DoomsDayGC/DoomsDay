@@ -11,54 +11,69 @@ public class VideoButtons : MonoBehaviour {
         // Quality
         if(this.name == "Low")
         {
+            VideoConfig.quality = "Low";
             VideoConfig.SetSettings("Low");
         }
         if (this.name == "Medium")
         {
+            VideoConfig.quality = "Medium";
             VideoConfig.SetSettings("Medium");
         }
         if (this.name == "High")
         {
+            VideoConfig.quality = "High";
             VideoConfig.SetSettings("High");
         }
         
-        // Antialiasing
-        if (this.name == "AA")
+        // Fullscreen
+        if (this.name == "Fullscreen")
         {
-            if(GetComponent<Toggle>().isOn)
+            if (GetComponent<Toggle>().isOn)
             {
-                VideoConfig.SetAA(8);
+                VideoConfig.fullscreen = 1;
+                Screen.fullScreen = true;
             }
             else
             {
-                VideoConfig.SetAA(0);
+                Screen.fullScreen = false;
+                VideoConfig.fullscreen = 0;
             }
         }
-        
+
         // Resolution
-        if(this.name == "Resolution")
+        if (this.name == "Resolution")
         {
             if(GetComponent<Dropdown>().value == 0)
             {
-                VideoConfig.SetResolution(0, 3);
+                VideoConfig.res = 0;
+                VideoConfig.SetResolution(0, VideoConfig.fullscreen == 0 ? false : true);
             }
             else
             if (GetComponent<Dropdown>().value == 1)
             {
-                VideoConfig.SetResolution(1, 3);
+                VideoConfig.res = 1;
+                VideoConfig.SetResolution(1, VideoConfig.fullscreen == 0 ? false : true);
             }
             else
             if (GetComponent<Dropdown>().value == 2)
             {
-                VideoConfig.SetResolution(2, 3);
+                VideoConfig.res = 2;
+                VideoConfig.SetResolution(2, VideoConfig.fullscreen == 0 ? false : true);
             }
             else
             if (GetComponent<Dropdown>().value == 3)
             {
-                VideoConfig.SetResolution(3, 3);
+                VideoConfig.res = 3;
+                VideoConfig.SetResolution(3, VideoConfig.fullscreen == 0 ? false : true);
             }
         }
-        Debug.Log("da");
+    }
+
+    public void SaveAll()
+    {
+        PlayerPrefs.SetString("Custom_Settings", VideoConfig.quality);
+        PlayerPrefs.SetInt("Custom_Resolution", VideoConfig.res);
+        PlayerPrefs.SetInt("Custom_Full", VideoConfig.fullscreen);
     }
 
 }

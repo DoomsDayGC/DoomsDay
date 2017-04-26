@@ -7,9 +7,6 @@ public class Controller : MonoBehaviour
 {
     private bool isItem = false;
 
-    // Game pause
-    public static bool pause = false;
-
     private static Scene initialScene;
 
     public static Vector3 initialPos;
@@ -332,7 +329,6 @@ public class Controller : MonoBehaviour
 
                 if (Input.GetKeyDown(GameManager.GM.exit))
                 {
-                    pause = true;
                     SceneManager.LoadScene(1);
                 }
 
@@ -372,15 +368,6 @@ public class Controller : MonoBehaviour
             GetComponent<PlayerStatus>().ResetLevel();
         }*/
     }
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Pick Up Invi")
-        {
-            PlayerStatus.inviProtection = true;
-            //other.gameObject.SetActive(false);
-        }
-    }*/
 
     private void OnCollisionEnter(Collision collision)
     {

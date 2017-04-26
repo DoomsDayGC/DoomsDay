@@ -15,15 +15,17 @@ public class AsteroidController : MonoBehaviour
     {
         direction = player.transform.position - this.transform.position;
         //Debug.Log(direction.magnitude + " " + direction.z);
-        /*
+        
         if (direction.z <= -2)
         {
             this.transform.rotation = Quaternion.LookRotation(direction);
-        }*/
-        if (direction.magnitude <= 100)
-            transform.position += transform.forward * 0.02f * meteorSpeed;
+            //transform.position += transform.forward * 0.02f * 40;
+        }
+        
+        if (direction.magnitude <= 300)
+            transform.position += transform.forward * 0.02f * 30;
         else
             transform.position += transform.forward * 0.02f * 1;
-
+            
     }
 }
