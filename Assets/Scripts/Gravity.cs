@@ -123,6 +123,12 @@ public class Gravity : MonoBehaviour
                 if (earth.GetComponent<Rigidbody>().velocity.z <= Controller.staticForwardSpeed + 30)
                     earth.GetComponent<Rigidbody>().AddForce(Vector3.forward * 100, ForceMode.Acceleration);
             }
+
+            if (this.tag == "Checkpoint")
+            {
+                Checkpoint.touchTooMuch = 1;
+                Checkpoint.passed = true;
+            }
             planetName = this.name;
             attractionTimes = 1;
         }
@@ -135,19 +141,58 @@ public class Gravity : MonoBehaviour
                 PlayerStatus.orangeWarning = false;
                 attractionTimes = 0;
             }
+
             gravity = 0.0f;
             planetAttraction = false;
             beyond2Souls = false;
+
+            if (PlayerStatus.isAlive && !PlayerStatus.atTheEnd)
+            {
+                if (PlayerStatus.heatAmount >= 0)
+                {
+                    PlayerStatus.heatAmount -= PlayerStatus.heatDamageStatic * 0.02f;//
+                }
+                else
+                {
+                    if ((PlayerStatus.heatAmount >= 0 && PlayerStatus.heatAmount < 1) || PlayerStatus.heatAmount < 0)
+                        PlayerStatus.isAlive = false;
+                    PlayerStatus.killedBy = "Heat";
+                }
+            }
+        }
+
+        // If it got passed the Save Star it is now attracted by, here comes a checkpoint
+        if (earth.transform.position.z >= (this.transform.position.z + this.transform.localScale.z))
+        {
+            if (this.name == planetName)
+                if (this.tag == "Checkpoint")
+                {
+                    Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, (this.transform.position.z + this.transform.localScale.z) + 50 );
+                    if (Checkpoint.passed)
+                    {
+                        Checkpoint.showChk = true;
+                    }
+                }
         }
 
         runYouFool = false;
 
+        if (this.tag == "Black Hole")
+        {
+            PlayerStatus.feelingOldYet = false;
+        }
         //////
         if (planetAttraction)
         {
             //PlayerStatus.planetName = this.name;
             PlayerStatus.yellowWarning = true;
-
+            if (this.tag == "Black Hole")
+            {
+                if (offset.magnitude <= 100)
+                {
+                    PlayerStatus.feelingOldYet = true;
+                }
+            }
             if (offset.magnitude <= ((maxRadius - this.transform.localScale.x) / orangeRadius/*- 30*/) && this.transform.position.z >= earth.GetComponent<Rigidbody>().transform.position.z)//(this.transform.position.z + this.transform.localScale.z / 2) >= earth.GetComponent<Rigidbody>().transform.position.z)//(1 / 3.0 * (maxRadius - this.transform.localScale.x)))// 
             {
                PlayerStatus.yellowWarning = false;
@@ -176,6 +221,41 @@ public class Gravity : MonoBehaviour
             if(!PlayerStatus.cameraFollow && PlayerStatus.isAlive)
             {
                 earth.GetComponent<Rigidbody>().AddForce(-direction * 5, ForceMode.Acceleration);
+            }
+            if (PlayerStatus.isAlive)
+            {
+
+                if (this.tag == "Checkpoint")
+                {
+                    if (PlayerStatus.heatAmount <= 100)
+                    {
+                        PlayerStatus.heatAmount += PlayerStatus.chkHeatGainStatic * 0.02f;// // 3
+                    }
+                }
+                else
+                if (this.tag == "Sun")
+                {
+                    if (PlayerStatus.heatAmount <= 100)
+                    {
+                        PlayerStatus.heatAmount += PlayerStatus.sunHeatGainStatic * 0.02f;// // 3
+                    }
+                }
+                else
+                {
+                    if (PlayerStatus.isAlive && !PlayerStatus.atTheEnd)
+                    {
+                        if (PlayerStatus.heatAmount >= 0)
+                        {
+                            PlayerStatus.heatAmount -= PlayerStatus.heatDamageStatic * 0.02f;// // 0.5f
+                        }
+                        else
+                        {
+                            if ((PlayerStatus.heatAmount >= 0 && PlayerStatus.heatAmount < 1) || PlayerStatus.heatAmount < 0)
+                                PlayerStatus.isAlive = false;
+                            PlayerStatus.killedBy = "Heat";
+                        }
+                    }
+                }
             }
         }
         

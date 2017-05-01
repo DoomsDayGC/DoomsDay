@@ -10,6 +10,11 @@ public class CollisionSystem : MonoBehaviour
         {
             PlayerStatus.isAlive = false;
             PlayerStatus.killedBy = "Planet";
+            if(this.tag == "Black Hole")
+            {
+                PlayerStatus.cameraFollow = false;
+                col.transform.position = this.transform.position - new Vector3(-30, transform.position.y, transform.position.z);
+            }
         }
     }
 }

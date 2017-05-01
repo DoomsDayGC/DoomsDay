@@ -8,7 +8,13 @@ public class AsteroidController : MonoBehaviour
     public float meteorSpeed;
     //public float distanceToAccelerate;
 
+    private Vector3 startPos;
     Vector3 direction;
+
+    private void Start()
+    {
+        startPos = this.transform.position;
+    }
 
     // Update is called once per frame
     void Update()
@@ -26,6 +32,10 @@ public class AsteroidController : MonoBehaviour
             transform.position += transform.forward * 0.02f * 30;
         else
             transform.position += transform.forward * 0.02f * 1;
-            
+        
+        if(!PlayerStatus.isAlive)
+        {
+            this.transform.position = startPos;
+        }
     }
 }

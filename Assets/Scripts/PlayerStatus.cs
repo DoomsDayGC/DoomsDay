@@ -417,7 +417,10 @@ public class PlayerStatus : MonoBehaviour
             isAlive = false;
         }
 
-        col.gameObject.SetActive(false);
+        if (col.collider.tag == "Meteor")
+        {
+            col.gameObject.SetActive(false);
+        }
     }
 
     public void ResetLevel()
