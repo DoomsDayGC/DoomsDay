@@ -146,7 +146,8 @@ public class Gravity : MonoBehaviour
             planetAttraction = false;
             beyond2Souls = false;
 
-            if (PlayerStatus.isAlive && !PlayerStatus.atTheEnd)
+            
+            if (PlayerStatus.isAlive && !PlayerStatus.atTheEnd && (this.tag == "Sun" || this.tag == "Checkpoint"))
             {
                 if (PlayerStatus.heatAmount >= 0)
                 {
@@ -239,7 +240,7 @@ public class Gravity : MonoBehaviour
                     {
                         PlayerStatus.heatAmount += PlayerStatus.sunHeatGainStatic * 0.02f;// // 3
                     }
-                }
+                }/*
                 else
                 {
                     if (PlayerStatus.isAlive && !PlayerStatus.atTheEnd)
@@ -255,7 +256,7 @@ public class Gravity : MonoBehaviour
                             PlayerStatus.killedBy = "Heat";
                         }
                     }
-                }
+                }*/
             }
         }
         

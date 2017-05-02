@@ -105,9 +105,9 @@ public class PlayerStatus : MonoBehaviour
         blueWarning = false;
         cameraFollow = true;
 
-        suns = GameObject.FindGameObjectsWithTag("Star");
+        suns = GameObject.FindGameObjectsWithTag("Sun");
         bHoles = GameObject.FindGameObjectsWithTag("Black Hole");
-        sSuns = GameObject.FindGameObjectsWithTag("Save Star");
+        sSuns = GameObject.FindGameObjectsWithTag("Checkpoint");
 
         if (suns.Length == 0 && bHoles.Length == 0 && sSuns.Length == 0)
         {
@@ -129,6 +129,7 @@ public class PlayerStatus : MonoBehaviour
         feelingOldYet = false;
         startTime = Time.time;
         time = 0.0f;
+
     }
 
     private void Update()
