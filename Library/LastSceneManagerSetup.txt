@@ -15,7 +15,7 @@ sceneSetups:
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/Level Test.unity
-  isLoaded: 1
+  isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/Making the Sun.unity
   isLoaded: 0
