@@ -9,8 +9,11 @@ sceneSetups:
   isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/Lets call it a test.unity
-  isLoaded: 1
+  isLoaded: 0
   isActive: 0
 - path: Assets/Scenes/Game Level.unity
+  isLoaded: 0
+  isActive: 0
+- path: Assets/LitParticles/Scene.unity
   isLoaded: 0
   isActive: 0

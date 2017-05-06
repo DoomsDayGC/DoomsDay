@@ -420,7 +420,7 @@ public class PlayerStatus : MonoBehaviour
 
         if (col.collider.tag == "Meteor")
         {
-            col.gameObject.SetActive(false);
+            //col.gameObject.SetActive(false);
         }
     }
 

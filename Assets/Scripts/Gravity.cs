@@ -168,12 +168,18 @@ public class Gravity : MonoBehaviour
             if (this.name == planetName)
                 if (this.tag == "Checkpoint")
                 {
-                    Checkpoint.savedPosition = Controller.initialPos + new Vector3(0, 0, (this.transform.position.z + this.transform.localScale.z) + 50 );
+                    Checkpoint.savedPosition = Controller.initialPos 
+                        + new Vector3(0, 0, (this.transform.position.z + this.transform.localScale.z) + this.gameObject.transform.parent.gameObject.transform.localScale.z * 10 + 50 );
                     if (Checkpoint.passed)
                     {
                         Checkpoint.showChk = true;
                     }
                 }
+        }
+
+        if(this.name == "CheckpointV2 (1)")
+        {
+            Debug.Log(this.transform.position.z + this.transform.localScale.z);
         }
 
         runYouFool = false;
