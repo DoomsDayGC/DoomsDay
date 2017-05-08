@@ -11,12 +11,6 @@ sceneSetups:
 - path: Assets/Scenes/Tutorial.unity
   isLoaded: 0
   isActive: 0
-<<<<<<< HEAD
-- path: Assets/Scenes/Lets call it a test.unity
-  isLoaded: 0
-  isActive: 0
-=======
->>>>>>> my-branch
 - path: Assets/Scenes/Game Level.unity
   isLoaded: 0
   isActive: 0
