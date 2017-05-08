@@ -84,9 +84,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\2D animated stars\Scripts\Billboard.cs" />
-    <Compile Include="Assets\2D animated stars\Scripts\DemoGUI.cs" />
-    <Compile Include="Assets\2D animated stars\Scripts\UVTextureAnimator.cs" />
     <Compile Include="Assets\LitParticles\CameraToWorld.cs" />
     <Compile Include="Assets\LitParticles\RandomSphericalPosition.cs" />
     <Compile Include="Assets\LitParticles\RotateAround.cs" />
@@ -114,30 +111,15 @@
     <Compile Include="Assets\Scripts\AsteroidController.cs" />
     <Compile Include="Assets\Scripts\AutoFade.cs" />
     <Compile Include="Assets\Scripts\BlackHoleLens.cs" />
-    <Compile Include="Assets\Scripts\Camera\AspectRatioFix.cs" />
-    <Compile Include="Assets\Scripts\Camera\CameraLocationTracker.cs" />
-    <Compile Include="Assets\Scripts\Camera\GetRes.cs" />
-    <Compile Include="Assets\Scripts\Camera\MirrorMainCamera.cs" />
-    <Compile Include="Assets\Scripts\Camera\SetChild.cs" />
-    <Compile Include="Assets\Scripts\Camera\SetRes.cs" />
-    <Compile Include="Assets\Scripts\Camera\SetSceneBuffer.cs" />
-    <Compile Include="Assets\Scripts\Camera\ViewPanOffset.cs" />
     <Compile Include="Assets\Scripts\Checkpoint.cs" />
     <Compile Include="Assets\Scripts\CollisionSystem.cs" />
     <Compile Include="Assets\Scripts\ControlSaveButton.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
-    <Compile Include="Assets\Scripts\Controllers\LightingControl.cs" />
     <Compile Include="Assets\Scripts\EndGame.cs" />
     <Compile Include="Assets\Scripts\ExitIntro.cs" />
     <Compile Include="Assets\Scripts\ExitOnClick.cs" />
-    <Compile Include="Assets\Scripts\Fx\Screenshot.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\GameStart.cs" />
-    <Compile Include="Assets\Scripts\General\FaceCamera.cs" />
-    <Compile Include="Assets\Scripts\General\MatchOrientation.cs" />
-    <Compile Include="Assets\Scripts\General\RandomRotation.cs" />
-    <Compile Include="Assets\Scripts\General\RotationConstraint.cs" />
-    <Compile Include="Assets\Scripts\General\Rotator.cs" />
     <Compile Include="Assets\Scripts\GravitatingPlanet.cs" />
     <Compile Include="Assets\Scripts\Gravity.cs" />
     <Compile Include="Assets\Scripts\GravityWarning.cs" />
@@ -147,6 +129,7 @@
     <Compile Include="Assets\Scripts\LoadSceneOnClick.cs" />
     <Compile Include="Assets\Scripts\MainCameraScript.cs" />
     <Compile Include="Assets\Scripts\MenuScript.cs" />
+    <Compile Include="Assets\Scripts\Nebula.cs" />
     <Compile Include="Assets\Scripts\PauseGame.cs" />
     <Compile Include="Assets\Scripts\PlayerStatus.cs" />
     <Compile Include="Assets\Scripts\ResizingObjects.cs" />
@@ -161,7 +144,6 @@
     <Compile Include="Assets\test.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\2D animated stars\ReadMe.txt" />
     <None Include="Assets\LitParticles\LitParticle.shader" />
     <None Include="Assets\Materials\Shaders\unlit_noz.shader" />
     <None Include="Assets\Media\Materials\Unity UI Sample\Fonts\Jupiter\LICENSE.txt" />

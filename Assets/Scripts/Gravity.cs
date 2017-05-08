@@ -162,6 +162,9 @@ public class Gravity : MonoBehaviour
             }
         }
 
+
+        //Debug.Log(Checkpoint.touchTooMuch + " " + Checkpoint.passed);
+
         // If it got passed the Save Star it is now attracted by, here comes a checkpoint
         if (earth.transform.position.z >= (this.transform.position.z + this.transform.localScale.z))
         {
@@ -175,11 +178,6 @@ public class Gravity : MonoBehaviour
                         Checkpoint.showChk = true;
                     }
                 }
-        }
-
-        if(this.name == "CheckpointV2 (1)")
-        {
-            Debug.Log(this.transform.position.z + this.transform.localScale.z);
         }
 
         runYouFool = false;

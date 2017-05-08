@@ -428,6 +428,7 @@ public class PlayerStatus : MonoBehaviour
     {
         isAlive = true;
         Controller.ignoreKey = false;
+        //Nebula.unfroze = true;
         cameraFollow = true;
         warning = false;
         time = startTime;
@@ -440,6 +441,7 @@ public class PlayerStatus : MonoBehaviour
         ResetLife();
         heatAmount = 100f;
         Controller.ignoreKey = false;
+        //Nebula.unfroze = true;
         warning = false;
         time = startTime;
     }
