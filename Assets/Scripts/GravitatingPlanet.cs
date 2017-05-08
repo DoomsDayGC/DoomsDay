@@ -8,6 +8,7 @@ public class GravitatingPlanet : MonoBehaviour
 
     public float orbitSpeed;
 
+    public bool invert;
     public bool xAxe;
     public bool yAxe;
     public bool zAxe;
@@ -17,7 +18,7 @@ public class GravitatingPlanet : MonoBehaviour
     {
         if (PlayerStatus.isAlive)
         {
-            transform.RotateAround(planetToGravitate.transform.position, new Vector3(xAxe ? 1 : 0, yAxe ? 1 : 0, zAxe ? 1 : 0), orbitSpeed * 0.02f);
+            transform.RotateAround(planetToGravitate.transform.position, new Vector3(xAxe ? (invert ? (-1) : 1) * 1 : 0, yAxe ? (invert ? (-1) : 1) * 1 : 0, zAxe ? (invert ? (-1) : 1) * 1 : 0),  orbitSpeed * 0.02f);
         }
 	}
 }
